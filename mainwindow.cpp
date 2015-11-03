@@ -431,36 +431,13 @@ public:
     {
         QString ErrorText;
         if(ErrorID==517) ErrorText="Недостаточно привилегий";
-        else if(ErrorID==399) ErrorText="Ошибка отправки запроса";
+        else if(ErrorID==399) ErrorText="Ошибка неверные аргументы";
         else if(ErrorID==404) ErrorText="Нет соединения с базой данных";
         else if(ErrorID==419) ErrorText="Ошибка запрошеный скрипт не найден";
         else if(ErrorID==408) ErrorText="Не верный пароль.";
         else if(ErrorID==410) ErrorText="Ошибка вы не авторизированы";
-        //else if(ErrorID==400) ErrorText="Ошибка клиент уже авторизирован";
-        //else if(ErrorID==518) ErrorText="Почта не подтверждена";
-        //else if(ErrorID==405) ErrorText="Клиент который вы создаете уже существует";
-        //else if(ErrorID==406) ErrorText="Новый клиент успешно создан";
-        //else if(ErrorID==407) ErrorText="Не известная ошибка создания пользователя";
         else if(ErrorID==439) ErrorText="Ваш клиент не поддерживается";
-        //else if(ErrorID==415) ErrorText="Ошибка сообщение не отправлено";
-        //else if(ErrorID==421) ErrorText="Ошибка пользователь не существует";
-        //else if(ErrorID==422) ErrorText="Ошибка данные не получены";
-        //else if(ErrorID==423) ErrorText="Не задано название комнаты";
-        //else if(ErrorID==424) ErrorText="Ошибка создания";
         else if(ErrorID==426) ErrorText="Вы исчерпали ллимит комнат";
-        //else if(ErrorID==427) ErrorText="Ошибка удаления";
-        //else if(ErrorID==428) ErrorText="Задан пустой id";
-        //else if(ErrorID==429) ErrorText="Нельзя удалить чужую комнату";
-        //else if(ErrorID==431) ErrorText="Комната не существует";
-        //else if(ErrorID==432) ErrorText="Ошибка получения информации";
-        //else if(ErrorID==506) ErrorText="Письмо не отправлено";
-        //else if(ErrorID==507) ErrorText="Письмо отправлено";
-        //else if(ErrorID==508) ErrorText="Не указан email";
-        //else if(ErrorID==509) ErrorText="Не указан подаргумент";
-        //else if(ErrorID==510) ErrorText="Не возможно восстановить пароль, отсутствует запись";
-        //else if(ErrorID==511) ErrorText="Не правильный код смены пароля";
-        //else if(ErrorID==513) ErrorText="Ошибка, пароль не изменен";
-        //else if(ErrorID==514) ErrorText="Пароль не задан";
         else if(ErrorID==525) ErrorText="Регистрация на этом сервере запрещена";
         return ErrorText;
     }
@@ -1036,10 +1013,10 @@ public slots:
             if(Text=="303") break;
             if(!isStart || isReloadHostory)
             {
-                SMStoValues(ReplyMap,true);
+                SMStoValues(ReplyMap.value("0").toMap(),true);
                 isReloadHostory=false;
             }
-            else SMStoValues(ReplyMap,false);
+            else SMStoValues(ReplyMap.value("0").toMap(),false);
             isStart=true;
             QString Texte=ListToHTML();
             R.MainUI->textBrowser->setHtml(Texte);
