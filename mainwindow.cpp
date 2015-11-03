@@ -538,6 +538,8 @@ public:
         else R.KabinUI->checkBox->setChecked(0);
         if(setings->GetKey("Debug")=="true") R.KabinUI->checkBox->setChecked(1);
         else R.KabinUI->checkBox->setChecked(0);
+        if(!R.LoadMenuUI->lineEdit_2->text().isEmpty()) R.LoadMenuUI->checkBox->setChecked(1);
+        else R.LoadMenuUI->checkBox->setChecked(0);
     }
     bool LoadStyle(QString path)
     {
@@ -1020,7 +1022,6 @@ public slots:
             for(int i=0;i<result.size();i++) tmp+="/"+result.value(i);
             tmp.remove(0,1);
             post("type=info&id="+tmp,tGetInfo);
-
             timer->start(7000);
             break;
         }
@@ -1207,8 +1208,8 @@ void MainWindow::OnStart()
 {
     temp=new AChat;
     temp->LoadSettings();
+    temp->CheckBoxUpdate();
     temp->GetServersList();
-
 }
 void Dialog::on_comboBox_activated(const QString &arg1)
 {
