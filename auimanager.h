@@ -43,7 +43,6 @@ Loading::Loading(QWidget *parent) :
     ui->setupUi(this);
     R.LoadWindow=this;
     R.LoadWindowUI=ui;
-	qDebug() << 1;
 }
 
 Loading::~Loading()
