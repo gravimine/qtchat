@@ -235,8 +235,6 @@ public:
         temp.msg=msg;
         MessageList << temp;
     }
-    int ServerTempCashe=0;
-    QString ServerReplyCashe;
     void WriteServerList(QMap<QString,QVariant> reply)
     {
         int Servers=0,AllServers=0;
@@ -247,7 +245,6 @@ public:
             AServer tmp;
             QMap<QString,QVariant> tmp2=reply.value(keys.value(i)).toMap();
             tmp.name=tmp2.value("name").toString();
-
             tmp.ping=tmp2.value("ping").toString().toFloat();
             tmp.url=tmp2.value("url").toString().replace("<space>"," ");
             if(tmp.name.isEmpty()) tmp.name=tmp.url;
@@ -263,13 +260,11 @@ public:
                 R.LoadMenuUI->comboBox->addItem(tmp.name);
                 tmp.status="online";
             }
-
             else  Servers++;
             AllServers++; ServersList<<tmp;
         }
         log<<QString::number(Servers)+" ot "+QString::number(AllServers)+" Servers";
     }
-
     void LSUp()
     {
         HistoryNumberLS-=20;
@@ -294,7 +289,6 @@ public:
             if(RoomID!=MyClient.com_id) postiString+="/"+QString::number(RoomID);
         }
         post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);
-
     }
     QString OnlinetoHTML(QMap<QString,QVariant> Map)
     {
@@ -315,7 +309,6 @@ public:
         HTML=Styled.Main.arg(allLS);
         return HTML;
     }
-
     void SetServer(QString name)
     {
         log<<"New server: "+name;
@@ -339,21 +332,18 @@ public:
                 ADD_DEBUG "Server url: "+ServersList.value(i).url;
             }
         }
-
     }
     AServer FindServer(QString name)
     {
         AServer returnServer;
         for(int i=0;i<ServersList.size();i++)
         {
-
             if(ServersList.value(i).name==name || ServersList.value(i).url==name) {
                 returnServer=ServersList.value(i);
             }
         }
         return returnServer;
     }
-
     bool SendCommand(QString message)
     {
         //QStringList ArgList=message.split(" ");
@@ -439,41 +429,38 @@ public:
     }
     QString GetErrorText(int ErrorID)
     {
-        QString ErrorText="";
+        QString ErrorText;
         if(ErrorID==517) ErrorText="Недостаточно привилегий";
         else if(ErrorID==399) ErrorText="Ошибка отправки запроса";
         else if(ErrorID==404) ErrorText="Нет соединения с базой данных";
         else if(ErrorID==419) ErrorText="Ошибка запрошеный скрипт не найден";
         else if(ErrorID==408) ErrorText="Не верный пароль.";
         else if(ErrorID==410) ErrorText="Ошибка вы не авторизированы";
-        else if(ErrorID==400) ErrorText="Ошибка клиент уже авторизирован";
-        else if(ErrorID==518) ErrorText="Почта не подтверждена";
-        else if(ErrorID==405) ErrorText="Клиент который вы создаете уже существует";
-        else if(ErrorID==406) ErrorText="Новый клиент успешно создан";
-        else if(ErrorID==407) ErrorText="Не известная ошибка создания пользователя";
+        //else if(ErrorID==400) ErrorText="Ошибка клиент уже авторизирован";
+        //else if(ErrorID==518) ErrorText="Почта не подтверждена";
+        //else if(ErrorID==405) ErrorText="Клиент который вы создаете уже существует";
+        //else if(ErrorID==406) ErrorText="Новый клиент успешно создан";
+        //else if(ErrorID==407) ErrorText="Не известная ошибка создания пользователя";
         else if(ErrorID==439) ErrorText="Ваш клиент не поддерживается";
-        else if(ErrorID==415) ErrorText="Ошибка сообщение не отправлено";
-        else if(ErrorID==421) ErrorText="Ошибка пользователь не существует";
-        else if(ErrorID==422) ErrorText="Ошибка данные не получены";
-        else if(ErrorID==423) ErrorText="Не задано название комнаты";
-        else if(ErrorID==424) ErrorText="Ошибка создания";
+        //else if(ErrorID==415) ErrorText="Ошибка сообщение не отправлено";
+        //else if(ErrorID==421) ErrorText="Ошибка пользователь не существует";
+        //else if(ErrorID==422) ErrorText="Ошибка данные не получены";
+        //else if(ErrorID==423) ErrorText="Не задано название комнаты";
+        //else if(ErrorID==424) ErrorText="Ошибка создания";
         else if(ErrorID==426) ErrorText="Вы исчерпали ллимит комнат";
-        else if(ErrorID==427) ErrorText="Ошибка удаления";
-        else if(ErrorID==428) ErrorText="Задан пустой id";
-        else if(ErrorID==429) ErrorText="Нельзя удалить чужую комнату";
-        else if(ErrorID==431) ErrorText="Комната не существует";
-        else if(ErrorID==432) ErrorText="Ошибка получения информации";
-        else if(ErrorID==428) ErrorText="Задан пустой id";
-        else if(ErrorID==431) ErrorText="Комната не существует";
-        else if(ErrorID==432) ErrorText="Ошибка получения информации";
-        else if(ErrorID==506) ErrorText="Письмо не отправлено";
-        else if(ErrorID==507) ErrorText="Письмо отправлено";
-        else if(ErrorID==508) ErrorText="Не указан email";
-        else if(ErrorID==509) ErrorText="Не указан подаргумент";
-        else if(ErrorID==510) ErrorText="Не возможно восстановить пароль, отсутствует запись";
-        else if(ErrorID==511) ErrorText="Не правильный код смены пароля";
-        else if(ErrorID==513) ErrorText="Ошибка, пароль не изменен";
-        else if(ErrorID==514) ErrorText="Пароль не задан";
+        //else if(ErrorID==427) ErrorText="Ошибка удаления";
+        //else if(ErrorID==428) ErrorText="Задан пустой id";
+        //else if(ErrorID==429) ErrorText="Нельзя удалить чужую комнату";
+        //else if(ErrorID==431) ErrorText="Комната не существует";
+        //else if(ErrorID==432) ErrorText="Ошибка получения информации";
+        //else if(ErrorID==506) ErrorText="Письмо не отправлено";
+        //else if(ErrorID==507) ErrorText="Письмо отправлено";
+        //else if(ErrorID==508) ErrorText="Не указан email";
+        //else if(ErrorID==509) ErrorText="Не указан подаргумент";
+        //else if(ErrorID==510) ErrorText="Не возможно восстановить пароль, отсутствует запись";
+        //else if(ErrorID==511) ErrorText="Не правильный код смены пароля";
+        //else if(ErrorID==513) ErrorText="Ошибка, пароль не изменен";
+        //else if(ErrorID==514) ErrorText="Пароль не задан";
         else if(ErrorID==525) ErrorText="Регистрация на этом сервере запрещена";
         return ErrorText;
     }
@@ -488,7 +475,6 @@ public:
             }
         }
     }
-
     void login(QString loginit,QString passit,QString key = "")
     {
         QString posti;
@@ -514,7 +500,6 @@ public:
         get("http://server-ClusterChat.esy.es/fileinfo.php",tGetError);
         log<<"Get Errors.txt";
     }
-
     void LoadSettings()
     {
         setings->AddKey("Debug",IS_DEBUG);
@@ -537,11 +522,9 @@ public:
         QStringList List1,List2;
         List1=setings->Main->value("KeysList1").toStringList();
         List2=setings->Main->value("KeysList2").toStringList();
-
         for(int i=0;i<List1.size();i++)
         {
             UniKey s;
-
             s.StringID=List1.value(i);
             s.key=List2.value(i);
             UniKeyList << s;
@@ -556,7 +539,6 @@ public:
         if(setings->GetKey("Debug")=="true") R.KabinUI->checkBox->setChecked(1);
         else R.KabinUI->checkBox->setChecked(0);
     }
-
     bool LoadStyle(QString path)
     {
         log<<"Loading style "+path;
@@ -617,10 +599,8 @@ public:
         }
         return returnClient;
     }
-
     AChat()
     {
-
         timer3=QTime::currentTime();
         SetPath=QDir().homePath();
         if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); log<<"Create dir .ClusterChat";}
@@ -658,7 +638,6 @@ public:
         TimerTick=0;
         qDebug() << "Старотвал за:"+QString::number(timer3.elapsed())+"мс";
     }
-
     ~AChat()
     {
         log.SaveLog();
@@ -679,7 +658,6 @@ public:
         delete errors;
         delete setings;
         log<< "Exit " + timeEx(timer3);
-
     }
     ASettings *setings;
     void Registration(QString Login,QString name_and_family, QString Pass,QString EMail)
@@ -726,7 +704,6 @@ public:
     {
         return MyClient;
     }
-
     void exit()
     {
         post("type=exit",tExit);
@@ -751,7 +728,6 @@ public:
 
                 break;
             }
-
         }
         return ReturnValue;
     }
@@ -798,11 +774,9 @@ public:
             ssLS.msg.replace(":)","<IMG src=\":/res/smail.png\">")
                     .replace(":(","<IMG src=\":/res/sadness.png\">")
                     .replace(":пфф:","<IMG src=\":/res/rukalico.png\">")
-                    .replace(":{}","<IMG src=\":/res/default/zloi.png\">")
-                    ;
+                    .replace(":{}","<IMG src=\":/res/default/zloi.png\">");
             Client ClientLS=GetClient(ssLS.ClientID);
             QStringList ListX=ssLS.time.split(":");
-
             allLS+=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
                     .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg)).arg(timeEx(ListX.value(1).toInt(),ListX.value(2).toInt(),ListX.value(0).toInt()));
             nummers++;
@@ -811,7 +785,6 @@ public:
             TextMessages=ClientLS.name+": "+ssLS.msg;
             temp=ssLS.ClientID;
             ShowID=ssLS.id;
-            
             if(HistoryNumberLS<numLS) HistoryNumberLS=numLS;}
         }
         HTML=Styled.Main.arg(allLS);
@@ -831,9 +804,11 @@ public slots:
         if(!ReplyMap.isEmpty())  {ReplyMap=ValuesMap.value("arg").toMap(); Text=ClusterChat.UnsplitStringHTML(ValuesMap);}
         qDebug() << ClusterChat.printMap(ReplyMap);
         int Type=reply.Type;
-        if(Text.toInt() > 300 && Text.toInt() <600) {
+        if(Text.toInt() > 300 && Text.toInt() <600)
+        {
             QString sma=GetErrorText(Text.toInt());
-        if(!sma.isEmpty()) SendMessage(sma);}
+            if(!sma.isEmpty()) SendMessage(sma);
+        }
 
         if(reply.TextError!="Unknown error"&&reply.TextError!="Неизвестная ошибка")
         {
@@ -882,7 +857,6 @@ public slots:
         }
         case tOnlineList:
         {
-
             R.MainUI->labelOnline->setText(OnlinetoHTML(ReplyMap.value("0").toMap()));
             WriteClients(ReplyMap.value("0").toMap());
             break;

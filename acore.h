@@ -220,14 +220,13 @@ public:
     }
     QString QtHtmlRecoder(QString html)
     {
-        //QString result=html_find(html,REPLACE_TEXT_II,"</body>").replace(REPLACE_TEXT_I,"").replace("</p>","");
         QString result=html_find(html,REPLACE_TEXT_I,"</p>");
         return result;
     }
     QString SpecialSybmolCoder(QString value,bool isDecode)
     {
-        if(!isDecode) return value.replace("<","\t0001").replace(">","\t0002");
-        else return value.replace("\t0001","<").replace("\t0002",">");
+        if(!isDecode) return value.replace("<","\k0001").replace(">","\k0002");
+        else return value.replace("\k0001","<").replace("\k0002",">");
     }
 
 private:
@@ -313,13 +312,6 @@ private:
     }
 };
 
-
-
-
-
-
-
-
 class ALog : public QStringList
 {
 public:
@@ -358,7 +350,14 @@ public:
     {
         append(dtime()+h);
     }
-
+    void addInfo(QString h)
+    {
+        append("[info]"+dtime()+h);
+    }
+    void addError(QString h)
+    {
+        append("[error]"+dtime()+h);
+    }
     void SetFile(QString data)
     {
         patch=data;
@@ -458,8 +457,8 @@ QString dtime()
 {
     QTime time=QTime::currentTime();
     QDate date=QDate::currentDate();
-    QString datatime="["+QString::number(date.day())+"."+QString::number(date.month())+"."+QString::number(date.year())+"]";
-    datatime+="["+QString::number(time.hour())+":"+QString::number(time.minute())+":"+QString::number(time.second())+"x"+QString::number(time.msec())+"]";
+    QString datatime;
+    datatime.sprintf("[%d.%d.%d][%d:%d:%d][%d]",date.day(),date.month(),date.year(),time.hour(),time.minute(),time.second(),time.msec());
     return datatime;
 }
 QString timeEx(QTime starture)
