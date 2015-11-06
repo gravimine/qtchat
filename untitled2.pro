@@ -36,9 +36,4 @@ FORMS    += mainwindow.ui \
     form.ui \
     kabinet.ui \
     loading.ui
-
-DISTFILES += \
-    android-sources/AndroidManifest.xml \
-    android-sources/src/org/qtproject/example/notification/NotificationClient.java \
-    android-sources/res/drawable/icon.png
 RESOURCES     = app.qrc

@@ -346,7 +346,7 @@ public:
     bool SendCommand(QString message)
     {
         //QStringList ArgList=message.split(" ");
-        QStringList ArgList=ClusterChat.splitStringArgs(message);
+        QStringList ArgList=splitStringArgs(message);
         QString cmd=ArgList.value(0);
         if(cmd=="/ban")
         {
@@ -402,7 +402,7 @@ public:
             Temp.ClientID=ValueMap.value("idUser").toString().toInt();
             Temp.id=ValueMap.value("id").toString().toInt();
             Temp.isRealLS=true;
-            Temp.msg= ClusterChat.SpecialSybmolCoder(ValueMap.value("textMessage").toString(),true);
+            Temp.msg=SpecialSybmolCoder(ValueMap.value("textMessage").toString(),true);
             QStringList TimeData=ValueMap.value("dateMessage").toString().split(" ");
             Temp.data=TimeData.value(0);
             Temp.time=TimeData.value(1);
@@ -635,6 +635,8 @@ public:
         delete timer;
         delete errors;
         delete setings;
+        delete styles;
+        delete timersendls;
         log<< "Exit " + timeEx(timer3);
     }
     ASettings *setings;
@@ -647,7 +649,7 @@ public:
         QString posti;
         for(int i=0;i<SendLSList.size();i++)
             posti+="&m_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
-                ClusterChat.SpecialSybmolCoder(SendLSList.value(i)
+                SpecialSybmolCoder(SendLSList.value(i)
                                                                       .replace("%","%25").replace("&","%26")
                                                                       .replace("+","%2B"),false);
         if(!posti.isEmpty())post("type=sendmsg"+posti,tNewLS);
@@ -664,7 +666,7 @@ public:
         else
         {
         if(!isSendCommand(Text))
-            post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+ClusterChat.SpecialSybmolCoder(Text
+            post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(Text
                                                                         .replace("%","%25").replace("&","%26")
                                                                         .replace("+","%2B"),false),tNewLS);
         //if(!isSendCommand(Text)) post("type=sendmsg&message="+Text.replace("&","%26"),tNewLS);
@@ -759,28 +761,29 @@ public:
                     .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg)).arg(timeEx(ListX.value(1).toInt(),ListX.value(2).toInt(),ListX.value(0).toInt()));
             nummers++;
             if(numLS<ssLS.id && !bool(ssLS.msg.isEmpty()))
-            {numLS=ssLS.id;
-            TextMessages=ClientLS.name+": "+ssLS.msg;
-            temp=ssLS.ClientID;
-            ShowID=ssLS.id;
-            if(HistoryNumberLS<numLS) HistoryNumberLS=numLS;}
+            {
+                numLS=ssLS.id;
+                TextMessages=ClientLS.name+": "+ssLS.msg;
+                temp=ssLS.ClientID;
+                ShowID=ssLS.id;
+            if(HistoryNumberLS<numLS) HistoryNumberLS=numLS;
+            }
         }
         HTML=Styled.Main.arg(allLS);
-        if(!TextMessages.isEmpty() && MyClient.id != temp && !R.MainUI->textEdit->hasFocus()) {SendDialogMessage(TextMessages,"<b><center>Новое Сообщение"); log<< "Send Dialog Message ID: "+ QString::number(ShowID)+" Text:"+ TextMessages;}
+        if(!TextMessages.isEmpty() && MyClient.id != temp && !R.MainUI->textEdit->hasFocus()) {
+            SendDialogMessage(TextMessages,"<center><b>Новое Сообщение");
+            log<< "Send Dialog Message ID: "+ QString::number(ShowID)+" Text:"+ TextMessages;}
         return HTML;
     }
     int GetKomnata(){ return MyClient.com_id;}
 public slots:
     void getReplyFinished(ANetworkReply reply) //Принят ответ сервера
     {
-        QMap<QString,QVariant> ValuesMap = ClusterChat.splitStringHTML(reply.TextReply);
-        QMap<QString,QVariant> ReplyMap;
-
+        QMap<QString,QVariant> ValuesMap = splitStringHTML(reply.TextReply);
+        QMap<QString,QVariant> ReplyMap=ValuesMap.value("arg").toMap();
         QString Text;
         Text=ValuesMap.value("key").toString();
-        if(ValuesMap.value("arg").type()==QVariant::Map)ReplyMap=ValuesMap.value("arg").toMap();
-        if(!ReplyMap.isEmpty())  {ReplyMap=ValuesMap.value("arg").toMap(); Text=ClusterChat.UnsplitStringHTML(ValuesMap);}
-        qDebug() << ClusterChat.printMap(ReplyMap);
+        qDebug() << printMap(ValuesMap);
         int Type=reply.Type;
         if(Text.toInt() > 300 && Text.toInt() <600)
         {
@@ -863,7 +866,7 @@ public slots:
                 R.KabinUI->listWidget_2->addItem(temp.name);
                 ClientList << temp;
             }
-            if(isDebug)R.LoadWindowUI->label_2->setText("Получение списка доступных комнат");
+            if(isDebug) R.LoadWindowUI->label_2->setText("Получение списка доступных комнат");
             QString postiString;
             for(int i=0;i<ChatsList.size();i++)
             {
@@ -885,12 +888,12 @@ public slots:
             MyClient.Active=false;}
             else if(ClusterChat.MessageQuest("На сообщение о выходе сервер отреагировал отрицательно. Выйти принудительно?"))
             {
-                        R.LoadMenu->show();
-                        R.Main->setHidden(1);
-                        R.MainUI->textBrowser->setHtml(DEFAULT_TEXT_TEXTBROWSER);
-                        clearlist();
-                        timer->stop();
-                        MyClient.Active=false;
+                  R.LoadMenu->show();
+                  R.Main->setHidden(1);
+                  R.MainUI->textBrowser->setHtml(DEFAULT_TEXT_TEXTBROWSER);
+                  clearlist();
+                  timer->stop();
+                  MyClient.Active=false;
             }
             break;
         }
@@ -949,8 +952,9 @@ public slots:
                 tmp.ip=ValueMap.value("ip").toString();
                 tmp.key=ValueMap.value("unigie").toString();
                 tmp.lastDate=ValueMap.value("lastDate").toString();
-
-                if(!UniClientList.contains(tmp)) {UniClientList << tmp;qDebug() << tmp.key;}
+                if(!UniClientList.contains(tmp)) {
+                    UniClientList << tmp;
+                    qDebug() << tmp.key;}
             }
 
             for(int i=0;i<UniClientList.size();i++) R.KabinUI->listWidget_4->addItem(UniClientList.value(i).key);
@@ -1032,14 +1036,14 @@ public slots:
     {
         if(MyClient.Active)
         {
-            if(TimerTick!=10) if(MyClient.com_id!=0) post("type=msglist&new=true&room="+QString::number(GetKomnata()),tMessage);
+            if(TimerTick!=10) {if(MyClient.com_id!=0) post("type=msglist&new=true&room="+QString::number(GetKomnata()),tMessage);
             else {QString postiString;
                 for(int i=0;i<ChatsList.size();i++)
                 {
                     int RoomID=ChatsList.value(i).KomID;
                     if(RoomID!=MyClient.com_id) postiString+="/"+QString::number(RoomID);
                 }
-                post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);TimerTick=0;}
+                post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);TimerTick=0;}}
             TimerTick++;
         }
         R.KabinUI->textBrowser->setText(log.toHTML());
@@ -1220,16 +1224,9 @@ void registr::on_pushButton_clicked()
     else ClusterChat.SendM("Неверно заполнены поля");
     else ClusterChat.SendM("Неверно заполнены поля");
 }
- void MainWindow::on_label_linkActivated(const QString &link)
- {
-     if(!R.MainUI->textEdit->toPlainText().isEmpty())temp->SendLS(ClusterChat.QtHtmlRecoder(R.MainUI->textEdit->toHtml()));
-     R.MainUI->textEdit->setHtml("");
-     R.MainUI->textEdit->setFocus();
- }
-
 void MainWindow::on_commandLinkButton_clicked()
 {
-    if(!R.MainUI->textEdit->toPlainText().isEmpty())temp->SendLS(ClusterChat.QtHtmlRecoder(R.MainUI->textEdit->toHtml()));
+    if(!R.MainUI->textEdit->toPlainText().isEmpty())temp->SendLS(QtHtmlRecoder(R.MainUI->textEdit->toHtml()));
     R.MainUI->textEdit->setHtml("");
     R.MainUI->textEdit->setFocus();
 }
@@ -1239,12 +1236,6 @@ void MainWindow::on_listWidget_clicked(const QModelIndex &index)
     QStringList lst=index.data().toString().split(" ");
     temp->SetKomnata(lst.value(lst.size()-1).toInt());
 }
-
-void MainWindow::on_pushButton_clicked()
-{
-    temp->exit();
-}
-
 void MainWindow::on_action_6_triggered()
 {
     temp->exit();

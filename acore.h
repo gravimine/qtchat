@@ -13,6 +13,7 @@
 #define MAX_MESSAGE_BOX 2
 #define REPLACE_TEXT_I "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
 #define MapFind(n,Map,keyd) QStringList keyd=Map.keys(); for(int n=0;n<keyd.size();n++)
+#define foreash(n,mas) for(int n=0;n<mas.size();n++)
 //#define REPLACE_TEXT_II "<body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">"
 namespace ACore
 {
@@ -63,27 +64,7 @@ public:
         if (n == QMessageBox::Yes)return true;
         else return false;
     }
-    QString html_find(QString htmlcode,QString sMin,QString sMax, int start=0)
-    {
-        QString result;
-        int iMin,iMax;
-        iMin=htmlcode.indexOf(sMin,start)+sMin.size();
-        iMax=htmlcode.indexOf(sMax,iMin);
-        for(int i=iMin;i<iMax;i++) result+=htmlcode[i];
-        return result;
-    }
-    QString html_find_s(QString htmlcode,QString html, int start=0)
-    {
-        QString result;
-        int iMin,iMax;
-        QString sMax,sMin;
-        sMin="<"+html+">";
-        sMax="</"+html+">";
-        iMin=htmlcode.indexOf(sMin,start)+sMin.size();
-        iMax=htmlcode.indexOf(sMax,iMin);
-        for(int i=iMin;i<iMax;i++) result+=htmlcode[i];
-        return result;
-    }
+
     void SetProgramName(QString name)
     {
         ProgramName=name;
@@ -102,133 +83,7 @@ public:
         MessageBoxNumber=0;
         ProgramName=ProgName;
     }
-    QStringList splitStringArgs(QString value)
-    {
-        QString _value;
-        QStringList ReturnValue;
-        bool isBlock;
-        for(int i=0;i<value.size();i++)
-        {
-            if(value[i]=='\"'){
-                if(!isBlock) isBlock=true;
-                else isBlock=false;
-            }
-            else if(value[i]==' ')
-            {
-                if(!isBlock)
-                {
-                    ReturnValue << _value;
-                    _value="";
-                }
-                else _value+=value[i];
-            }
-            else
-            {
-                _value+=value[i];
-            }
-        }
-        ReturnValue << _value;
-        return ReturnValue;
-    }
-    QMap<QString,QVariant> splitStringHTML(QString value)
-    {
-       QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
-       int i=0;
-       while(i<value.size()) //Главный цикл
-        {
-            int iMin=value.indexOf("<",i); //Поиск символа <
-            if(iMin<0) break;
-            int iMax=value.indexOf(">",iMin); //Поиск символа >
-            if(iMax<0) break;
-            QString NameValue;//Имя переменной
-            //NameValue.reserve(iMax-iMin); //Выделение памяти
-            NameValue=value.mid(iMin+1,iMax-iMin-1);
-            //qDebug() <<value.mid(iMin+1,iMax-iMin-1);
-            //for(int j=iMin+1;j<iMax;j++) NameValue+=value[j]; //Заполнение имени переменной
-            int nextiMin=value.indexOf("<"+NameValue+">",iMax); //Поиск <ИмяПеременной>
-            int nMax=value.indexOf("</"+NameValue+">",iMax); //Поиск закрывающего тега
-            if(nextiMin!=-1) if(nextiMin<nMax) //Если существует еще по крайней мере один <ИмяПеременной>
-            {
-                int numNextiMin=0; //Колличество включений <ИмяПеременной>
-                while(nextiMin!=-1 && nextiMin<nMax) //Получаю колличество включений
-                {nextiMin=value.indexOf("<"+NameValue+">",nextiMin+1);
-                numNextiMin+=1; }
-                while(numNextiMin!=0) //Использую колличество включений для определения последнего закрывающего тега
-                {nMax=value.indexOf("</"+NameValue+">",nMax+1);
-                numNextiMin-=1;}
-            }
-             if(nMax<0) //Если nMax невалидный
-            {
-                i=iMax+2;
-            }
-            else {
-            QString sValue; //Значение переменной
-            //sValue.reserve(nMax-iMax); //Выделение памяти
-            sValue=value.mid(iMax+1,nMax-iMax-1);
-            //for(int j=iMax+1;j<nMax;j++) sValue+=value[j]; //Заполнение значения переменной
-            QMap<QString,QVariant> temp=splitStringHTML(sValue); //Рекурсия
-            if(sValue.isEmpty() || NameValue.isEmpty()) {
-                int tmp=iMax-iMin;
-                i=nMax+tmp;
-                continue; }
-            if(temp.isEmpty()) //Если рекурсия не нашла других значений переменной
-            ReturnValue[NameValue] = sValue; //Запись элемента в Map
-            else
-            ReturnValue[NameValue] = temp; //Запись элемента в Map
-            int tmp=iMax-iMin; //Переход к следующему
-            i=nMax+tmp;}
-        }
-        return ReturnValue; //Возврат готового Map
-    }
-    QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator="")
-    {
-        QString ReturnValue;
-        int i=0;
-        QList<QString> keys=Map.keys();
-        if(keys.size()<=0) return "";
-        ReturnValue+="\n"+Tabulator+"QMap("+NameMap+")\n"+Tabulator+"(\n";
-        while(i<keys.size())
-        {
-            QString NameKey=keys.value(i);
-            QVariant tmp=Map.value(NameKey);
-            if(tmp.type()!=QVariant::Map) ReturnValue+=Tabulator+"\t["+NameKey+"] = ";
-            if(tmp.type()==QVariant::String) ReturnValue+= Map.value(NameKey).toString();
-            else if(tmp.type()==QVariant::Map) {
-                ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"\t");
-            }
-            else ReturnValue+="Unkown()";
-            ReturnValue+="\n";
-            i++;
-        }
-        ReturnValue+=Tabulator+")";
-        return ReturnValue;
-    }
-    QString UnsplitStringHTML(QMap<QString,QVariant> Map)
-    {
-        QString ReturnValue;
-        int i=0;
-        QList<QString> keys=Map.keys();
-        while(i<keys.size())
-        {
-            ReturnValue+="<"+keys.value(i)+">";
-            QString tmp= UnsplitStringHTML(Map.value(keys.value(i)).toMap());
-            if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
-            else ReturnValue+=tmp;
-            ReturnValue+="</"+keys.value(i)+">";
-            i++;
-        }
-        return ReturnValue;
-    }
-    QString QtHtmlRecoder(QString html)
-    {
-        QString result=html_find(html,REPLACE_TEXT_I,"</p>");
-        return result;
-    }
-    QString SpecialSybmolCoder(QString value,bool isDecode)
-    {
-        if(!isDecode) return value.replace("<","\k0001").replace(">","\k0002");
-        else return value.replace("\k0001","<").replace("\k0002",">");
-    }
+
 
 private:
     int MessageBoxNumber;
@@ -242,7 +97,154 @@ public:
         QThread::msleep(ms);
     }
 };
-
+QString html_find(QString htmlcode,QString sMin,QString sMax, int start=0)
+{
+    QString result;
+    int iMin,iMax;
+    iMin=htmlcode.indexOf(sMin,start)+sMin.size();
+    iMax=htmlcode.indexOf(sMax,iMin);
+    for(int i=iMin;i<iMax;i++) result+=htmlcode[i];
+    return result;
+}
+QString html_find_s(QString htmlcode,QString html, int start=0)
+{
+    QString result;
+    int iMin,iMax;
+    QString sMax,sMin;
+    sMin="<"+html+">";
+    sMax="</"+html+">";
+    iMin=htmlcode.indexOf(sMin,start)+sMin.size();
+    iMax=htmlcode.indexOf(sMax,iMin);
+    for(int i=iMin;i<iMax;i++) result+=htmlcode[i];
+    return result;
+}
+QStringList splitStringArgs(QString value)
+{
+    QString _value;
+    QStringList ReturnValue;
+    bool isBlock;
+    for(int i=0;i<value.size();i++)
+    {
+        if(value[i]=='\"'){
+            if(!isBlock) isBlock=true;
+            else isBlock=false;
+        }
+        else if(value[i]==' ')
+        {
+            if(!isBlock)
+            {
+                ReturnValue << _value;
+                _value="";
+            }
+            else _value+=value[i];
+        }
+        else
+        {
+            _value+=value[i];
+        }
+    }
+    ReturnValue << _value;
+    return ReturnValue;
+}
+QMap<QString,QVariant> splitStringHTML(QString value)
+{
+   QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
+   int i=0;
+   while(i<value.size()) //Главный цикл
+    {
+        int iMin=value.indexOf("<",i); //Поиск символа <
+        if(iMin<0) break;
+        int iMax=value.indexOf(">",iMin); //Поиск символа >
+        if(iMax<0) break;
+        QString NameValue;//Имя переменной
+        //NameValue.reserve(iMax-iMin); //Выделение памяти
+        NameValue=value.mid(iMin+1,iMax-iMin-1);
+        //qDebug() <<value.mid(iMin+1,iMax-iMin-1);
+        //for(int j=iMin+1;j<iMax;j++) NameValue+=value[j]; //Заполнение имени переменной
+        int nextiMin=value.indexOf("<"+NameValue+">",iMax); //Поиск <ИмяПеременной>
+        int nMax=value.indexOf("</"+NameValue+">",iMax); //Поиск закрывающего тега
+        if(nextiMin!=-1) if(nextiMin<nMax) //Если существует еще по крайней мере один <ИмяПеременной>
+        {
+            int numNextiMin=0; //Колличество включений <ИмяПеременной>
+            while(nextiMin!=-1 && nextiMin<nMax) //Получаю колличество включений
+            {nextiMin=value.indexOf("<"+NameValue+">",nextiMin+1);
+            numNextiMin+=1; }
+            while(numNextiMin!=0) //Использую колличество включений для определения последнего закрывающего тега
+            {nMax=value.indexOf("</"+NameValue+">",nMax+1);
+            numNextiMin-=1;}
+        }
+         if(nMax<0) //Если nMax невалидный
+        {
+            i=iMax+2;
+        }
+        else {
+        QString sValue; //Значение переменной
+        //sValue.reserve(nMax-iMax); //Выделение памяти
+        sValue=value.mid(iMax+1,nMax-iMax-1);
+        //for(int j=iMax+1;j<nMax;j++) sValue+=value[j]; //Заполнение значения переменной
+        QMap<QString,QVariant> temp=splitStringHTML(sValue); //Рекурсия
+        if(sValue.isEmpty() || NameValue.isEmpty()) {
+            int tmp=iMax-iMin;
+            i=nMax+tmp;
+            continue; }
+        if(temp.isEmpty()) //Если рекурсия не нашла других значений переменной
+        ReturnValue[NameValue] = sValue; //Запись элемента в Map
+        else
+        ReturnValue[NameValue] = temp; //Запись элемента в Map
+        int tmp=iMax-iMin; //Переход к следующему
+        i=nMax+tmp;}
+    }
+    return ReturnValue; //Возврат готового Map
+}
+QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator="")
+{
+    QString ReturnValue;
+    int i=0;
+    QList<QString> keys=Map.keys();
+    if(keys.size()<=0) return "";
+    ReturnValue+=Tabulator+"QMap("+NameMap+")\n"+Tabulator+"{\n";
+    while(i<keys.size())
+    {
+        QString NameKey=keys.value(i);
+        QVariant tmp=Map.value(NameKey);
+        if(tmp.type()!=QVariant::Map) ReturnValue+=Tabulator+"   ["+NameKey+"] = ";
+        if(tmp.type()==QVariant::String) ReturnValue+= Map.value(NameKey).toString();
+        else if(tmp.type()==QVariant::Map) {
+            ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
+        }
+        else ReturnValue+="Unkown()";
+        ReturnValue+="\n";
+        i++;
+    }
+    ReturnValue+=Tabulator+"}";
+    return ReturnValue;
+}
+QString UnsplitStringHTML(QMap<QString,QVariant> Map)
+{
+    QString ReturnValue;
+    int i=0;
+    QList<QString> keys=Map.keys();
+    while(i<keys.size())
+    {
+        ReturnValue+="<"+keys.value(i)+">";
+        QString tmp= UnsplitStringHTML(Map.value(keys.value(i)).toMap());
+        if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
+        else ReturnValue+=tmp;
+        ReturnValue+="</"+keys.value(i)+">";
+        i++;
+    }
+    return ReturnValue;
+}
+QString QtHtmlRecoder(QString html)
+{
+    QString result=html_find(html,REPLACE_TEXT_I,"</p>");
+    return result;
+}
+QString SpecialSybmolCoder(QString value,bool isDecode)
+{
+    if(!isDecode) return value.replace("<","/k0001").replace(">","/k0002");
+    else return value.replace("/k0001","<").replace("/k0002",">");
+}
 
 template <typename T1, typename T2>
 class ATable

@@ -32,14 +32,10 @@ bool isPoste;
 QList<AQuest> Posts;
 void RealPost(QString posti)
 {
-   //posti+="&typed="+QString::number(Type);
-   qDebug() << "RealPost:"+posti;
-   //Server.setRawHeader("Accept-Encoding","gzip");
    Network->post(Server,posti.toLocal8Bit().data());
 }
 void RealGet(QString geti)
 {
-    qDebug() << "RealGet:"+geti;
     Network->get(QNetworkRequest(QUrl(geti.toLocal8Bit().data())));
 }
 signals:
@@ -58,10 +54,8 @@ void getReplyFinished(QNetworkReply*reply)
     ANetworkReply _value;
     _value.TextError=reply->errorString();
     _value.TextReply=QString::fromUtf8(reply->readAll()) ;
-    qDebug() << reply->rawHeader("Content-Encoding");
     reply->deleteLater();
     _value.Type=Type;
-    qDebug() << "Return:"+_value.TextReply;
     ARequest(_value);
     }
     if(Posts.size()>=1)
@@ -88,17 +82,17 @@ public:
     {
         delete Network;
     }
-    void DownloadFile(QString url)
+    void downloadFile(QString url)
     {
         get(url,RESERVE_CODE);
     }
-    void SetCookie(QString name,QString value)
+    void setCookie(QString name,QString value)
     {
         QList<QNetworkCookie> cookies=Network->cookieJar()->cookiesForUrl(Server.url());
         cookies.append(QNetworkCookie(name.toLocal8Bit().data(), value.toLocal8Bit().data()));
         Network->cookieJar()->setCookiesFromUrl(cookies,Server.url());
     }
-    QString GetCookie(QString name)
+    QString getCookie(QString name)
     {
         QList<QNetworkCookie> cookies=Network->cookieJar()->cookiesForUrl(Server.url());
         QNetworkCookie s;
@@ -106,10 +100,14 @@ public:
         s.setDomain(Server.url().toString());
         return cookies.value(cookies.indexOf(s)).value();
     }
-    void ClearCookie(QString url)
+    void clearCookie(QString url)
     {
         QList<QNetworkCookie> cookies;
         Network->cookieJar()->setCookiesFromUrl(cookies,url);
+    }
+    QList<QNetworkCookie> getCookies(QString url)
+    {
+        return Network->cookieJar()->cookiesForUrl(url);
     }
 
     void post(QString text, int Typ)

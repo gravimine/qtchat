@@ -17,10 +17,8 @@ public:
     void OnStart();
 private slots:
     void on_commandLinkButton_clicked();
-    void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
-    void on_label_linkActivated(const QString &link);
     void on_listWidget_clicked(const QModelIndex &index);
     void on_action_triggered();
     void on_action_2_triggered();
