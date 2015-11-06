@@ -1,13 +1,3 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "dialog.h"
-#include "ui_dialog.h"
-#include "registr.h"
-#include "ui_registr.h"
-#include "form.h"
-#include "ui_form.h"
-#include "kabinet.h"
-#include "ui_kabinet.h"
 #include <QString>
 #include <QMessageBox>
 #include <QNetworkRequest>
@@ -705,7 +695,6 @@ public:
         for(int i=0;i<UniClientList.size();i++)
         {
             if(UniClientList.value(i).key==key) {ReturnValue=UniClientList.value(i);
-
                 break;
             }
         }
@@ -732,7 +721,6 @@ public:
             {
                 if(isDebug)R.LoadWindowUI->label_2->setText("Получение информации о пользователях");
                 if(result=="") result+=QString::number(temp.id);
-
                 else result+="/"+QString::number(temp.id);
             }
         }
@@ -1054,7 +1042,7 @@ public slots:
     }
 };
 #include "mainwindow.moc"
-AChat *temp;
+AChat *CluChat;
 AChate MyKomnata;
 bool isCreareRoom=false;
 void Kabinet::on_pushButton_CreateRoom_clicked()
@@ -1074,37 +1062,37 @@ void Kabinet::on_pushButton_CreateRoom_clicked()
         QString NameRoom=R.KabinUI->lineEdit_CreateRoom->text();
         R.KabinUI->pushButton_CreateRoom->setText("Создать комнату");
         if(ClusterChat.MessageQuest("Вы действительно хотите создать комнату \""+NameRoom+"\"?"))
-            temp->post("type=addRoom&nameTextRoom="+NameRoom, tCreateRoom);
+            CluChat->post("type=addRoom&nameTextRoom="+NameRoom, tCreateRoom);
         isCreareRoom=false;
     }
 }
 void  Kabinet::on_pushButton_2_clicked()
 {
-    temp->post("type=getUnigue",tGetUngine);
+    CluChat->post("type=getUnigue",tGetUngine);
 }
  void Kabinet::on_pushButton_4_clicked()
  {
      QString NameRoom=MyKomnata.Name;
-     if(MyKomnata.CreatedID!=temp->GetMyClient().id)
+     if(MyKomnata.CreatedID!=CluChat->GetMyClient().id)
      {
          ClusterChat.SendM("Вы не владеете комнатой \""+NameRoom+"\".");
      } else
      if(ClusterChat.MessageQuest("Вы действительно хотите удалить комнату \""+NameRoom+"\"?\nВся переписка БУДЕТ УДАЛЕНА!"))
      if(ClusterChat.MessageQuest("Подтвердите свои действия:\n1.Удаление комнаты \""+NameRoom+"\"?Вся переписка БУДЕТ УДАЛЕНА!"))
      {
-         temp->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),tRemoveRoom);
+         CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),tRemoveRoom);
      }
  }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete temp;
+    delete CluChat;
 }
 void Kabinet::on_listWidget_clicked(const QModelIndex &index)
 {
 
-    AServer tmp=temp->FindServer(index.data().toString());
+    AServer tmp=CluChat->FindServer(index.data().toString());
     R.KabinUI->label_nameserver->setText("Имя сервера: "+tmp.name);
     if(tmp.status!="offline")R.KabinUI->label_serverstatus->setText("Статус: <font color=#0F0>online");
     else R.KabinUI->label_serverstatus->setText("Статус: <font color=#F00>offline");
@@ -1115,7 +1103,7 @@ void Kabinet::on_listWidget_clicked(const QModelIndex &index)
 }
 void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 {
-    UniClient tmp=temp->GetUniClient(index.data().toString());
+    UniClient tmp=CluChat->GetUniClient(index.data().toString());
     R.KabinUI->label_ClientVersion_Uni->setText("Версия: "+tmp.Init+" "+tmp.InitVersion);
     R.KabinUI->label__UniKey_Uni->setText("Уникальный ключ: "+tmp.key);
     R.KabinUI->label_LastData_Uni->setText("Дата последнего входа: "+tmp.lastDate);
@@ -1126,8 +1114,8 @@ void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 
 void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
 {
-    AChate tmp=temp->FindKomOfIndex(index.data().toString());
-    Client Creater=temp->GetClient(tmp.CreatedID);
+    AChate tmp=CluChat->FindKomOfIndex(index.data().toString());
+    Client Creater=CluChat->GetClient(tmp.CreatedID);
     MyKomnata=tmp;
     R.KabinUI->label_NameKom->setText("Имя комнаты: "+tmp.Name);
     R.KabinUI->label_NumKom->setText("Номер комнаты: "+QString::number(tmp.KomID));
@@ -1136,14 +1124,14 @@ void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
     qDebug() << tmp.ClientList;
     for(int i=0;i<tmp.ClientList.size();i++)
     {
-        Client s=temp->GetClient(tmp.ClientList.value(i));
+        Client s=CluChat->GetClient(tmp.ClientList.value(i));
         if(!s.name.isEmpty() && s.id!=tmp.CreatedID)
             R.KabinUI->listWidget_5->addItem(s.name);
     }
 }
 void  Kabinet::on_listWidget_2_clicked(const QModelIndex &index)
 {
-    Client  tmp=temp->FindClientOfIndex(index.data().toString());
+    Client  tmp=CluChat->FindClientOfIndex(index.data().toString());
     R.KabinUI->label_NameUser->setText("Имя пользователя: "+tmp.name);
     R.KabinUI->label_RegionUser->setText("Страна: "+tmp.region);
     if(tmp.Active){R.KabinUI->label_StatusUser->setText("<center><font color=green>Онлайн"); R.KabinUI->label_TimeOnlineUser->setText("");}
@@ -1156,49 +1144,49 @@ void  Kabinet::on_listWidget_2_clicked(const QModelIndex &index)
 
 void Kabinet::on_pushButton_clicked()
 {
-    Client tmp=temp->GetMyClient();
+    Client tmp=CluChat->GetMyClient();
     QString posti="type=setInfo&id="+QString::number(tmp.id);
     if(tmp.name!=R.KabinUI->lineEditMyName->text())
         posti+="&real_name="+R.KabinUI->lineEditMyName->text();
-    temp->post(posti,tSetInfo);
+    CluChat->post(posti,tSetInfo);
 }
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
-    if(arg1==2) {temp->setings->SetKey("Login",R.LoadMenuUI->lineEdit->text());
-    temp->setings->SetKey("Pass",R.LoadMenuUI->lineEdit_2->text());}
+    if(arg1==2) {CluChat->setings->SetKey("Login",R.LoadMenuUI->lineEdit->text());
+    CluChat->setings->SetKey("Pass",R.LoadMenuUI->lineEdit_2->text());}
 }
 
 void Kabinet::on_checkBox_5_stateChanged(int arg1)
 {
-    if(arg1==2) {temp->setings->SetKey("VirtualHost","true");}
-    else {temp->setings->SetKey("VirtualHost","false");}
+    if(arg1==2) {CluChat->setings->SetKey("VirtualHost","true");}
+    else {CluChat->setings->SetKey("VirtualHost","false");}
 }
 
 void Kabinet::on_checkBox_clicked(bool checked)
 {
-    if(checked) {temp->setings->SetKey("Smiles","true");}
-    else temp->setings->SetKey("Smiles","false");
+    if(checked) {CluChat->setings->SetKey("Smiles","true");}
+    else CluChat->setings->SetKey("Smiles","false");
 }
 void Kabinet::on_checkBox_2_clicked(bool checked)
 {
-    if(checked) {temp->setings->SetKey("Debug","true");}
-    else temp->setings->SetKey("Debug","false");
+    if(checked) {CluChat->setings->SetKey("Debug","true");}
+    else CluChat->setings->SetKey("Debug","false");
 }
 void MainWindow::OnStart()
 {
-    temp=new AChat;
-    temp->LoadSettings();
-    temp->CheckBoxUpdate();
-    temp->GetServersList();
+    CluChat=new AChat;
+    CluChat->LoadSettings();
+    CluChat->CheckBoxUpdate();
+    CluChat->GetServersList();
 }
 void Dialog::on_comboBox_activated(const QString &arg1)
 {
-    temp->SetServer(arg1);
+    CluChat->SetServer(arg1);
 }
 void Dialog::on_pushButton_clicked()
 {
-    if(!temp->Server.url().isEmpty())
-    temp->login(R.LoadMenuUI->lineEdit->text(),R.LoadMenuUI->lineEdit_2->text());
+    if(!CluChat->Server.url().isEmpty())
+    CluChat->login(R.LoadMenuUI->lineEdit->text(),R.LoadMenuUI->lineEdit_2->text());
     else ClusterChat.SendM("Выберите сервер для входа");
 }
 void registr::on_pushButton_2_clicked()
@@ -1208,7 +1196,7 @@ void registr::on_pushButton_2_clicked()
 void registr::on_pushButton_3_clicked()
 {
 
-    temp->login(R.RegUI->lineEditLogin->text(),R.RegUI->lineEditPass->text(),R.RegUI->lineEdit->text());
+    CluChat->login(R.RegUI->lineEditLogin->text(),R.RegUI->lineEditPass->text(),R.RegUI->lineEdit->text());
 }
 
 void registr::on_pushButton_clicked()
@@ -1216,7 +1204,7 @@ void registr::on_pushButton_clicked()
     if(!R.RegUI->lineEditLogin->text().isEmpty()) if(!R.RegUI->lineEditPass->text().isEmpty())
         if(!R.RegUI->lineEditName->text().isEmpty()) if(!R.RegUI->lineEditFamelye->text().isEmpty())
             if(!R.RegUI->lineEditEmail->text().isEmpty())
-    temp->Registration(R.RegUI->lineEditLogin->text(),R.RegUI->lineEditName->text()+" "+R.RegUI->lineEditFamelye->text(),
+    CluChat->Registration(R.RegUI->lineEditLogin->text(),R.RegUI->lineEditName->text()+" "+R.RegUI->lineEditFamelye->text(),
                        R.RegUI->lineEditPass->text(),R.RegUI->lineEditEmail->text());
     else ClusterChat.SendM("Неверно заполнены поля");
     else ClusterChat.SendM("Неверно заполнены поля");
@@ -1226,7 +1214,7 @@ void registr::on_pushButton_clicked()
 }
 void MainWindow::on_commandLinkButton_clicked()
 {
-    if(!R.MainUI->textEdit->toPlainText().isEmpty())temp->SendLS(QtHtmlRecoder(R.MainUI->textEdit->toHtml()));
+    if(!R.MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(QtHtmlRecoder(R.MainUI->textEdit->toHtml()));
     R.MainUI->textEdit->setHtml("");
     R.MainUI->textEdit->setFocus();
 }
@@ -1234,21 +1222,21 @@ void MainWindow::on_commandLinkButton_clicked()
 void MainWindow::on_listWidget_clicked(const QModelIndex &index)
 {
     QStringList lst=index.data().toString().split(" ");
-    temp->SetKomnata(lst.value(lst.size()-1).toInt());
+    CluChat->SetKomnata(lst.value(lst.size()-1).toInt());
 }
 void MainWindow::on_action_6_triggered()
 {
-    temp->exit();
+    CluChat->exit();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    temp->LSUp();
-    temp->ReloadHistory();
+    CluChat->LSUp();
+    CluChat->ReloadHistory();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    temp->LSDown();
-    temp->ReloadHistory();
+    CluChat->LSDown();
+    CluChat->ReloadHistory();
 }
