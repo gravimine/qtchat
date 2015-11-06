@@ -32,7 +32,6 @@
 #define IS_DEBUG "false"
 #define TIMER_SENDLS 300
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
-#define MapFind(n,Map,keyd) QStringList keyd=Map.keys(); for(int n=0;n<keyd.size();n++)
 #define EXTRA_NETWORK false
 using namespace ACore;
 #define ADD_DEBUG log<<
