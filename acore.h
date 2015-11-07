@@ -157,10 +157,7 @@ QMap<QString,QVariant> splitStringHTML(QString value)
         int iMax=value.indexOf(">",iMin); //Поиск символа >
         if(iMax<0) break;
         QString NameValue;//Имя переменной
-        //NameValue.reserve(iMax-iMin); //Выделение памяти
         NameValue=value.mid(iMin+1,iMax-iMin-1);
-        //qDebug() <<value.mid(iMin+1,iMax-iMin-1);
-        //for(int j=iMin+1;j<iMax;j++) NameValue+=value[j]; //Заполнение имени переменной
         int nextiMin=value.indexOf("<"+NameValue+">",iMax); //Поиск <ИмяПеременной>
         int nMax=value.indexOf("</"+NameValue+">",iMax); //Поиск закрывающего тега
         if(nextiMin!=-1) if(nextiMin<nMax) //Если существует еще по крайней мере один <ИмяПеременной>
@@ -179,9 +176,7 @@ QMap<QString,QVariant> splitStringHTML(QString value)
         }
         else {
         QString sValue; //Значение переменной
-        //sValue.reserve(nMax-iMax); //Выделение памяти
         sValue=value.mid(iMax+1,nMax-iMax-1);
-        //for(int j=iMax+1;j<nMax;j++) sValue+=value[j]; //Заполнение значения переменной
         QMap<QString,QVariant> temp=splitStringHTML(sValue); //Рекурсия
         if(sValue.isEmpty() || NameValue.isEmpty()) {
             int tmp=iMax-iMin;
@@ -196,6 +191,20 @@ QMap<QString,QVariant> splitStringHTML(QString value)
     }
     return ReturnValue; //Возврат готового Map
 }
+QString printList(QList<QVariant> List)
+{
+    QString ReturnValue="[";
+    QVariant Value0=List.value(0);
+    if(Value0.type()==QVariant::String) if(!Value0.toString().isEmpty()) ReturnValue+=Value0.toString();
+    for(int i=1;i<List.size();i++)
+    {
+        QVariant Value=List.value(i);
+        if(Value.type()==QVariant::String) if(!Value.toString().isEmpty())
+            ReturnValue+=","+Value.toString();
+    }
+    ReturnValue+="]";
+    return ReturnValue;
+}
 QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator="")
 {
     QString ReturnValue;
@@ -209,6 +218,8 @@ QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator
         QVariant tmp=Map.value(NameKey);
         if(tmp.type()!=QVariant::Map) ReturnValue+=Tabulator+"   ["+NameKey+"] = ";
         if(tmp.type()==QVariant::String) ReturnValue+= Map.value(NameKey).toString();
+        else if(tmp.type()==QVariant::ByteArray) ReturnValue+= QString(Map.value(NameKey).toByteArray());
+        else if(tmp.type()==QVariant::List) ReturnValue+=printList(Map.value(NameKey).toList());
         else if(tmp.type()==QVariant::Map) {
             ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
         }
@@ -219,6 +230,8 @@ QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator
     ReturnValue+=Tabulator+"}";
     return ReturnValue;
 }
+
+
 QString UnsplitStringHTML(QMap<QString,QVariant> Map)
 {
     QString ReturnValue;
@@ -315,7 +328,7 @@ struct ASett
 class ASettings
 {
 public:
-    QSettings *Main;
+    QSettings* Main;
     void AddKey(QString _key,QString _stdtext)
     {
         ASett temp;

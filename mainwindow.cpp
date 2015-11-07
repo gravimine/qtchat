@@ -569,7 +569,6 @@ public:
     }
     AChat()
     {
-        timer3=QTime::currentTime();
         SetPath=QDir().homePath();
         if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); log<<"Create dir .ClusterChat";}
         log.SetFile(SetPath+"/.ClusterChat/ClusterChat.log");
@@ -604,7 +603,6 @@ public:
         isReloadHostory=false;
         HistoryNumberLS=0;
         TimerTick=0;
-        qDebug() << "Старотвал за:"+QString::number(timer3.elapsed())+"мс";
     }
     ~AChat()
     {
@@ -1177,6 +1175,9 @@ void MainWindow::OnStart()
     CluChat=new AChat;
     CluChat->LoadSettings();
     CluChat->CheckBoxUpdate();
+}
+void MainWindow::OnRequest()
+{
     CluChat->GetServersList();
 }
 void Dialog::on_comboBox_activated(const QString &arg1)
