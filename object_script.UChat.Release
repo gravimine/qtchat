@@ -1,0 +1,13 @@
+INPUT(
+./release/main.o
+./release/mainwindow.o
+./release/qrc_app.o
+./release/moc_mainwindow.o
+./release/moc_dialog.o
+./release/moc_registr.o
+./release/moc_form.o
+./release/moc_kabinet.o
+./release/moc_anetwork.o
+./release/moc_aclientserver.o
+./release/moc_loading.o
+);

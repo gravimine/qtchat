@@ -112,7 +112,6 @@ public:
 
     void post(QString text, int Typ)
     {
-        qDebug() << "Post:"+text;
         if(isSendPost==0) {RealPost(text); Type=Typ;isSendPost=1;}
         else
         {

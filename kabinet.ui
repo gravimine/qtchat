@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -52,7 +52,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Дебаг режим</string>
+      <string>Включить отладочные записи</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="checkBox_3">
@@ -79,6 +79,104 @@
      </property>
      <property name="text">
       <string>Использовать виртуальный сервер для входа</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_7">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>102</y>
+       <width>581</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Фильтровать нецензурные слова</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_8">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>127</y>
+       <width>581</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Автоматический вход</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_9">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>152</y>
+       <width>581</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пользовательский стиль отображения сообщений (HTML)</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>170</y>
+       <width>491</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_6">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>170</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ОК</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_10">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>195</y>
+       <width>581</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пользовательское ДАТА/ВРЕМЯ</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>212</y>
+       <width>491</width>
+       <height>20</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_7">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>212</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ОК</string>
      </property>
     </widget>
    </widget>

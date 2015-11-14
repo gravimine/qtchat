@@ -17,7 +17,7 @@
 #include "aclientserver.h"
 #include "auimanager.h"
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "8.0"
+#define INIT_VERSION "8.1"
 #define API_VERSION "2.1"
 #define IS_DEBUG "false"
 #define TIMER_SENDLS 300
@@ -174,6 +174,7 @@ private:
     QList<QString> SendLSList;
     QTime SendLSOnTime;
     QList<PrivateMessage> MessageList;
+    QList< QList<PrivateMessage> > MessageListOther;
     QList<AServer> ServersList;
     QList<Client> ClientList;
     QList<AChate> ChatsList;
@@ -182,7 +183,7 @@ private:
     QString MyUniKey,InitServerUrl;
     QString ReportMessage, passworda,logina,SetPath;
     int myID,HistoryNumberLS,TimerTick;
-    bool isSmiles,isReloadHostory,ServerType;
+    bool isSmiles,isReloadHostory,ServerType,isCensure;
     QTime TimeStart;
     QTimer *timersendls;
     Style Styled;
@@ -567,6 +568,12 @@ public:
         }
         return returnClient;
     }
+    void functionA()
+    {
+        int sum = 0;
+        while (sum < 10e5)
+            sum++;
+    }
     AChat()
     {
         SetPath=QDir().homePath();
@@ -575,6 +582,7 @@ public:
         log<< "Start";
         ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
         isStart=false;
+        functionA();
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
         TimeStart=QTime::currentTime();
         #ifdef Q_OS_WIN32
@@ -769,7 +777,7 @@ public slots:
         QMap<QString,QVariant> ReplyMap=ValuesMap.value("arg").toMap();
         QString Text;
         Text=ValuesMap.value("key").toString();
-        qDebug() << printMap(ValuesMap);
+        if(isDebug)qDebug() << printMap(ValuesMap);
         int Type=reply.Type;
         if(Text.toInt() > 300 && Text.toInt() <600)
         {
@@ -939,8 +947,7 @@ public slots:
                 tmp.key=ValueMap.value("unigie").toString();
                 tmp.lastDate=ValueMap.value("lastDate").toString();
                 if(!UniClientList.contains(tmp)) {
-                    UniClientList << tmp;
-                    qDebug() << tmp.key;}
+                    UniClientList << tmp;}
             }
 
             for(int i=0;i<UniClientList.size();i++) R.KabinUI->listWidget_4->addItem(UniClientList.value(i).key);
@@ -970,7 +977,6 @@ public slots:
                 {
                     int res=UsersRoom.value(j).toInt();
                     temp2.ClientList << res;
-                    qDebug() << res;
                     if(!result.contains(QString::number(res))){
                     result<<UsersRoom.value(j);
                     }
@@ -980,7 +986,6 @@ public slots:
                 R.MainUI->listWidget->addItem( temp2.Name+" "+ QString::number(temp2.KomID));
                 R.KabinUI->listWidget_3->addItem( temp2.Name);}
             }
-            qDebug() << result;
             R.Main->show();
             R.LoadWindow->setHidden(1);
             R.LoadMenu->setHidden(1);
@@ -1045,7 +1050,6 @@ AChate MyKomnata;
 bool isCreareRoom=false;
 void Kabinet::on_pushButton_CreateRoom_clicked()
 {
-    qDebug() << 1;
     if(!isCreareRoom)
     {
         R.KabinUI->label_CreateRoom->show();
@@ -1119,7 +1123,6 @@ void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
     R.KabinUI->label_NumKom->setText("Номер комнаты: "+QString::number(tmp.KomID));
     R.KabinUI->label_Creater->setText("Создатель комнаты: "+Creater.name);
     R.KabinUI->listWidget_5->clear();
-    qDebug() << tmp.ClientList;
     for(int i=0;i<tmp.ClientList.size();i++)
     {
         Client s=CluChat->GetClient(tmp.ClientList.value(i));

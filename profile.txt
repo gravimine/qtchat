@@ -1,0 +1,1606 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+ no time accumulated
+
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+  0.00      0.00     0.00     1490     0.00     0.00  QBasicAtomicInteger<int>::load() const
+  0.00      0.00     0.00     1002     0.00     0.00  qt_noop()
+  0.00      0.00     0.00      963     0.00     0.00  QtPrivate::RefCount::deref()
+  0.00      0.00     0.00      922     0.00     0.00  QString::~QString()
+  0.00      0.00     0.00      872     0.00     0.00  bool QBasicAtomicOps<4>::deref<int>(int&)
+  0.00      0.00     0.00      872     0.00     0.00  QBasicAtomicInteger<int>::deref()
+  0.00      0.00     0.00      501     0.00     0.00  QtPrivate::RefCount::ref()
+  0.00      0.00     0.00      500     0.00     0.00  bool QBasicAtomicOps<4>::ref<int>(int&)
+  0.00      0.00     0.00      500     0.00     0.00  QBasicAtomicInteger<int>::ref()
+  0.00      0.00     0.00      498     0.00     0.00  QString::QString(QString const&)
+  0.00      0.00     0.00      487     0.00     0.00  QScopedPointer<QObjectData, QScopedPointerDeleter<QObjectData> >::operator->() const
+  0.00      0.00     0.00      297     0.00     0.00  QListData::size() const
+  0.00      0.00     0.00      175     0.00     0.00  QString::fromUtf8(char const*, int)
+  0.00      0.00     0.00      160     0.00     0.00  QListData::at(int) const
+  0.00      0.00     0.00      154     0.00     0.00  ACore::ASett::~ASett()
+  0.00      0.00     0.00      150     0.00     0.00  QList<ACore::ASett>::Node::t()
+  0.00      0.00     0.00      148     0.00     0.00  ACore::ASett::ASett(ACore::ASett const&)
+  0.00      0.00     0.00      142     0.00     0.00  QList<ACore::ASett>::value(int) const
+  0.00      0.00     0.00      126     0.00     0.00  QList<ACore::ASett>::size() const
+  0.00      0.00     0.00      110     0.00     0.00  QArrayData::sharedNull()
+  0.00      0.00     0.00      110     0.00     0.00  QTypedArrayData<unsigned short>::sharedNull()
+  0.00      0.00     0.00      110     0.00     0.00  QString::QString()
+  0.00      0.00     0.00      107     0.00     0.00  QRect::QRect(int, int, int, int)
+  0.00      0.00     0.00       91     0.00     0.00  QTypedArrayData<unsigned short>::deallocate(QArrayData*)
+  0.00      0.00     0.00       73     0.00     0.00  QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*)
+  0.00      0.00     0.00       37     0.00     0.00  QString::QString(char const*)
+  0.00      0.00     0.00       30     0.00     0.00  QString::operator+=(QString const&)
+  0.00      0.00     0.00       30     0.00     0.00  QListData::begin() const
+  0.00      0.00     0.00       26     0.00     0.00  QtPrivate::RefCount::isShared() const
+  0.00      0.00     0.00       17     0.00     0.00  operator+(QString const&, char const*)
+  0.00      0.00     0.00       13     0.00     0.00  QByteArray::~QByteArray()
+  0.00      0.00     0.00        9     0.00     0.00  QArrayData::data()
+  0.00      0.00     0.00        9     0.00     0.00  QList<QString>::node_construct(QList<QString>::Node*, QString const&)
+  0.00      0.00     0.00        9     0.00     0.00  QList<QString>::append(QString const&)
+  0.00      0.00     0.00        9     0.00     0.00  operator new(unsigned int, void*)
+  0.00      0.00     0.00        8     0.00     0.00  ACore::ASett::operator=(ACore::ASett const&)
+  0.00      0.00     0.00        8     0.00     0.00  ACore::ASettings::GetKey(QString)
+  0.00      0.00     0.00        8     0.00     0.00  ACore::ASettings::SetKey(QString, QString)
+  0.00      0.00     0.00        8     0.00     0.00  QList<QString>::Node::t()
+  0.00      0.00     0.00        8     0.00     0.00  QList<QString>::node_copy(QList<QString>::Node*, QList<QString>::Node*, QList<QString>::Node*)
+  0.00      0.00     0.00        8     0.00     0.00  QList<ACore::ASett>::detach()
+  0.00      0.00     0.00        8     0.00     0.00  QList<ACore::ASett>::replace(int, ACore::ASett const&)
+  0.00      0.00     0.00        8     0.00     0.00  QSize::QSize(int, int)
+  0.00      0.00     0.00        8     0.00     0.00  UniKey::~UniKey()
+  0.00      0.00     0.00        8     0.00     0.00  QList<QString>::size() const
+  0.00      0.00     0.00        8     0.00     0.00  QList<QString>::value(int) const
+  0.00      0.00     0.00        7     0.00     0.00  QTypedArrayData<char>::deallocate(QArrayData*)
+  0.00      0.00     0.00        7     0.00     0.00  QListSpecialMethods<QString>::QListSpecialMethods()
+  0.00      0.00     0.00        7     0.00     0.00  QList<QString>::~QList()
+  0.00      0.00     0.00        7     0.00     0.00  QString::isEmpty() const
+  0.00      0.00     0.00        6     0.00     0.00  QStringList::~QStringList()
+  0.00      0.00     0.00        6     0.00     0.00  ACore::ASett::ASett()
+  0.00      0.00     0.00        6     0.00     0.00  ACore::ASettings::AddKey(QString, QString)
+  0.00      0.00     0.00        6     0.00     0.00  QList<ACore::ASett>::node_construct(QList<ACore::ASett>::Node*, ACore::ASett const&)
+  0.00      0.00     0.00        6     0.00     0.00  QList<ACore::ASett>::append(ACore::ASett const&)
+  0.00      0.00     0.00        6     0.00     0.00  QList<ACore::ASett>::operator<<(ACore::ASett const&)
+  0.00      0.00     0.00        6     0.00     0.00  QDebug::maybeQuote(char)
+  0.00      0.00     0.00        6     0.00     0.00  QWidget::resize(int, int)
+  0.00      0.00     0.00        6     0.00     0.00  QDebug::Stream::testFlag(QDebug::Stream::FormatFlag) const
+  0.00      0.00     0.00        6     0.00     0.00  QListData::end() const
+  0.00      0.00     0.00        5     0.00     0.00  QTypedArrayData<char>::data()
+  0.00      0.00     0.00        5     0.00     0.00  ACore::ALog::operator<<(QString)
+  0.00      0.00     0.00        5     0.00     0.00  ACore::dtime()
+  0.00      0.00     0.00        5     0.00     0.00  QList<QString>::QList()
+  0.00      0.00     0.00        5     0.00     0.00  QList<QString>::~QList()
+  0.00      0.00     0.00        5     0.00     0.00  QFlags<Qt::AlignmentFlag>::QFlags(int QFlags<Qt::AlignmentFlag>::Private::*)
+  0.00      0.00     0.00        5     0.00     0.00  operator+(char const*, QString const&)
+  0.00      0.00     0.00        5     0.00     0.00  operator+(QString const&, QString const&)
+  0.00      0.00     0.00        4     0.00     0.00  QStringList::QStringList()
+  0.00      0.00     0.00        4     0.00     0.00  QStringList::operator<<(QString const&)
+  0.00      0.00     0.00        4     0.00     0.00  QTypedArrayData<unsigned short>::data()
+  0.00      0.00     0.00        4     0.00     0.00  QList<QString>::detach_helper_grow(int, int)
+  0.00      0.00     0.00        4     0.00     0.00  QTime::QTime()
+  0.00      0.00     0.00        4     0.00     0.00  UniKey::UniKey(UniKey const&)
+  0.00      0.00     0.00        4     0.00     0.00  UniKey::UniKey()
+  0.00      0.00     0.00        4     0.00     0.00  QIODevice::write(QByteArray const&)
+  0.00      0.00     0.00        4     0.00     0.00  QByteArray::size() const
+  0.00      0.00     0.00        4     0.00     0.00  QByteArray::constData() const
+  0.00      0.00     0.00        4     0.00     0.00  QString::size() const
+  0.00      0.00     0.00        4     0.00     0.00  QString::constData() const
+  0.00      0.00     0.00        4     0.00     0.00  QString::operator==(char const*) const
+  0.00      0.00     0.00        3     0.00     0.00  void qSwap<QListData::Data*>(QListData::Data*&, QListData::Data*&)
+  0.00      0.00     0.00        3     0.00     0.00  QMessageLogger::QMessageLogger(char const*, int, char const*)
+  0.00      0.00     0.00        3     0.00     0.00  QMessageLogContext::QMessageLogContext(char const*, int, char const*, char const*)
+  0.00      0.00     0.00        3     0.00     0.00  QList<QString>::swap(QList<QString>&)
+  0.00      0.00     0.00        3     0.00     0.00  QList<QString>::QList(QList<QString> const&)
+  0.00      0.00     0.00        3     0.00     0.00  QList<QString>::operator=(QList<QString> const&)
+  0.00      0.00     0.00        3     0.00     0.00  QDebug::maybeSpace()
+  0.00      0.00     0.00        3     0.00     0.00  QDebug::operator<<(QString const&)
+  0.00      0.00     0.00        3     0.00     0.00  QList<UniKey>::size() const
+  0.00      0.00     0.00        3     0.00     0.00  void std::swap<QListData::Data*>(QListData::Data*&, QListData::Data*&)
+  0.00      0.00     0.00        2     0.00     0.00  QTextCodec::codecForName(char const*)
+  0.00      0.00     0.00        2     0.00     0.00  QStringList::operator=(QStringList const&)
+  0.00      0.00     0.00        2     0.00     0.00  QListSpecialMethods<AQuest>::QListSpecialMethods()
+  0.00      0.00     0.00        2     0.00     0.00  QList<AQuest>::QList()
+  0.00      0.00     0.00        2     0.00     0.00  QList<AQuest>::~QList()
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::node_construct(QList<UniKey>::Node*, UniKey const&)
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::Node::t()
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::append(UniKey const&)
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::node_copy(QList<UniKey>::Node*, QList<UniKey>::Node*, QList<UniKey>::Node*)
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::operator<<(UniKey const&)
+  0.00      0.00     0.00        2     0.00     0.00  QList<QString>::node_destruct(QList<QString>::Node*, QList<QString>::Node*)
+  0.00      0.00     0.00        2     0.00     0.00  QList<QString>::dealloc(QListData::Data*)
+  0.00      0.00     0.00        2     0.00     0.00  QList<QString>::QList()
+  0.00      0.00     0.00        2     0.00     0.00  QList<ACore::ASett>::node_copy(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*)
+  0.00      0.00     0.00        2     0.00     0.00  Client::Client()
+  0.00      0.00     0.00        2     0.00     0.00  Client::~Client()
+  0.00      0.00     0.00        2     0.00     0.00  QFlags<Qt::WindowType>::QFlags(Qt::WindowType)
+  0.00      0.00     0.00        2     0.00     0.00  UniKey::operator=(UniKey const&)
+  0.00      0.00     0.00        2     0.00     0.00  QVariant::Private::Private()
+  0.00      0.00     0.00        2     0.00     0.00  QVariant::QVariant()
+  0.00      0.00     0.00        2     0.00     0.00  QList<UniKey>::value(int) const
+  0.00      0.00     0.00        2     0.00     0.00  QSize::width() const
+  0.00      0.00     0.00        2     0.00     0.00  QSize::height() const
+  0.00      0.00     0.00        2     0.00     0.00  QObject::connect(QObject const*, char const*, char const*, Qt::ConnectionType) const
+  0.00      0.00     0.00        1     0.00     0.00  qMain(int, char**)
+  0.00      0.00     0.00        1     0.00     0.00  MainWindow::OnStart()
+  0.00      0.00     0.00        1     0.00     0.00  MainWindow::OnRequest()
+  0.00      0.00     0.00        1     0.00     0.00  MainWindow::MainWindow(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  MainWindow::~MainWindow()
+  0.00      0.00     0.00        1     0.00     0.00  MainWindow::~MainWindow()
+  0.00      0.00     0.00        1     0.00     0.00  QByteArray::data()
+  0.00      0.00     0.00        1     0.00     0.00  QByteArray::detach()
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Kabinet::retranslateUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Kabinet::setupUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Loading::retranslateUi(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Loading::setupUi(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_registr::retranslateUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_registr::setupUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  ATcpNetwork::ATcpNetwork()
+  0.00      0.00     0.00        1     0.00     0.00  ATcpNetwork::~ATcpNetwork()
+  0.00      0.00     0.00        1     0.00     0.00  QStringList::QStringList()
+  0.00      0.00     0.00        1     0.00     0.00  QStringList::~QStringList()
+  0.00      0.00     0.00        1     0.00     0.00  QLatin1String::QLatin1String(char const*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_MainWindow::retranslateUi(QMainWindow*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_MainWindow::setupUi(QMainWindow*)
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<PrivateMessage>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<QList<PrivateMessage> >::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<AChate>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<Client>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<UniKey>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<AServer>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<UniClient>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  QListSpecialMethods<ACore::ASett>::QListSpecialMethods()
+  0.00      0.00     0.00        1     0.00     0.00  Form::Form(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Form::~Form()
+  0.00      0.00     0.00        1     0.00     0.00  Form::~Form()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::LoadSettings()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::CheckBoxUpdate()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::GetServersList()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::functionA()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::AChat()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::~AChat()
+  0.00      0.00     0.00        1     0.00     0.00  AChat::~AChat()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ALog::SaveLog()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ALog::SetFile(QString)
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ALog::ALog()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ALog::~ALog()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::timeEx(QTime)
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ASettings::LoadSettings()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ASettings::SaveSettings()
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ASettings::ASettings(QString)
+  0.00      0.00     0.00        1     0.00     0.00  ACore::ASettings::~ASettings()
+  0.00      0.00     0.00        1     0.00     0.00  QFlag::QFlag(unsigned int)
+  0.00      0.00     0.00        1     0.00     0.00  QList<PrivateMessage>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<PrivateMessage>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<AChate>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<AChate>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<Client>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<Client>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniKey>::node_destruct(QList<UniKey>::Node*, QList<UniKey>::Node*)
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniKey>::detach_helper_grow(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniKey>::dealloc(QListData::Data*)
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniKey>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniKey>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<AServer>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<AServer>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<QString>::clear()
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniClient>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<UniClient>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<ACore::ASett>::node_destruct(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*)
+  0.00      0.00     0.00        1     0.00     0.00  QList<ACore::ASett>::detach_helper_grow(int, int)
+  0.00      0.00     0.00        1     0.00     0.00  QList<ACore::ASett>::dealloc(QListData::Data*)
+  0.00      0.00     0.00        1     0.00     0.00  QList<ACore::ASett>::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<ACore::ASett>::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<QList<PrivateMessage> >::QList()
+  0.00      0.00     0.00        1     0.00     0.00  QList<QList<PrivateMessage> >::~QList()
+  0.00      0.00     0.00        1     0.00     0.00  Style::Style()
+  0.00      0.00     0.00        1     0.00     0.00  Style::~Style()
+  0.00      0.00     0.00        1     0.00     0.00  Dialog::qt_static_metacall(QObject*, QMetaObject::Call, int, void**)
+  0.00      0.00     0.00        1     0.00     0.00  Dialog::on_checkBox_stateChanged(int)
+  0.00      0.00     0.00        1     0.00     0.00  Dialog::Dialog(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Dialog::~Dialog()
+  0.00      0.00     0.00        1     0.00     0.00  Dialog::~Dialog()
+  0.00      0.00     0.00        1     0.00     0.00  QFlags<Qt::WindowType>::QFlags(QFlag)
+  0.00      0.00     0.00        1     0.00     0.00  QFlags<QIODevice::OpenModeFlag>::QFlags(QIODevice::OpenModeFlag)
+  0.00      0.00     0.00        1     0.00     0.00  Kabinet::Kabinet(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Kabinet::~Kabinet()
+  0.00      0.00     0.00        1     0.00     0.00  Kabinet::~Kabinet()
+  0.00      0.00     0.00        1     0.00     0.00  Loading::Loading(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Loading::~Loading()
+  0.00      0.00     0.00        1     0.00     0.00  Loading::~Loading()
+  0.00      0.00     0.00        1     0.00     0.00  QString::QString(QLatin1String)
+  0.00      0.00     0.00        1     0.00     0.00  QWidget::setBaseSize(QSize const&)
+  0.00      0.00     0.00        1     0.00     0.00  QWidget::setMinimumSize(QSize const&)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Form::retranslateUi(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Form::setupUi(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  registr::registr(QWidget*)
+  0.00      0.00     0.00        1     0.00     0.00  registr::~registr()
+  0.00      0.00     0.00        1     0.00     0.00  registr::~registr()
+  0.00      0.00     0.00        1     0.00     0.00  ANetwork::get(QString, int)
+  0.00      0.00     0.00        1     0.00     0.00  ANetwork::RealGet(QString)
+  0.00      0.00     0.00        1     0.00     0.00  ANetwork::ANetwork()
+  0.00      0.00     0.00        1     0.00     0.00  ANetwork::~ANetwork()
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Dialog::retranslateUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  Ui_Dialog::setupUi(QDialog*)
+  0.00      0.00     0.00        1     0.00     0.00  QLatin1String::size() const
+  0.00      0.00     0.00        1     0.00     0.00  QLatin1String::latin1() const
+  0.00      0.00     0.00        1     0.00     0.00  QFlag::operator unsigned int() const
+  0.00      0.00     0.00        1     0.00     0.00  QRect::height() const
+  0.00      0.00     0.00        1     0.00     0.00  QFlags<Qt::WindowType>::operator|(Qt::WindowType) const
+  0.00      0.00     0.00        1     0.00     0.00  QWidget::geometry() const
+  0.00      0.00     0.00        1     0.00     0.00  operator|(Qt::WindowType, Qt::WindowType)
+
+			Call graph
+
+
+granularity: each sample hit covers 4 byte(s) no time propagated
+
+index % time    self  children    called     name
+                0.00    0.00      26/1490        QtPrivate::RefCount::isShared() const [30]
+                0.00    0.00     501/1490        QtPrivate::RefCount::ref() [8]
+                0.00    0.00     963/1490        QtPrivate::RefCount::deref() [4]
+[2]      0.0    0.00    0.00    1490         QBasicAtomicInteger<int>::load() const [2]
+-----------------------------------------------
+                0.00    0.00       8/1002        QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+                0.00    0.00       9/1002        QArrayData::data() [33]
+                0.00    0.00     487/1002        QScopedPointer<QObjectData, QScopedPointerDeleter<QObjectData> >::operator->() const [12]
+                0.00    0.00     498/1002        QString::QString(QString const&) [11]
+[3]      0.0    0.00    0.00    1002         qt_noop() [3]
+-----------------------------------------------
+                0.00    0.00       1/963         QList<PrivateMessage>::~QList() [167]
+                0.00    0.00       1/963         QList<AChate>::~QList() [169]
+                0.00    0.00       1/963         QList<Client>::~QList() [171]
+                0.00    0.00       1/963         QList<UniKey>::detach_helper_grow(int, int) [173]
+                0.00    0.00       1/963         QList<UniKey>::~QList() [176]
+                0.00    0.00       1/963         QList<AServer>::~QList() [178]
+                0.00    0.00       1/963         QList<UniClient>::~QList() [181]
+                0.00    0.00       1/963         QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+                0.00    0.00       1/963         QList<ACore::ASett>::~QList() [186]
+                0.00    0.00       1/963         QList<QList<PrivateMessage> >::~QList() [188]
+                0.00    0.00       2/963         QList<AQuest>::~QList() [97]
+                0.00    0.00       4/963         QList<QString>::detach_helper_grow(int, int) [73]
+                0.00    0.00       5/963         QList<QString>::~QList() [66]
+                0.00    0.00       7/963         QList<QString>::~QList() [50]
+                0.00    0.00      13/963         QByteArray::~QByteArray() [32]
+                0.00    0.00     922/963         QString::~QString() [5]
+[4]      0.0    0.00    0.00     963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00     963/1490        QBasicAtomicInteger<int>::load() const [2]
+                0.00    0.00     872/872         QBasicAtomicInteger<int>::deref() [7]
+-----------------------------------------------
+                0.00    0.00       1/922         MainWindow::MainWindow(QWidget*) [120]
+                0.00    0.00       1/922         ACore::ALog::~ALog() [159]
+                0.00    0.00       1/922         ANetwork::RealGet(QString) [213]
+                0.00    0.00       2/922         registr::registr(QWidget*) [209]
+                0.00    0.00       2/922         Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       2/922         Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       2/922         AChat::GetServersList() [151]
+                0.00    0.00       2/922         ANetwork::get(QString, int) [212]
+                0.00    0.00       3/922         Ui_Loading::retranslateUi(QWidget*) [127]
+                0.00    0.00       4/922         Dialog::on_checkBox_stateChanged(int) [192]
+                0.00    0.00       4/922         Ui_Form::retranslateUi(QWidget*) [207]
+                0.00    0.00       5/922         Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       5/922         AChat::CheckBoxUpdate() [150]
+                0.00    0.00       5/922         QList<QString>::node_destruct(QList<QString>::Node*, QList<QString>::Node*) [103]
+                0.00    0.00       5/922         Style::~Style() [190]
+                0.00    0.00       6/922         qMain(int, char**) [117]
+                0.00    0.00       6/922         ACore::timeEx(QTime) [160]
+                0.00    0.00       8/922         ACore::ALog::SaveLog() [156]
+                0.00    0.00       8/922         Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       9/922         Ui_Dialog::retranslateUi(QDialog*) [216]
+                0.00    0.00      10/922         Ui_registr::retranslateUi(QDialog*) [129]
+                0.00    0.00      10/922         ACore::ALog::operator<<(QString) [63]
+                0.00    0.00      12/922         AChat::~AChat() [155]
+                0.00    0.00      12/922         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00      13/922         AChat::AChat() [153]
+                0.00    0.00      16/922         UniKey::~UniKey() [45]
+                0.00    0.00      17/922         Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00      17/922         operator+(QString const&, char const*) [31]
+                0.00    0.00      18/922         Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00      19/922         Ui_MainWindow::retranslateUi(QMainWindow*) [136]
+                0.00    0.00      20/922         Client::~Client() [108]
+                0.00    0.00      30/922         AChat::LoadSettings() [149]
+                0.00    0.00      34/922         Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00      65/922         Ui_Kabinet::retranslateUi(QDialog*) [125]
+                0.00    0.00      86/922         Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00     462/922         ACore::ASett::~ASett() [16]
+[5]      0.0    0.00    0.00     922         QString::~QString() [5]
+                0.00    0.00     922/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00      91/91          QTypedArrayData<unsigned short>::deallocate(QArrayData*) [25]
+-----------------------------------------------
+                0.00    0.00     872/872         QBasicAtomicInteger<int>::deref() [7]
+[6]      0.0    0.00    0.00     872         bool QBasicAtomicOps<4>::deref<int>(int&) [6]
+-----------------------------------------------
+                0.00    0.00     872/872         QtPrivate::RefCount::deref() [4]
+[7]      0.0    0.00    0.00     872         QBasicAtomicInteger<int>::deref() [7]
+                0.00    0.00     872/872         bool QBasicAtomicOps<4>::deref<int>(int&) [6]
+-----------------------------------------------
+                0.00    0.00       3/501         QList<QString>::QList(QList<QString> const&) [87]
+                0.00    0.00     498/501         QString::QString(QString const&) [11]
+[8]      0.0    0.00    0.00     501         QtPrivate::RefCount::ref() [8]
+                0.00    0.00     501/1490        QBasicAtomicInteger<int>::load() const [2]
+                0.00    0.00     500/500         QBasicAtomicInteger<int>::ref() [10]
+-----------------------------------------------
+                0.00    0.00     500/500         QBasicAtomicInteger<int>::ref() [10]
+[9]      0.0    0.00    0.00     500         bool QBasicAtomicOps<4>::ref<int>(int&) [9]
+-----------------------------------------------
+                0.00    0.00     500/500         QtPrivate::RefCount::ref() [8]
+[10]     0.0    0.00    0.00     500         QBasicAtomicInteger<int>::ref() [10]
+                0.00    0.00     500/500         bool QBasicAtomicOps<4>::ref<int>(int&) [9]
+-----------------------------------------------
+                0.00    0.00       1/498         ANetwork::get(QString, int) [212]
+                0.00    0.00       5/498         operator+(QString const&, QString const&) [69]
+                0.00    0.00       6/498         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00       8/498         UniKey::UniKey(UniKey const&) [75]
+                0.00    0.00       8/498         QList<QString>::value(int) const [47]
+                0.00    0.00       9/498         QList<QString>::node_construct(QList<QString>::Node*, QString const&) [34]
+                0.00    0.00      17/498         operator+(QString const&, char const*) [31]
+                0.00    0.00     444/498         ACore::ASett::ASett(ACore::ASett const&) [18]
+[11]     0.0    0.00    0.00     498         QString::QString(QString const&) [11]
+                0.00    0.00     498/1002        qt_noop() [3]
+                0.00    0.00     498/501         QtPrivate::RefCount::ref() [8]
+-----------------------------------------------
+                0.00    0.00       2/487         ANetwork::metaObject() const [734]
+                0.00    0.00       6/487         ATcpNetwork::metaObject() const [665]
+                0.00    0.00      10/487         AChat::metaObject() const [681]
+                0.00    0.00      22/487         Kabinet::metaObject() const [714]
+                0.00    0.00      24/487         Loading::metaObject() const [715]
+                0.00    0.00      25/487         registr::metaObject() const [733]
+                0.00    0.00      40/487         MainWindow::metaObject() const [662]
+                0.00    0.00     151/487         Dialog::metaObject() const [707]
+                0.00    0.00     207/487         Form::metaObject() const [671]
+[12]     0.0    0.00    0.00     487         QScopedPointer<QObjectData, QScopedPointerDeleter<QObjectData> >::operator->() const [12]
+                0.00    0.00     487/1002        qt_noop() [3]
+-----------------------------------------------
+                0.00    0.00       2/297         QList<UniKey>::value(int) const [113]
+                0.00    0.00       3/297         QList<UniKey>::size() const [91]
+                0.00    0.00       8/297         QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+                0.00    0.00       8/297         QList<QString>::size() const [46]
+                0.00    0.00       8/297         QList<QString>::value(int) const [47]
+                0.00    0.00     126/297         QList<ACore::ASett>::size() const [20]
+                0.00    0.00     142/297         QList<ACore::ASett>::value(int) const [19]
+[13]     0.0    0.00    0.00     297         QListData::size() const [13]
+-----------------------------------------------
+                0.00    0.00       4/175         Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       5/175         operator+(char const*, QString const&) [68]
+                0.00    0.00       7/175         Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00      16/175         Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00      17/175         Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00      17/175         operator+(QString const&, char const*) [31]
+                0.00    0.00      32/175         Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00      77/175         Ui_Kabinet::setupUi(QDialog*) [126]
+[14]     0.0    0.00    0.00     175         QString::fromUtf8(char const*, int) [14]
+-----------------------------------------------
+                0.00    0.00       2/160         QList<UniKey>::value(int) const [113]
+                0.00    0.00       8/160         QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+                0.00    0.00       8/160         QList<QString>::value(int) const [47]
+                0.00    0.00     142/160         QList<ACore::ASett>::value(int) const [19]
+[15]     0.0    0.00    0.00     160         QListData::at(int) const [15]
+-----------------------------------------------
+                0.00    0.00       6/154         ACore::ASettings::AddKey(QString, QString) [54]
+                0.00    0.00       6/154         QList<ACore::ASett>::node_destruct(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [182]
+                0.00    0.00      12/154         ACore::ASettings::SaveSettings() [162]
+                0.00    0.00      18/154         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00      56/154         ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00      56/154         ACore::ASettings::SetKey(QString, QString) [39]
+[16]     0.0    0.00    0.00     154         ACore::ASett::~ASett() [16]
+                0.00    0.00     462/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       8/150         QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+                0.00    0.00     142/150         QList<ACore::ASett>::value(int) const [19]
+[17]     0.0    0.00    0.00     150         QList<ACore::ASett>::Node::t() [17]
+-----------------------------------------------
+                0.00    0.00       6/148         QList<ACore::ASett>::node_construct(QList<ACore::ASett>::Node*, ACore::ASett const&) [55]
+                0.00    0.00     142/148         QList<ACore::ASett>::value(int) const [19]
+[18]     0.0    0.00    0.00     148         ACore::ASett::ASett(ACore::ASett const&) [18]
+                0.00    0.00     444/498         QString::QString(QString const&) [11]
+-----------------------------------------------
+                0.00    0.00      12/142         ACore::ASettings::SaveSettings() [162]
+                0.00    0.00      18/142         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00      56/142         ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00      56/142         ACore::ASettings::SetKey(QString, QString) [39]
+[19]     0.0    0.00    0.00     142         QList<ACore::ASett>::value(int) const [19]
+                0.00    0.00     142/297         QListData::size() const [13]
+                0.00    0.00     142/160         QListData::at(int) const [15]
+                0.00    0.00     142/150         QList<ACore::ASett>::Node::t() [17]
+                0.00    0.00     142/148         ACore::ASett::ASett(ACore::ASett const&) [18]
+-----------------------------------------------
+                0.00    0.00       7/126         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00       7/126         ACore::ASettings::SaveSettings() [162]
+                0.00    0.00      56/126         ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00      56/126         ACore::ASettings::SetKey(QString, QString) [39]
+[20]     0.0    0.00    0.00     126         QList<ACore::ASett>::size() const [20]
+                0.00    0.00     126/297         QListData::size() const [13]
+-----------------------------------------------
+                0.00    0.00     110/110         QTypedArrayData<unsigned short>::sharedNull() [22]
+[21]     0.0    0.00    0.00     110         QArrayData::sharedNull() [21]
+-----------------------------------------------
+                0.00    0.00     110/110         QString::QString() [23]
+[22]     0.0    0.00    0.00     110         QTypedArrayData<unsigned short>::sharedNull() [22]
+                0.00    0.00     110/110         QArrayData::sharedNull() [21]
+-----------------------------------------------
+                0.00    0.00       1/110         ACore::timeEx(QTime) [160]
+                0.00    0.00       1/110         ACore::ALog::ALog() [158]
+                0.00    0.00       1/110         Ui_Dialog::retranslateUi(QDialog*) [216]
+                0.00    0.00       3/110         Ui_MainWindow::retranslateUi(QMainWindow*) [136]
+                0.00    0.00       5/110         ACore::dtime() [64]
+                0.00    0.00       5/110         Style::Style() [189]
+                0.00    0.00       8/110         Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00       8/110         ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00       8/110         UniKey::UniKey() [76]
+                0.00    0.00       9/110         AChat::AChat() [153]
+                0.00    0.00      18/110         ACore::ASett::ASett() [53]
+                0.00    0.00      20/110         Client::Client() [107]
+                0.00    0.00      23/110         Ui_Kabinet::retranslateUi(QDialog*) [125]
+[23]     0.0    0.00    0.00     110         QString::QString() [23]
+                0.00    0.00     110/110         QTypedArrayData<unsigned short>::sharedNull() [22]
+-----------------------------------------------
+                0.00    0.00       3/107         Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       3/107         Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       7/107         Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00      11/107         Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00      15/107         Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00      68/107         Ui_Kabinet::setupUi(QDialog*) [126]
+[24]     0.0    0.00    0.00     107         QRect::QRect(int, int, int, int) [24]
+-----------------------------------------------
+                0.00    0.00      91/91          QString::~QString() [5]
+[25]     0.0    0.00    0.00      91         QTypedArrayData<unsigned short>::deallocate(QArrayData*) [25]
+-----------------------------------------------
+                0.00    0.00       1/73          Loading::Loading(QWidget*) [201]
+                0.00    0.00       1/73          registr::registr(QWidget*) [209]
+                0.00    0.00       1/73          Form::Form(QWidget*) [146]
+                0.00    0.00       1/73          Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       1/73          MainWindow::MainWindow(QWidget*) [120]
+                0.00    0.00       1/73          Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       2/73          Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       3/73          Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       4/73          Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00       6/73          Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00       6/73          Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00      46/73          Ui_Kabinet::setupUi(QDialog*) [126]
+[26]     0.0    0.00    0.00      73         QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+-----------------------------------------------
+                0.00    0.00       1/37          registr::registr(QWidget*) [209]
+                0.00    0.00       1/37          Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       1/37          MainWindow::MainWindow(QWidget*) [120]
+                0.00    0.00       1/37          Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       1/37          ANetwork::RealGet(QString) [213]
+                0.00    0.00       2/37          Dialog::on_checkBox_stateChanged(int) [192]
+                0.00    0.00       2/37          AChat::CheckBoxUpdate() [150]
+                0.00    0.00       2/37          AChat::GetServersList() [151]
+                0.00    0.00       2/37          AChat::~AChat() [155]
+                0.00    0.00       4/37          AChat::AChat() [153]
+                0.00    0.00      20/37          AChat::LoadSettings() [149]
+[27]     0.0    0.00    0.00      37         QString::QString(char const*) [27]
+-----------------------------------------------
+                0.00    0.00       3/30          ACore::timeEx(QTime) [160]
+                0.00    0.00       5/30          operator+(char const*, QString const&) [68]
+                0.00    0.00       5/30          operator+(QString const&, QString const&) [69]
+                0.00    0.00      17/30          operator+(QString const&, char const*) [31]
+[28]     0.0    0.00    0.00      30         QString::operator+=(QString const&) [28]
+-----------------------------------------------
+                0.00    0.00       5/30          QList<UniKey>::detach_helper_grow(int, int) [173]
+                0.00    0.00       5/30          QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+                0.00    0.00      20/30          QList<QString>::detach_helper_grow(int, int) [73]
+[29]     0.0    0.00    0.00      30         QListData::begin() const [29]
+-----------------------------------------------
+                0.00    0.00       1/26          QByteArray::detach() [124]
+                0.00    0.00       2/26          QList<UniKey>::append(UniKey const&) [100]
+                0.00    0.00       6/26          QList<ACore::ASett>::append(ACore::ASett const&) [56]
+                0.00    0.00       8/26          QList<ACore::ASett>::detach() [42]
+                0.00    0.00       9/26          QList<QString>::append(QString const&) [35]
+[30]     0.0    0.00    0.00      26         QtPrivate::RefCount::isShared() const [30]
+                0.00    0.00      26/1490        QBasicAtomicInteger<int>::load() const [2]
+-----------------------------------------------
+                0.00    0.00       1/17          registr::registr(QWidget*) [209]
+                0.00    0.00       1/17          Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       1/17          Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       2/17          qMain(int, char**) [117]
+                0.00    0.00       3/17          ACore::timeEx(QTime) [160]
+                0.00    0.00       4/17          ACore::ALog::SaveLog() [156]
+                0.00    0.00       5/17          AChat::AChat() [153]
+[31]     0.0    0.00    0.00      17         operator+(QString const&, char const*) [31]
+                0.00    0.00      17/498         QString::QString(QString const&) [11]
+                0.00    0.00      17/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00      17/30          QString::operator+=(QString const&) [28]
+                0.00    0.00      17/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/13          ANetwork::RealGet(QString) [213]
+                0.00    0.00       2/13          QTextCodec::codecForName(char const*) [93]
+                0.00    0.00       4/13          ACore::ALog::SaveLog() [156]
+                0.00    0.00       6/13          ACore::ASettings::SaveSettings() [162]
+[32]     0.0    0.00    0.00      13         QByteArray::~QByteArray() [32]
+                0.00    0.00      13/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00       7/7           QTypedArrayData<char>::deallocate(QArrayData*) [48]
+-----------------------------------------------
+                0.00    0.00       4/9           QTypedArrayData<unsigned short>::data() [72]
+                0.00    0.00       5/9           QTypedArrayData<char>::data() [62]
+[33]     0.0    0.00    0.00       9         QArrayData::data() [33]
+                0.00    0.00       9/1002        qt_noop() [3]
+-----------------------------------------------
+                0.00    0.00       9/9           QList<QString>::append(QString const&) [35]
+[34]     0.0    0.00    0.00       9         QList<QString>::node_construct(QList<QString>::Node*, QString const&) [34]
+                0.00    0.00       9/9           operator new(unsigned int, void*) [36]
+                0.00    0.00       9/498         QString::QString(QString const&) [11]
+-----------------------------------------------
+                0.00    0.00       4/9           QStringList::operator<<(QString const&) [71]
+                0.00    0.00       5/9           ACore::ALog::operator<<(QString) [63]
+[35]     0.0    0.00    0.00       9         QList<QString>::append(QString const&) [35]
+                0.00    0.00       9/26          QtPrivate::RefCount::isShared() const [30]
+                0.00    0.00       9/9           QList<QString>::node_construct(QList<QString>::Node*, QString const&) [34]
+                0.00    0.00       4/4           QList<QString>::detach_helper_grow(int, int) [73]
+-----------------------------------------------
+                0.00    0.00       9/9           QList<QString>::node_construct(QList<QString>::Node*, QString const&) [34]
+[36]     0.0    0.00    0.00       9         operator new(unsigned int, void*) [36]
+-----------------------------------------------
+                0.00    0.00       8/8           QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+[37]     0.0    0.00    0.00       8         ACore::ASett::operator=(ACore::ASett const&) [37]
+-----------------------------------------------
+                0.00    0.00       2/8           AChat::CheckBoxUpdate() [150]
+                0.00    0.00       6/8           AChat::LoadSettings() [149]
+[38]     0.0    0.00    0.00       8         ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00      56/142         QList<ACore::ASett>::value(int) const [19]
+                0.00    0.00      56/154         ACore::ASett::~ASett() [16]
+                0.00    0.00      56/126         QList<ACore::ASett>::size() const [20]
+                0.00    0.00       8/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       2/8           Dialog::on_checkBox_stateChanged(int) [192]
+                0.00    0.00       6/8           ACore::ASettings::LoadSettings() [161]
+[39]     0.0    0.00    0.00       8         ACore::ASettings::SetKey(QString, QString) [39]
+                0.00    0.00      56/142         QList<ACore::ASett>::value(int) const [19]
+                0.00    0.00      56/154         ACore::ASett::~ASett() [16]
+                0.00    0.00      56/126         QList<ACore::ASett>::size() const [20]
+                0.00    0.00       8/8           QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+-----------------------------------------------
+                0.00    0.00       8/8           QList<QString>::value(int) const [47]
+[40]     0.0    0.00    0.00       8         QList<QString>::Node::t() [40]
+-----------------------------------------------
+                0.00    0.00       8/8           QList<QString>::detach_helper_grow(int, int) [73]
+[41]     0.0    0.00    0.00       8         QList<QString>::node_copy(QList<QString>::Node*, QList<QString>::Node*, QList<QString>::Node*) [41]
+-----------------------------------------------
+                0.00    0.00       8/8           QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+[42]     0.0    0.00    0.00       8         QList<ACore::ASett>::detach() [42]
+                0.00    0.00       8/26          QtPrivate::RefCount::isShared() const [30]
+-----------------------------------------------
+                0.00    0.00       8/8           ACore::ASettings::SetKey(QString, QString) [39]
+[43]     0.0    0.00    0.00       8         QList<ACore::ASett>::replace(int, ACore::ASett const&) [43]
+                0.00    0.00       8/297         QListData::size() const [13]
+                0.00    0.00       8/1002        qt_noop() [3]
+                0.00    0.00       8/8           QList<ACore::ASett>::detach() [42]
+                0.00    0.00       8/160         QListData::at(int) const [15]
+                0.00    0.00       8/150         QList<ACore::ASett>::Node::t() [17]
+                0.00    0.00       8/8           ACore::ASett::operator=(ACore::ASett const&) [37]
+-----------------------------------------------
+                0.00    0.00       2/8           Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00       6/8           QWidget::resize(int, int) [59]
+[44]     0.0    0.00    0.00       8         QSize::QSize(int, int) [44]
+-----------------------------------------------
+                0.00    0.00       2/8           AChat::LoadSettings() [149]
+                0.00    0.00       2/8           QList<UniKey>::node_destruct(QList<UniKey>::Node*, QList<UniKey>::Node*) [172]
+                0.00    0.00       4/8           AChat::~AChat() [155]
+[45]     0.0    0.00    0.00       8         UniKey::~UniKey() [45]
+                0.00    0.00      16/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       3/8           AChat::LoadSettings() [149]
+                0.00    0.00       5/8           ACore::ALog::SaveLog() [156]
+[46]     0.0    0.00    0.00       8         QList<QString>::size() const [46]
+                0.00    0.00       8/297         QListData::size() const [13]
+-----------------------------------------------
+                0.00    0.00       4/8           AChat::LoadSettings() [149]
+                0.00    0.00       4/8           ACore::ALog::SaveLog() [156]
+[47]     0.0    0.00    0.00       8         QList<QString>::value(int) const [47]
+                0.00    0.00       8/297         QListData::size() const [13]
+                0.00    0.00       8/160         QListData::at(int) const [15]
+                0.00    0.00       8/8           QList<QString>::Node::t() [40]
+                0.00    0.00       8/498         QString::QString(QString const&) [11]
+-----------------------------------------------
+                0.00    0.00       7/7           QByteArray::~QByteArray() [32]
+[48]     0.0    0.00    0.00       7         QTypedArrayData<char>::deallocate(QArrayData*) [48]
+-----------------------------------------------
+                0.00    0.00       2/7           QList<QString>::QList() [105]
+                0.00    0.00       5/7           QList<QString>::QList() [65]
+[49]     0.0    0.00    0.00       7         QListSpecialMethods<QString>::QListSpecialMethods() [49]
+-----------------------------------------------
+                0.00    0.00       1/7           QStringList::~QStringList() [134]
+                0.00    0.00       6/7           QStringList::~QStringList() [52]
+[50]     0.0    0.00    0.00       7         QList<QString>::~QList() [50]
+                0.00    0.00       7/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00       1/2           QList<QString>::dealloc(QListData::Data*) [104]
+-----------------------------------------------
+                0.00    0.00       1/7           Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00       1/7           Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       1/7           Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00       1/7           Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00       1/7           AChat::CheckBoxUpdate() [150]
+                0.00    0.00       1/7           Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       1/7           Ui_Dialog::setupUi(QDialog*) [217]
+[51]     0.0    0.00    0.00       7         QString::isEmpty() const [51]
+-----------------------------------------------
+                0.00    0.00       2/6           AChat::~AChat() [155]
+                0.00    0.00       4/6           AChat::LoadSettings() [149]
+[52]     0.0    0.00    0.00       6         QStringList::~QStringList() [52]
+                0.00    0.00       6/7           QList<QString>::~QList() [50]
+-----------------------------------------------
+                0.00    0.00       6/6           ACore::ASettings::AddKey(QString, QString) [54]
+[53]     0.0    0.00    0.00       6         ACore::ASett::ASett() [53]
+                0.00    0.00      18/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       6/6           AChat::LoadSettings() [149]
+[54]     0.0    0.00    0.00       6         ACore::ASettings::AddKey(QString, QString) [54]
+                0.00    0.00       6/6           ACore::ASett::ASett() [53]
+                0.00    0.00       6/6           QList<ACore::ASett>::operator<<(ACore::ASett const&) [57]
+                0.00    0.00       6/154         ACore::ASett::~ASett() [16]
+-----------------------------------------------
+                0.00    0.00       6/6           QList<ACore::ASett>::append(ACore::ASett const&) [56]
+[55]     0.0    0.00    0.00       6         QList<ACore::ASett>::node_construct(QList<ACore::ASett>::Node*, ACore::ASett const&) [55]
+                0.00    0.00       6/148         ACore::ASett::ASett(ACore::ASett const&) [18]
+-----------------------------------------------
+                0.00    0.00       6/6           QList<ACore::ASett>::operator<<(ACore::ASett const&) [57]
+[56]     0.0    0.00    0.00       6         QList<ACore::ASett>::append(ACore::ASett const&) [56]
+                0.00    0.00       6/26          QtPrivate::RefCount::isShared() const [30]
+                0.00    0.00       6/6           QList<ACore::ASett>::node_construct(QList<ACore::ASett>::Node*, ACore::ASett const&) [55]
+                0.00    0.00       1/1           QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+-----------------------------------------------
+                0.00    0.00       6/6           ACore::ASettings::AddKey(QString, QString) [54]
+[57]     0.0    0.00    0.00       6         QList<ACore::ASett>::operator<<(ACore::ASett const&) [57]
+                0.00    0.00       6/6           QList<ACore::ASett>::append(ACore::ASett const&) [56]
+-----------------------------------------------
+                0.00    0.00       6/6           QDebug::operator<<(QString const&) [90]
+[58]     0.0    0.00    0.00       6         QDebug::maybeQuote(char) [58]
+                0.00    0.00       6/6           QDebug::Stream::testFlag(QDebug::Stream::FormatFlag) const [60]
+-----------------------------------------------
+                0.00    0.00       1/6           Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00       1/6           Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       1/6           Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00       1/6           Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00       1/6           Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       1/6           Ui_Dialog::setupUi(QDialog*) [217]
+[59]     0.0    0.00    0.00       6         QWidget::resize(int, int) [59]
+                0.00    0.00       6/8           QSize::QSize(int, int) [44]
+-----------------------------------------------
+                0.00    0.00       6/6           QDebug::maybeQuote(char) [58]
+[60]     0.0    0.00    0.00       6         QDebug::Stream::testFlag(QDebug::Stream::FormatFlag) const [60]
+-----------------------------------------------
+                0.00    0.00       1/6           QList<UniKey>::detach_helper_grow(int, int) [173]
+                0.00    0.00       1/6           QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+                0.00    0.00       4/6           QList<QString>::detach_helper_grow(int, int) [73]
+[61]     0.0    0.00    0.00       6         QListData::end() const [61]
+-----------------------------------------------
+                0.00    0.00       1/5           QByteArray::data() [123]
+                0.00    0.00       4/5           QByteArray::constData() const [79]
+[62]     0.0    0.00    0.00       5         QTypedArrayData<char>::data() [62]
+                0.00    0.00       5/9           QArrayData::data() [33]
+-----------------------------------------------
+                0.00    0.00       1/5           AChat::GetServersList() [151]
+                0.00    0.00       1/5           AChat::~AChat() [155]
+                0.00    0.00       3/5           AChat::AChat() [153]
+[63]     0.0    0.00    0.00       5         ACore::ALog::operator<<(QString) [63]
+                0.00    0.00      10/922         QString::~QString() [5]
+                0.00    0.00       5/5           ACore::dtime() [64]
+                0.00    0.00       5/5           operator+(QString const&, QString const&) [69]
+                0.00    0.00       5/9           QList<QString>::append(QString const&) [35]
+-----------------------------------------------
+                0.00    0.00       5/5           ACore::ALog::operator<<(QString) [63]
+[64]     0.0    0.00    0.00       5         ACore::dtime() [64]
+                0.00    0.00       5/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/5           QStringList::QStringList() [133]
+                0.00    0.00       4/5           QStringList::QStringList() [70]
+[65]     0.0    0.00    0.00       5         QList<QString>::QList() [65]
+                0.00    0.00       5/7           QListSpecialMethods<QString>::QListSpecialMethods() [49]
+-----------------------------------------------
+                0.00    0.00       1/5           AChat::~AChat() [155]
+                0.00    0.00       1/5           QList<QString>::clear() [179]
+                0.00    0.00       3/5           QList<QString>::operator=(QList<QString> const&) [88]
+[66]     0.0    0.00    0.00       5         QList<QString>::~QList() [66]
+                0.00    0.00       5/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00       1/2           QList<QString>::dealloc(QListData::Data*) [104]
+-----------------------------------------------
+                0.00    0.00       5/5           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[67]     0.0    0.00    0.00       5         QFlags<Qt::AlignmentFlag>::QFlags(int QFlags<Qt::AlignmentFlag>::Private::*) [67]
+-----------------------------------------------
+                0.00    0.00       1/5           AChat::AChat() [153]
+                0.00    0.00       1/5           AChat::~AChat() [155]
+                0.00    0.00       1/5           ANetwork::get(QString, int) [212]
+                0.00    0.00       2/5           qMain(int, char**) [117]
+[68]     0.0    0.00    0.00       5         operator+(char const*, QString const&) [68]
+                0.00    0.00       5/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00       5/30          QString::operator+=(QString const&) [28]
+-----------------------------------------------
+                0.00    0.00       5/5           ACore::ALog::operator<<(QString) [63]
+[69]     0.0    0.00    0.00       5         operator+(QString const&, QString const&) [69]
+                0.00    0.00       5/498         QString::QString(QString const&) [11]
+                0.00    0.00       5/30          QString::operator+=(QString const&) [28]
+-----------------------------------------------
+                0.00    0.00       2/4           AChat::LoadSettings() [149]
+                0.00    0.00       2/4           AChat::~AChat() [155]
+[70]     0.0    0.00    0.00       4         QStringList::QStringList() [70]
+                0.00    0.00       4/5           QList<QString>::QList() [65]
+-----------------------------------------------
+                0.00    0.00       4/4           AChat::~AChat() [155]
+[71]     0.0    0.00    0.00       4         QStringList::operator<<(QString const&) [71]
+                0.00    0.00       4/9           QList<QString>::append(QString const&) [35]
+-----------------------------------------------
+                0.00    0.00       4/4           QString::constData() const [81]
+[72]     0.0    0.00    0.00       4         QTypedArrayData<unsigned short>::data() [72]
+                0.00    0.00       4/9           QArrayData::data() [33]
+-----------------------------------------------
+                0.00    0.00       4/4           QList<QString>::append(QString const&) [35]
+[73]     0.0    0.00    0.00       4         QList<QString>::detach_helper_grow(int, int) [73]
+                0.00    0.00      20/30          QListData::begin() const [29]
+                0.00    0.00       8/8           QList<QString>::node_copy(QList<QString>::Node*, QList<QString>::Node*, QList<QString>::Node*) [41]
+                0.00    0.00       4/6           QListData::end() const [61]
+                0.00    0.00       4/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/4           qMain(int, char**) [117]
+                0.00    0.00       3/4           AChat::AChat() [153]
+[74]     0.0    0.00    0.00       4         QTime::QTime() [74]
+-----------------------------------------------
+                0.00    0.00       2/4           QList<UniKey>::node_construct(QList<UniKey>::Node*, UniKey const&) [98]
+                0.00    0.00       2/4           QList<UniKey>::value(int) const [113]
+[75]     0.0    0.00    0.00       4         UniKey::UniKey(UniKey const&) [75]
+                0.00    0.00       8/498         QString::QString(QString const&) [11]
+-----------------------------------------------
+                0.00    0.00       2/4           AChat::LoadSettings() [149]
+                0.00    0.00       2/4           AChat::~AChat() [155]
+[76]     0.0    0.00    0.00       4         UniKey::UniKey() [76]
+                0.00    0.00       8/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       4/4           ACore::ALog::SaveLog() [156]
+[77]     0.0    0.00    0.00       4         QIODevice::write(QByteArray const&) [77]
+                0.00    0.00       4/4           QByteArray::size() const [78]
+                0.00    0.00       4/4           QByteArray::constData() const [79]
+-----------------------------------------------
+                0.00    0.00       4/4           QIODevice::write(QByteArray const&) [77]
+[78]     0.0    0.00    0.00       4         QByteArray::size() const [78]
+-----------------------------------------------
+                0.00    0.00       4/4           QIODevice::write(QByteArray const&) [77]
+[79]     0.0    0.00    0.00       4         QByteArray::constData() const [79]
+                0.00    0.00       4/5           QTypedArrayData<char>::data() [62]
+-----------------------------------------------
+                0.00    0.00       4/4           QString::operator==(char const*) const [82]
+[80]     0.0    0.00    0.00       4         QString::size() const [80]
+-----------------------------------------------
+                0.00    0.00       4/4           QString::operator==(char const*) const [82]
+[81]     0.0    0.00    0.00       4         QString::constData() const [81]
+                0.00    0.00       4/4           QTypedArrayData<unsigned short>::data() [72]
+-----------------------------------------------
+                0.00    0.00       2/4           AChat::LoadSettings() [149]
+                0.00    0.00       2/4           AChat::CheckBoxUpdate() [150]
+[82]     0.0    0.00    0.00       4         QString::operator==(char const*) const [82]
+                0.00    0.00       4/4           QString::size() const [80]
+                0.00    0.00       4/4           QString::constData() const [81]
+-----------------------------------------------
+                0.00    0.00       3/3           QList<QString>::swap(QList<QString>&) [86]
+[83]     0.0    0.00    0.00       3         void qSwap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [83]
+                0.00    0.00       3/3           void std::swap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [92]
+-----------------------------------------------
+                0.00    0.00       1/3           ANetwork::get(QString, int) [212]
+                0.00    0.00       2/3           qMain(int, char**) [117]
+[84]     0.0    0.00    0.00       3         QMessageLogger::QMessageLogger(char const*, int, char const*) [84]
+                0.00    0.00       3/3           QMessageLogContext::QMessageLogContext(char const*, int, char const*, char const*) [85]
+-----------------------------------------------
+                0.00    0.00       3/3           QMessageLogger::QMessageLogger(char const*, int, char const*) [84]
+[85]     0.0    0.00    0.00       3         QMessageLogContext::QMessageLogContext(char const*, int, char const*, char const*) [85]
+-----------------------------------------------
+                0.00    0.00       3/3           QList<QString>::operator=(QList<QString> const&) [88]
+[86]     0.0    0.00    0.00       3         QList<QString>::swap(QList<QString>&) [86]
+                0.00    0.00       3/3           void qSwap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [83]
+-----------------------------------------------
+                0.00    0.00       3/3           QList<QString>::operator=(QList<QString> const&) [88]
+[87]     0.0    0.00    0.00       3         QList<QString>::QList(QList<QString> const&) [87]
+                0.00    0.00       3/501         QtPrivate::RefCount::ref() [8]
+-----------------------------------------------
+                0.00    0.00       1/3           QList<QString>::clear() [179]
+                0.00    0.00       2/3           QStringList::operator=(QStringList const&) [94]
+[88]     0.0    0.00    0.00       3         QList<QString>::operator=(QList<QString> const&) [88]
+                0.00    0.00       3/3           QList<QString>::QList(QList<QString> const&) [87]
+                0.00    0.00       3/3           QList<QString>::swap(QList<QString>&) [86]
+                0.00    0.00       3/5           QList<QString>::~QList() [66]
+-----------------------------------------------
+                0.00    0.00       3/3           QDebug::operator<<(QString const&) [90]
+[89]     0.0    0.00    0.00       3         QDebug::maybeSpace() [89]
+-----------------------------------------------
+                0.00    0.00       1/3           ANetwork::get(QString, int) [212]
+                0.00    0.00       2/3           qMain(int, char**) [117]
+[90]     0.0    0.00    0.00       3         QDebug::operator<<(QString const&) [90]
+                0.00    0.00       6/6           QDebug::maybeQuote(char) [58]
+                0.00    0.00       3/3           QDebug::maybeSpace() [89]
+-----------------------------------------------
+                0.00    0.00       3/3           AChat::~AChat() [155]
+[91]     0.0    0.00    0.00       3         QList<UniKey>::size() const [91]
+                0.00    0.00       3/297         QListData::size() const [13]
+-----------------------------------------------
+                0.00    0.00       3/3           void qSwap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [83]
+[92]     0.0    0.00    0.00       3         void std::swap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [92]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::AChat() [153]
+[93]     0.0    0.00    0.00       2         QTextCodec::codecForName(char const*) [93]
+                0.00    0.00       2/13          QByteArray::~QByteArray() [32]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::LoadSettings() [149]
+[94]     0.0    0.00    0.00       2         QStringList::operator=(QStringList const&) [94]
+                0.00    0.00       2/3           QList<QString>::operator=(QList<QString> const&) [88]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<AQuest>::QList() [96]
+[95]     0.0    0.00    0.00       2         QListSpecialMethods<AQuest>::QListSpecialMethods() [95]
+-----------------------------------------------
+                0.00    0.00       1/2           ATcpNetwork::ATcpNetwork() [131]
+                0.00    0.00       1/2           ANetwork::ANetwork() [214]
+[96]     0.0    0.00    0.00       2         QList<AQuest>::QList() [96]
+                0.00    0.00       2/2           QListSpecialMethods<AQuest>::QListSpecialMethods() [95]
+-----------------------------------------------
+                0.00    0.00       1/2           ATcpNetwork::~ATcpNetwork() [132]
+                0.00    0.00       1/2           ANetwork::~ANetwork() [215]
+[97]     0.0    0.00    0.00       2         QList<AQuest>::~QList() [97]
+                0.00    0.00       2/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<UniKey>::append(UniKey const&) [100]
+[98]     0.0    0.00    0.00       2         QList<UniKey>::node_construct(QList<UniKey>::Node*, UniKey const&) [98]
+                0.00    0.00       2/4           UniKey::UniKey(UniKey const&) [75]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<UniKey>::value(int) const [113]
+[99]     0.0    0.00    0.00       2         QList<UniKey>::Node::t() [99]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<UniKey>::operator<<(UniKey const&) [102]
+[100]    0.0    0.00    0.00       2         QList<UniKey>::append(UniKey const&) [100]
+                0.00    0.00       2/26          QtPrivate::RefCount::isShared() const [30]
+                0.00    0.00       2/2           QList<UniKey>::node_construct(QList<UniKey>::Node*, UniKey const&) [98]
+                0.00    0.00       1/1           QList<UniKey>::detach_helper_grow(int, int) [173]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<UniKey>::detach_helper_grow(int, int) [173]
+[101]    0.0    0.00    0.00       2         QList<UniKey>::node_copy(QList<UniKey>::Node*, QList<UniKey>::Node*, QList<UniKey>::Node*) [101]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::LoadSettings() [149]
+[102]    0.0    0.00    0.00       2         QList<UniKey>::operator<<(UniKey const&) [102]
+                0.00    0.00       2/2           QList<UniKey>::append(UniKey const&) [100]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<QString>::dealloc(QListData::Data*) [104]
+[103]    0.0    0.00    0.00       2         QList<QString>::node_destruct(QList<QString>::Node*, QList<QString>::Node*) [103]
+                0.00    0.00       5/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/2           QList<QString>::~QList() [66]
+                0.00    0.00       1/2           QList<QString>::~QList() [50]
+[104]    0.0    0.00    0.00       2         QList<QString>::dealloc(QListData::Data*) [104]
+                0.00    0.00       2/2           QList<QString>::node_destruct(QList<QString>::Node*, QList<QString>::Node*) [103]
+-----------------------------------------------
+                0.00    0.00       1/2           AChat::AChat() [153]
+                0.00    0.00       1/2           QList<QString>::clear() [179]
+[105]    0.0    0.00    0.00       2         QList<QString>::QList() [105]
+                0.00    0.00       2/7           QListSpecialMethods<QString>::QListSpecialMethods() [49]
+-----------------------------------------------
+                0.00    0.00       2/2           QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+[106]    0.0    0.00    0.00       2         QList<ACore::ASett>::node_copy(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [106]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::AChat() [153]
+[107]    0.0    0.00    0.00       2         Client::Client() [107]
+                0.00    0.00      20/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::~AChat() [155]
+[108]    0.0    0.00    0.00       2         Client::~Client() [108]
+                0.00    0.00      20/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/2           qMain(int, char**) [117]
+                0.00    0.00       1/2           operator|(Qt::WindowType, Qt::WindowType) [224]
+[109]    0.0    0.00    0.00       2         QFlags<Qt::WindowType>::QFlags(Qt::WindowType) [109]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::~AChat() [155]
+[110]    0.0    0.00    0.00       2         UniKey::operator=(UniKey const&) [110]
+-----------------------------------------------
+                0.00    0.00       2/2           QVariant::QVariant() [112]
+[111]    0.0    0.00    0.00       2         QVariant::Private::Private() [111]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::LoadSettings() [149]
+[112]    0.0    0.00    0.00       2         QVariant::QVariant() [112]
+                0.00    0.00       2/2           QVariant::Private::Private() [111]
+-----------------------------------------------
+                0.00    0.00       2/2           AChat::~AChat() [155]
+[113]    0.0    0.00    0.00       2         QList<UniKey>::value(int) const [113]
+                0.00    0.00       2/297         QListData::size() const [13]
+                0.00    0.00       2/160         QListData::at(int) const [15]
+                0.00    0.00       2/2           QList<UniKey>::Node::t() [99]
+                0.00    0.00       2/4           UniKey::UniKey(UniKey const&) [75]
+-----------------------------------------------
+                0.00    0.00       1/2           QWidget::setBaseSize(QSize const&) [205]
+                0.00    0.00       1/2           QWidget::setMinimumSize(QSize const&) [206]
+[114]    0.0    0.00    0.00       2         QSize::width() const [114]
+-----------------------------------------------
+                0.00    0.00       1/2           QWidget::setBaseSize(QSize const&) [205]
+                0.00    0.00       1/2           QWidget::setMinimumSize(QSize const&) [206]
+[115]    0.0    0.00    0.00       2         QSize::height() const [115]
+-----------------------------------------------
+                0.00    0.00       2/2           ATcpNetwork::ATcpNetwork() [131]
+[116]    0.0    0.00    0.00       2         QObject::connect(QObject const*, char const*, char const*, Qt::ConnectionType) const [116]
+-----------------------------------------------
+                0.00    0.00       1/1           WinMain@16 [225]
+[117]    0.0    0.00    0.00       1         qMain(int, char**) [117]
+                0.00    0.00       6/922         QString::~QString() [5]
+                0.00    0.00       2/5           operator+(char const*, QString const&) [68]
+                0.00    0.00       2/17          operator+(QString const&, char const*) [31]
+                0.00    0.00       2/3           QMessageLogger::QMessageLogger(char const*, int, char const*) [84]
+                0.00    0.00       2/3           QDebug::operator<<(QString const&) [90]
+                0.00    0.00       1/4           QTime::QTime() [74]
+                0.00    0.00       1/1           MainWindow::MainWindow(QWidget*) [120]
+                0.00    0.00       1/1           Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       1/1           Form::Form(QWidget*) [146]
+                0.00    0.00       1/1           registr::registr(QWidget*) [209]
+                0.00    0.00       1/2           QFlags<Qt::WindowType>::QFlags(Qt::WindowType) [109]
+                0.00    0.00       1/1           Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       1/1           Loading::Loading(QWidget*) [201]
+                0.00    0.00       1/1           operator|(Qt::WindowType, Qt::WindowType) [224]
+                0.00    0.00       1/1           MainWindow::OnStart() [118]
+                0.00    0.00       1/1           MainWindow::OnRequest() [119]
+                0.00    0.00       1/1           MainWindow::~MainWindow() [121]
+                0.00    0.00       1/1           Form::~Form() [147]
+                0.00    0.00       1/1           Dialog::~Dialog() [194]
+                0.00    0.00       1/1           registr::~registr() [210]
+                0.00    0.00       1/1           Kabinet::~Kabinet() [199]
+                0.00    0.00       1/1           Loading::~Loading() [202]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[118]    0.0    0.00    0.00       1         MainWindow::OnStart() [118]
+                0.00    0.00       1/1           AChat::AChat() [153]
+                0.00    0.00       1/1           AChat::LoadSettings() [149]
+                0.00    0.00       1/1           AChat::CheckBoxUpdate() [150]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[119]    0.0    0.00    0.00       1         MainWindow::OnRequest() [119]
+                0.00    0.00       1/1           AChat::GetServersList() [151]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[120]    0.0    0.00    0.00       1         MainWindow::MainWindow(QWidget*) [120]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00       1/37          QString::QString(char const*) [27]
+                0.00    0.00       1/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[121]    0.0    0.00    0.00       1         MainWindow::~MainWindow() [121]
+                0.00    0.00       1/1           MainWindow::~MainWindow() [122]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::~MainWindow() [121]
+[122]    0.0    0.00    0.00       1         MainWindow::~MainWindow() [122]
+                0.00    0.00       1/1           AChat::~AChat() [154]
+-----------------------------------------------
+                0.00    0.00       1/1           ANetwork::RealGet(QString) [213]
+[123]    0.0    0.00    0.00       1         QByteArray::data() [123]
+                0.00    0.00       1/1           QByteArray::detach() [124]
+                0.00    0.00       1/5           QTypedArrayData<char>::data() [62]
+-----------------------------------------------
+                0.00    0.00       1/1           QByteArray::data() [123]
+[124]    0.0    0.00    0.00       1         QByteArray::detach() [124]
+                0.00    0.00       1/26          QtPrivate::RefCount::isShared() const [30]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_Kabinet::setupUi(QDialog*) [126]
+[125]    0.0    0.00    0.00       1         Ui_Kabinet::retranslateUi(QDialog*) [125]
+                0.00    0.00      65/922         QString::~QString() [5]
+                0.00    0.00      23/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           Kabinet::Kabinet(QWidget*) [198]
+[126]    0.0    0.00    0.00       1         Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00      86/922         QString::~QString() [5]
+                0.00    0.00      77/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00      68/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00      46/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       8/110         QString::QString() [23]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           Ui_Kabinet::retranslateUi(QDialog*) [125]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_Loading::setupUi(QWidget*) [128]
+[127]    0.0    0.00    0.00       1         Ui_Loading::retranslateUi(QWidget*) [127]
+                0.00    0.00       3/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/1           Loading::Loading(QWidget*) [201]
+[128]    0.0    0.00    0.00       1         Ui_Loading::setupUi(QWidget*) [128]
+                0.00    0.00       5/922         QString::~QString() [5]
+                0.00    0.00       4/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00       3/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       3/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           Ui_Loading::retranslateUi(QWidget*) [127]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_registr::setupUi(QDialog*) [130]
+[129]    0.0    0.00    0.00       1         Ui_registr::retranslateUi(QDialog*) [129]
+                0.00    0.00      10/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/1           registr::registr(QWidget*) [209]
+[130]    0.0    0.00    0.00       1         Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00      17/922         QString::~QString() [5]
+                0.00    0.00      16/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00      15/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00       6/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           Ui_registr::retranslateUi(QDialog*) [129]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[131]    0.0    0.00    0.00       1         ATcpNetwork::ATcpNetwork() [131]
+                0.00    0.00       2/2           QObject::connect(QObject const*, char const*, char const*, Qt::ConnectionType) const [116]
+                0.00    0.00       1/1           ANetwork::ANetwork() [214]
+                0.00    0.00       1/2           QList<AQuest>::QList() [96]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[132]    0.0    0.00    0.00       1         ATcpNetwork::~ATcpNetwork() [132]
+                0.00    0.00       1/2           QList<AQuest>::~QList() [97]
+                0.00    0.00       1/1           ANetwork::~ANetwork() [215]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ALog::ALog() [158]
+[133]    0.0    0.00    0.00       1         QStringList::QStringList() [133]
+                0.00    0.00       1/5           QList<QString>::QList() [65]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ALog::~ALog() [159]
+[134]    0.0    0.00    0.00       1         QStringList::~QStringList() [134]
+                0.00    0.00       1/7           QList<QString>::~QList() [50]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[135]    0.0    0.00    0.00       1         QLatin1String::QLatin1String(char const*) [135]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[136]    0.0    0.00    0.00       1         Ui_MainWindow::retranslateUi(QMainWindow*) [136]
+                0.00    0.00      19/922         QString::~QString() [5]
+                0.00    0.00       3/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::MainWindow(QWidget*) [120]
+[137]    0.0    0.00    0.00       1         Ui_MainWindow::setupUi(QMainWindow*) [137]
+                0.00    0.00      34/922         QString::~QString() [5]
+                0.00    0.00      32/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00       7/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00       6/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       5/5           QFlags<Qt::AlignmentFlag>::QFlags(int QFlags<Qt::AlignmentFlag>::Private::*) [67]
+                0.00    0.00       2/8           QSize::QSize(int, int) [44]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           QWidget::setMinimumSize(QSize const&) [206]
+                0.00    0.00       1/1           QWidget::setBaseSize(QSize const&) [205]
+                0.00    0.00       1/1           QLatin1String::QLatin1String(char const*) [135]
+                0.00    0.00       1/1           QString::QString(QLatin1String) [204]
+                0.00    0.00       1/1           Ui_MainWindow::retranslateUi(QMainWindow*) [136]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<PrivateMessage>::QList() [166]
+[138]    0.0    0.00    0.00       1         QListSpecialMethods<PrivateMessage>::QListSpecialMethods() [138]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<QList<PrivateMessage> >::QList() [187]
+[139]    0.0    0.00    0.00       1         QListSpecialMethods<QList<PrivateMessage> >::QListSpecialMethods() [139]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<AChate>::QList() [168]
+[140]    0.0    0.00    0.00       1         QListSpecialMethods<AChate>::QListSpecialMethods() [140]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<Client>::QList() [170]
+[141]    0.0    0.00    0.00       1         QListSpecialMethods<Client>::QListSpecialMethods() [141]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<UniKey>::QList() [175]
+[142]    0.0    0.00    0.00       1         QListSpecialMethods<UniKey>::QListSpecialMethods() [142]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<AServer>::QList() [177]
+[143]    0.0    0.00    0.00       1         QListSpecialMethods<AServer>::QListSpecialMethods() [143]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<UniClient>::QList() [180]
+[144]    0.0    0.00    0.00       1         QListSpecialMethods<UniClient>::QListSpecialMethods() [144]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<ACore::ASett>::QList() [185]
+[145]    0.0    0.00    0.00       1         QListSpecialMethods<ACore::ASett>::QListSpecialMethods() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[146]    0.0    0.00    0.00       1         Form::Form(QWidget*) [146]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_Form::setupUi(QWidget*) [208]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[147]    0.0    0.00    0.00       1         Form::~Form() [147]
+                0.00    0.00       1/1           Form::~Form() [148]
+-----------------------------------------------
+                0.00    0.00       1/1           Form::~Form() [147]
+[148]    0.0    0.00    0.00       1         Form::~Form() [148]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::OnStart() [118]
+[149]    0.0    0.00    0.00       1         AChat::LoadSettings() [149]
+                0.00    0.00      30/922         QString::~QString() [5]
+                0.00    0.00      20/37          QString::QString(char const*) [27]
+                0.00    0.00       6/6           ACore::ASettings::AddKey(QString, QString) [54]
+                0.00    0.00       6/8           ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00       4/6           QStringList::~QStringList() [52]
+                0.00    0.00       4/8           QList<QString>::value(int) const [47]
+                0.00    0.00       3/8           QList<QString>::size() const [46]
+                0.00    0.00       2/4           QString::operator==(char const*) const [82]
+                0.00    0.00       2/4           QStringList::QStringList() [70]
+                0.00    0.00       2/2           QVariant::QVariant() [112]
+                0.00    0.00       2/2           QStringList::operator=(QStringList const&) [94]
+                0.00    0.00       2/4           UniKey::UniKey() [76]
+                0.00    0.00       2/2           QList<UniKey>::operator<<(UniKey const&) [102]
+                0.00    0.00       2/8           UniKey::~UniKey() [45]
+                0.00    0.00       1/1           ACore::ASettings::LoadSettings() [161]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::OnStart() [118]
+[150]    0.0    0.00    0.00       1         AChat::CheckBoxUpdate() [150]
+                0.00    0.00       5/922         QString::~QString() [5]
+                0.00    0.00       2/37          QString::QString(char const*) [27]
+                0.00    0.00       2/8           ACore::ASettings::GetKey(QString) [38]
+                0.00    0.00       2/4           QString::operator==(char const*) const [82]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::OnRequest() [119]
+[151]    0.0    0.00    0.00       1         AChat::GetServersList() [151]
+                0.00    0.00       2/37          QString::QString(char const*) [27]
+                0.00    0.00       2/922         QString::~QString() [5]
+                0.00    0.00       1/1           ANetwork::get(QString, int) [212]
+                0.00    0.00       1/5           ACore::ALog::operator<<(QString) [63]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[152]    0.0    0.00    0.00       1         AChat::functionA() [152]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::OnStart() [118]
+[153]    0.0    0.00    0.00       1         AChat::AChat() [153]
+                0.00    0.00      13/922         QString::~QString() [5]
+                0.00    0.00       9/110         QString::QString() [23]
+                0.00    0.00       5/17          operator+(QString const&, char const*) [31]
+                0.00    0.00       4/37          QString::QString(char const*) [27]
+                0.00    0.00       3/4           QTime::QTime() [74]
+                0.00    0.00       3/5           ACore::ALog::operator<<(QString) [63]
+                0.00    0.00       2/2           Client::Client() [107]
+                0.00    0.00       2/2           QTextCodec::codecForName(char const*) [93]
+                0.00    0.00       1/1           ATcpNetwork::ATcpNetwork() [131]
+                0.00    0.00       1/1           ACore::ALog::ALog() [158]
+                0.00    0.00       1/2           QList<QString>::QList() [105]
+                0.00    0.00       1/1           QList<PrivateMessage>::QList() [166]
+                0.00    0.00       1/1           QList<QList<PrivateMessage> >::QList() [187]
+                0.00    0.00       1/1           QList<AServer>::QList() [177]
+                0.00    0.00       1/1           QList<Client>::QList() [170]
+                0.00    0.00       1/1           QList<AChate>::QList() [168]
+                0.00    0.00       1/1           QList<UniKey>::QList() [175]
+                0.00    0.00       1/1           QList<UniClient>::QList() [180]
+                0.00    0.00       1/1           Style::Style() [189]
+                0.00    0.00       1/1           ACore::ALog::SetFile(QString) [157]
+                0.00    0.00       1/5           operator+(char const*, QString const&) [68]
+                0.00    0.00       1/1           AChat::functionA() [152]
+                0.00    0.00       1/1           ACore::ASettings::ASettings(QString) [163]
+                0.00    0.00       1/1           QWidget::geometry() const [223]
+                0.00    0.00       1/1           QRect::height() const [221]
+-----------------------------------------------
+                0.00    0.00       1/1           MainWindow::~MainWindow() [122]
+[154]    0.0    0.00    0.00       1         AChat::~AChat() [154]
+                0.00    0.00       1/1           AChat::~AChat() [155]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [154]
+[155]    0.0    0.00    0.00       1         AChat::~AChat() [155]
+                0.00    0.00      12/922         QString::~QString() [5]
+                0.00    0.00       4/8           UniKey::~UniKey() [45]
+                0.00    0.00       4/4           QStringList::operator<<(QString const&) [71]
+                0.00    0.00       3/3           QList<UniKey>::size() const [91]
+                0.00    0.00       2/4           QStringList::QStringList() [70]
+                0.00    0.00       2/4           UniKey::UniKey() [76]
+                0.00    0.00       2/2           QList<UniKey>::value(int) const [113]
+                0.00    0.00       2/2           UniKey::operator=(UniKey const&) [110]
+                0.00    0.00       2/37          QString::QString(char const*) [27]
+                0.00    0.00       2/6           QStringList::~QStringList() [52]
+                0.00    0.00       2/2           Client::~Client() [108]
+                0.00    0.00       1/1           ACore::ALog::SaveLog() [156]
+                0.00    0.00       1/1           ACore::ASettings::SaveSettings() [162]
+                0.00    0.00       1/1           ACore::ASettings::~ASettings() [164]
+                0.00    0.00       1/1           ACore::timeEx(QTime) [160]
+                0.00    0.00       1/5           operator+(char const*, QString const&) [68]
+                0.00    0.00       1/5           ACore::ALog::operator<<(QString) [63]
+                0.00    0.00       1/1           Style::~Style() [190]
+                0.00    0.00       1/1           QList<UniClient>::~QList() [181]
+                0.00    0.00       1/1           QList<UniKey>::~QList() [176]
+                0.00    0.00       1/1           QList<AChate>::~QList() [169]
+                0.00    0.00       1/1           QList<Client>::~QList() [171]
+                0.00    0.00       1/1           QList<AServer>::~QList() [178]
+                0.00    0.00       1/1           QList<QList<PrivateMessage> >::~QList() [188]
+                0.00    0.00       1/1           QList<PrivateMessage>::~QList() [167]
+                0.00    0.00       1/5           QList<QString>::~QList() [66]
+                0.00    0.00       1/1           ACore::ALog::~ALog() [159]
+                0.00    0.00       1/1           ATcpNetwork::~ATcpNetwork() [132]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[156]    0.0    0.00    0.00       1         ACore::ALog::SaveLog() [156]
+                0.00    0.00       8/922         QString::~QString() [5]
+                0.00    0.00       5/8           QList<QString>::size() const [46]
+                0.00    0.00       4/8           QList<QString>::value(int) const [47]
+                0.00    0.00       4/17          operator+(QString const&, char const*) [31]
+                0.00    0.00       4/4           QIODevice::write(QByteArray const&) [77]
+                0.00    0.00       4/13          QByteArray::~QByteArray() [32]
+                0.00    0.00       1/1           QFlags<QIODevice::OpenModeFlag>::QFlags(QIODevice::OpenModeFlag) [197]
+                0.00    0.00       1/1           QList<QString>::clear() [179]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[157]    0.0    0.00    0.00       1         ACore::ALog::SetFile(QString) [157]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[158]    0.0    0.00    0.00       1         ACore::ALog::ALog() [158]
+                0.00    0.00       1/1           QStringList::QStringList() [133]
+                0.00    0.00       1/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[159]    0.0    0.00    0.00       1         ACore::ALog::~ALog() [159]
+                0.00    0.00       1/922         QString::~QString() [5]
+                0.00    0.00       1/1           QStringList::~QStringList() [134]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[160]    0.0    0.00    0.00       1         ACore::timeEx(QTime) [160]
+                0.00    0.00       6/922         QString::~QString() [5]
+                0.00    0.00       3/17          operator+(QString const&, char const*) [31]
+                0.00    0.00       3/30          QString::operator+=(QString const&) [28]
+                0.00    0.00       1/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::LoadSettings() [149]
+[161]    0.0    0.00    0.00       1         ACore::ASettings::LoadSettings() [161]
+                0.00    0.00      18/142         QList<ACore::ASett>::value(int) const [19]
+                0.00    0.00      18/154         ACore::ASett::~ASett() [16]
+                0.00    0.00      12/922         QString::~QString() [5]
+                0.00    0.00       7/126         QList<ACore::ASett>::size() const [20]
+                0.00    0.00       6/498         QString::QString(QString const&) [11]
+                0.00    0.00       6/8           ACore::ASettings::SetKey(QString, QString) [39]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[162]    0.0    0.00    0.00       1         ACore::ASettings::SaveSettings() [162]
+                0.00    0.00      12/142         QList<ACore::ASett>::value(int) const [19]
+                0.00    0.00      12/154         ACore::ASett::~ASett() [16]
+                0.00    0.00       7/126         QList<ACore::ASett>::size() const [20]
+                0.00    0.00       6/13          QByteArray::~QByteArray() [32]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[163]    0.0    0.00    0.00       1         ACore::ASettings::ASettings(QString) [163]
+                0.00    0.00       1/1           QList<ACore::ASett>::QList() [185]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[164]    0.0    0.00    0.00       1         ACore::ASettings::~ASettings() [164]
+                0.00    0.00       1/1           QList<ACore::ASett>::~QList() [186]
+-----------------------------------------------
+                0.00    0.00       1/1           QFlags<Qt::WindowType>::operator|(Qt::WindowType) const [222]
+[165]    0.0    0.00    0.00       1         QFlag::QFlag(unsigned int) [165]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[166]    0.0    0.00    0.00       1         QList<PrivateMessage>::QList() [166]
+                0.00    0.00       1/1           QListSpecialMethods<PrivateMessage>::QListSpecialMethods() [138]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[167]    0.0    0.00    0.00       1         QList<PrivateMessage>::~QList() [167]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[168]    0.0    0.00    0.00       1         QList<AChate>::QList() [168]
+                0.00    0.00       1/1           QListSpecialMethods<AChate>::QListSpecialMethods() [140]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[169]    0.0    0.00    0.00       1         QList<AChate>::~QList() [169]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[170]    0.0    0.00    0.00       1         QList<Client>::QList() [170]
+                0.00    0.00       1/1           QListSpecialMethods<Client>::QListSpecialMethods() [141]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[171]    0.0    0.00    0.00       1         QList<Client>::~QList() [171]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<UniKey>::dealloc(QListData::Data*) [174]
+[172]    0.0    0.00    0.00       1         QList<UniKey>::node_destruct(QList<UniKey>::Node*, QList<UniKey>::Node*) [172]
+                0.00    0.00       2/8           UniKey::~UniKey() [45]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<UniKey>::append(UniKey const&) [100]
+[173]    0.0    0.00    0.00       1         QList<UniKey>::detach_helper_grow(int, int) [173]
+                0.00    0.00       5/30          QListData::begin() const [29]
+                0.00    0.00       2/2           QList<UniKey>::node_copy(QList<UniKey>::Node*, QList<UniKey>::Node*, QList<UniKey>::Node*) [101]
+                0.00    0.00       1/6           QListData::end() const [61]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<UniKey>::~QList() [176]
+[174]    0.0    0.00    0.00       1         QList<UniKey>::dealloc(QListData::Data*) [174]
+                0.00    0.00       1/1           QList<UniKey>::node_destruct(QList<UniKey>::Node*, QList<UniKey>::Node*) [172]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[175]    0.0    0.00    0.00       1         QList<UniKey>::QList() [175]
+                0.00    0.00       1/1           QListSpecialMethods<UniKey>::QListSpecialMethods() [142]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[176]    0.0    0.00    0.00       1         QList<UniKey>::~QList() [176]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00       1/1           QList<UniKey>::dealloc(QListData::Data*) [174]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[177]    0.0    0.00    0.00       1         QList<AServer>::QList() [177]
+                0.00    0.00       1/1           QListSpecialMethods<AServer>::QListSpecialMethods() [143]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[178]    0.0    0.00    0.00       1         QList<AServer>::~QList() [178]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ALog::SaveLog() [156]
+[179]    0.0    0.00    0.00       1         QList<QString>::clear() [179]
+                0.00    0.00       1/2           QList<QString>::QList() [105]
+                0.00    0.00       1/3           QList<QString>::operator=(QList<QString> const&) [88]
+                0.00    0.00       1/5           QList<QString>::~QList() [66]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[180]    0.0    0.00    0.00       1         QList<UniClient>::QList() [180]
+                0.00    0.00       1/1           QListSpecialMethods<UniClient>::QListSpecialMethods() [144]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[181]    0.0    0.00    0.00       1         QList<UniClient>::~QList() [181]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<ACore::ASett>::dealloc(QListData::Data*) [184]
+[182]    0.0    0.00    0.00       1         QList<ACore::ASett>::node_destruct(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [182]
+                0.00    0.00       6/154         ACore::ASett::~ASett() [16]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<ACore::ASett>::append(ACore::ASett const&) [56]
+[183]    0.0    0.00    0.00       1         QList<ACore::ASett>::detach_helper_grow(int, int) [183]
+                0.00    0.00       5/30          QListData::begin() const [29]
+                0.00    0.00       2/2           QList<ACore::ASett>::node_copy(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [106]
+                0.00    0.00       1/6           QListData::end() const [61]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           QList<ACore::ASett>::~QList() [186]
+[184]    0.0    0.00    0.00       1         QList<ACore::ASett>::dealloc(QListData::Data*) [184]
+                0.00    0.00       1/1           QList<ACore::ASett>::node_destruct(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [182]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ASettings::ASettings(QString) [163]
+[185]    0.0    0.00    0.00       1         QList<ACore::ASett>::QList() [185]
+                0.00    0.00       1/1           QListSpecialMethods<ACore::ASett>::QListSpecialMethods() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ASettings::~ASettings() [164]
+[186]    0.0    0.00    0.00       1         QList<ACore::ASett>::~QList() [186]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+                0.00    0.00       1/1           QList<ACore::ASett>::dealloc(QListData::Data*) [184]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[187]    0.0    0.00    0.00       1         QList<QList<PrivateMessage> >::QList() [187]
+                0.00    0.00       1/1           QListSpecialMethods<QList<PrivateMessage> >::QListSpecialMethods() [139]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[188]    0.0    0.00    0.00       1         QList<QList<PrivateMessage> >::~QList() [188]
+                0.00    0.00       1/963         QtPrivate::RefCount::deref() [4]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[189]    0.0    0.00    0.00       1         Style::Style() [189]
+                0.00    0.00       5/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::~AChat() [155]
+[190]    0.0    0.00    0.00       1         Style::~Style() [190]
+                0.00    0.00       5/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/1           Dialog::qt_metacall(QMetaObject::Call, int, void**) [521]
+[191]    0.0    0.00    0.00       1         Dialog::qt_static_metacall(QObject*, QMetaObject::Call, int, void**) [191]
+                0.00    0.00       1/1           Dialog::on_checkBox_stateChanged(int) [192]
+-----------------------------------------------
+                0.00    0.00       1/1           Dialog::qt_static_metacall(QObject*, QMetaObject::Call, int, void**) [191]
+[192]    0.0    0.00    0.00       1         Dialog::on_checkBox_stateChanged(int) [192]
+                0.00    0.00       4/922         QString::~QString() [5]
+                0.00    0.00       2/37          QString::QString(char const*) [27]
+                0.00    0.00       2/8           ACore::ASettings::SetKey(QString, QString) [39]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[193]    0.0    0.00    0.00       1         Dialog::Dialog(QWidget*) [193]
+                0.00    0.00       2/922         QString::~QString() [5]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00       1/37          QString::QString(char const*) [27]
+                0.00    0.00       1/17          operator+(QString const&, char const*) [31]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[194]    0.0    0.00    0.00       1         Dialog::~Dialog() [194]
+                0.00    0.00       1/1           Dialog::~Dialog() [195]
+-----------------------------------------------
+                0.00    0.00       1/1           Dialog::~Dialog() [194]
+[195]    0.0    0.00    0.00       1         Dialog::~Dialog() [195]
+-----------------------------------------------
+                0.00    0.00       1/1           QFlags<Qt::WindowType>::operator|(Qt::WindowType) const [222]
+[196]    0.0    0.00    0.00       1         QFlags<Qt::WindowType>::QFlags(QFlag) [196]
+                0.00    0.00       1/1           QFlag::operator unsigned int() const [220]
+-----------------------------------------------
+                0.00    0.00       1/1           ACore::ALog::SaveLog() [156]
+[197]    0.0    0.00    0.00       1         QFlags<QIODevice::OpenModeFlag>::QFlags(QIODevice::OpenModeFlag) [197]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[198]    0.0    0.00    0.00       1         Kabinet::Kabinet(QWidget*) [198]
+                0.00    0.00       2/922         QString::~QString() [5]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_Kabinet::setupUi(QDialog*) [126]
+                0.00    0.00       1/37          QString::QString(char const*) [27]
+                0.00    0.00       1/17          operator+(QString const&, char const*) [31]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[199]    0.0    0.00    0.00       1         Kabinet::~Kabinet() [199]
+                0.00    0.00       1/1           Kabinet::~Kabinet() [200]
+-----------------------------------------------
+                0.00    0.00       1/1           Kabinet::~Kabinet() [199]
+[200]    0.0    0.00    0.00       1         Kabinet::~Kabinet() [200]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[201]    0.0    0.00    0.00       1         Loading::Loading(QWidget*) [201]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_Loading::setupUi(QWidget*) [128]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[202]    0.0    0.00    0.00       1         Loading::~Loading() [202]
+                0.00    0.00       1/1           Loading::~Loading() [203]
+-----------------------------------------------
+                0.00    0.00       1/1           Loading::~Loading() [202]
+[203]    0.0    0.00    0.00       1         Loading::~Loading() [203]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[204]    0.0    0.00    0.00       1         QString::QString(QLatin1String) [204]
+                0.00    0.00       1/1           QLatin1String::size() const [218]
+                0.00    0.00       1/1           QLatin1String::latin1() const [219]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[205]    0.0    0.00    0.00       1         QWidget::setBaseSize(QSize const&) [205]
+                0.00    0.00       1/2           QSize::height() const [115]
+                0.00    0.00       1/2           QSize::width() const [114]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_MainWindow::setupUi(QMainWindow*) [137]
+[206]    0.0    0.00    0.00       1         QWidget::setMinimumSize(QSize const&) [206]
+                0.00    0.00       1/2           QSize::height() const [115]
+                0.00    0.00       1/2           QSize::width() const [114]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_Form::setupUi(QWidget*) [208]
+[207]    0.0    0.00    0.00       1         Ui_Form::retranslateUi(QWidget*) [207]
+                0.00    0.00       4/922         QString::~QString() [5]
+-----------------------------------------------
+                0.00    0.00       1/1           Form::Form(QWidget*) [146]
+[208]    0.0    0.00    0.00       1         Ui_Form::setupUi(QWidget*) [208]
+                0.00    0.00       8/922         QString::~QString() [5]
+                0.00    0.00       7/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00       3/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00       2/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           Ui_Form::retranslateUi(QWidget*) [207]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[209]    0.0    0.00    0.00       1         registr::registr(QWidget*) [209]
+                0.00    0.00       2/922         QString::~QString() [5]
+                0.00    0.00       1/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/1           Ui_registr::setupUi(QDialog*) [130]
+                0.00    0.00       1/37          QString::QString(char const*) [27]
+                0.00    0.00       1/17          operator+(QString const&, char const*) [31]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[210]    0.0    0.00    0.00       1         registr::~registr() [210]
+                0.00    0.00       1/1           registr::~registr() [211]
+-----------------------------------------------
+                0.00    0.00       1/1           registr::~registr() [210]
+[211]    0.0    0.00    0.00       1         registr::~registr() [211]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::GetServersList() [151]
+[212]    0.0    0.00    0.00       1         ANetwork::get(QString, int) [212]
+                0.00    0.00       2/922         QString::~QString() [5]
+                0.00    0.00       1/498         QString::QString(QString const&) [11]
+                0.00    0.00       1/1           ANetwork::RealGet(QString) [213]
+                0.00    0.00       1/5           operator+(char const*, QString const&) [68]
+                0.00    0.00       1/3           QMessageLogger::QMessageLogger(char const*, int, char const*) [84]
+                0.00    0.00       1/3           QDebug::operator<<(QString const&) [90]
+-----------------------------------------------
+                0.00    0.00       1/1           ANetwork::get(QString, int) [212]
+[213]    0.0    0.00    0.00       1         ANetwork::RealGet(QString) [213]
+                0.00    0.00       1/1           QByteArray::data() [123]
+                0.00    0.00       1/37          QString::QString(char const*) [27]
+                0.00    0.00       1/922         QString::~QString() [5]
+                0.00    0.00       1/13          QByteArray::~QByteArray() [32]
+-----------------------------------------------
+                0.00    0.00       1/1           ATcpNetwork::ATcpNetwork() [131]
+[214]    0.0    0.00    0.00       1         ANetwork::ANetwork() [214]
+                0.00    0.00       1/2           QList<AQuest>::QList() [96]
+-----------------------------------------------
+                0.00    0.00       1/1           ATcpNetwork::~ATcpNetwork() [132]
+[215]    0.0    0.00    0.00       1         ANetwork::~ANetwork() [215]
+                0.00    0.00       1/2           QList<AQuest>::~QList() [97]
+-----------------------------------------------
+                0.00    0.00       1/1           Ui_Dialog::setupUi(QDialog*) [217]
+[216]    0.0    0.00    0.00       1         Ui_Dialog::retranslateUi(QDialog*) [216]
+                0.00    0.00       9/922         QString::~QString() [5]
+                0.00    0.00       1/110         QString::QString() [23]
+-----------------------------------------------
+                0.00    0.00       1/1           Dialog::Dialog(QWidget*) [193]
+[217]    0.0    0.00    0.00       1         Ui_Dialog::setupUi(QDialog*) [217]
+                0.00    0.00      18/922         QString::~QString() [5]
+                0.00    0.00      17/175         QString::fromUtf8(char const*, int) [14]
+                0.00    0.00      11/107         QRect::QRect(int, int, int, int) [24]
+                0.00    0.00       4/73          QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*) [26]
+                0.00    0.00       1/7           QString::isEmpty() const [51]
+                0.00    0.00       1/6           QWidget::resize(int, int) [59]
+                0.00    0.00       1/1           Ui_Dialog::retranslateUi(QDialog*) [216]
+-----------------------------------------------
+                0.00    0.00       1/1           QString::QString(QLatin1String) [204]
+[218]    0.0    0.00    0.00       1         QLatin1String::size() const [218]
+-----------------------------------------------
+                0.00    0.00       1/1           QString::QString(QLatin1String) [204]
+[219]    0.0    0.00    0.00       1         QLatin1String::latin1() const [219]
+-----------------------------------------------
+                0.00    0.00       1/1           QFlags<Qt::WindowType>::QFlags(QFlag) [196]
+[220]    0.0    0.00    0.00       1         QFlag::operator unsigned int() const [220]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[221]    0.0    0.00    0.00       1         QRect::height() const [221]
+-----------------------------------------------
+                0.00    0.00       1/1           operator|(Qt::WindowType, Qt::WindowType) [224]
+[222]    0.0    0.00    0.00       1         QFlags<Qt::WindowType>::operator|(Qt::WindowType) const [222]
+                0.00    0.00       1/1           QFlag::QFlag(unsigned int) [165]
+                0.00    0.00       1/1           QFlags<Qt::WindowType>::QFlags(QFlag) [196]
+-----------------------------------------------
+                0.00    0.00       1/1           AChat::AChat() [153]
+[223]    0.0    0.00    0.00       1         QWidget::geometry() const [223]
+-----------------------------------------------
+                0.00    0.00       1/1           qMain(int, char**) [117]
+[224]    0.0    0.00    0.00       1         operator|(Qt::WindowType, Qt::WindowType) [224]
+                0.00    0.00       1/2           QFlags<Qt::WindowType>::QFlags(Qt::WindowType) [109]
+                0.00    0.00       1/1           QFlags<Qt::WindowType>::operator|(Qt::WindowType) const [222]
+-----------------------------------------------
+
+Index by function name
+
+ [117] qMain(int, char**)     [54] ACore::ASettings::AddKey(QString, QString) [67] QFlags<Qt::AlignmentFlag>::QFlags(int QFlags<Qt::AlignmentFlag>::Private::*)
+  [83] void qSwap<QListData::Data*>(QListData::Data*&, QListData::Data*&) [38] ACore::ASettings::GetKey(QString) [197] QFlags<QIODevice::OpenModeFlag>::QFlags(QIODevice::OpenModeFlag)
+   [3] qt_noop()              [39] ACore::ASettings::SetKey(QString, QString) [75] UniKey::UniKey(UniKey const&)
+ [118] MainWindow::OnStart() [163] ACore::ASettings::ASettings(QString) [76] UniKey::UniKey()
+ [119] MainWindow::OnRequest() [164] ACore::ASettings::~ASettings() [45] UniKey::~UniKey()
+ [120] MainWindow::MainWindow(QWidget*) [165] QFlag::QFlag(unsigned int) [110] UniKey::operator=(UniKey const&)
+ [121] MainWindow::~MainWindow() [166] QList<PrivateMessage>::QList() [198] Kabinet::Kabinet(QWidget*)
+ [122] MainWindow::~MainWindow() [167] QList<PrivateMessage>::~QList() [199] Kabinet::~Kabinet()
+  [21] QArrayData::sharedNull() [168] QList<AChate>::QList() [200] Kabinet::~Kabinet()
+  [33] QArrayData::data()    [169] QList<AChate>::~QList() [201] Loading::Loading(QWidget*)
+ [123] QByteArray::data()     [96] QList<AQuest>::QList() [202] Loading::~Loading()
+ [124] QByteArray::detach()   [97] QList<AQuest>::~QList() [203] Loading::~Loading()
+  [32] QByteArray::~QByteArray() [170] QList<Client>::QList() [14] QString::fromUtf8(char const*, int)
+  [93] QTextCodec::codecForName(char const*) [171] QList<Client>::~QList() [204] QString::QString(QLatin1String)
+ [125] Ui_Kabinet::retranslateUi(QDialog*) [172] QList<UniKey>::node_destruct(QList<UniKey>::Node*, QList<UniKey>::Node*) [27] QString::QString(char const*)
+ [126] Ui_Kabinet::setupUi(QDialog*) [98] QList<UniKey>::node_construct(QList<UniKey>::Node*, UniKey const&) [11] QString::QString(QString const&)
+ [127] Ui_Loading::retranslateUi(QWidget*) [173] QList<UniKey>::detach_helper_grow(int, int) [23] QString::QString()
+ [128] Ui_Loading::setupUi(QWidget*) [99] QList<UniKey>::Node::t() [5] QString::~QString()
+ [129] Ui_registr::retranslateUi(QDialog*) [100] QList<UniKey>::append(UniKey const&) [28] QString::operator+=(QString const&)
+ [130] Ui_registr::setupUi(QDialog*) [174] QList<UniKey>::dealloc(QListData::Data*) [205] QWidget::setBaseSize(QSize const&)
+ [131] ATcpNetwork::ATcpNetwork() [101] QList<UniKey>::node_copy(QList<UniKey>::Node*, QList<UniKey>::Node*, QList<UniKey>::Node*) [206] QWidget::setMinimumSize(QSize const&)
+ [132] ATcpNetwork::~ATcpNetwork() [175] QList<UniKey>::QList() [59] QWidget::resize(int, int)
+  [70] QStringList::QStringList() [176] QList<UniKey>::~QList() [207] Ui_Form::retranslateUi(QWidget*)
+ [133] QStringList::QStringList() [102] QList<UniKey>::operator<<(UniKey const&) [208] Ui_Form::setupUi(QWidget*)
+  [52] QStringList::~QStringList() [177] QList<AServer>::QList() [209] registr::registr(QWidget*)
+ [134] QStringList::~QStringList() [178] QList<AServer>::~QList() [210] registr::~registr()
+  [94] QStringList::operator=(QStringList const&) [103] QList<QString>::node_destruct(QList<QString>::Node*, QList<QString>::Node*) [211] registr::~registr()
+  [71] QStringList::operator<<(QString const&) [34] QList<QString>::node_construct(QList<QString>::Node*, QString const&) [212] ANetwork::get(QString, int)
+ [135] QLatin1String::QLatin1String(char const*) [73] QList<QString>::detach_helper_grow(int, int) [213] ANetwork::RealGet(QString)
+ [136] Ui_MainWindow::retranslateUi(QMainWindow*) [40] QList<QString>::Node::t() [214] ANetwork::ANetwork()
+ [137] Ui_MainWindow::setupUi(QMainWindow*) [86] QList<QString>::swap(QList<QString>&) [215] ANetwork::~ANetwork()
+  [84] QMessageLogger::QMessageLogger(char const*, int, char const*) [179] QList<QString>::clear() [111] QVariant::Private::Private()
+   [9] bool QBasicAtomicOps<4>::ref<int>(int&) [35] QList<QString>::append(QString const&) [112] QVariant::QVariant()
+   [6] bool QBasicAtomicOps<4>::deref<int>(int&) [104] QList<QString>::dealloc(QListData::Data*) [77] QIODevice::write(QByteArray const&)
+  [48] QTypedArrayData<char>::deallocate(QArrayData*) [41] QList<QString>::node_copy(QList<QString>::Node*, QList<QString>::Node*, QList<QString>::Node*) [8] QtPrivate::RefCount::ref()
+  [62] QTypedArrayData<char>::data() [87] QList<QString>::QList(QList<QString> const&) [4] QtPrivate::RefCount::deref()
+  [25] QTypedArrayData<unsigned short>::deallocate(QArrayData*) [105] QList<QString>::QList() [216] Ui_Dialog::retranslateUi(QDialog*)
+  [22] QTypedArrayData<unsigned short>::sharedNull() [65] QList<QString>::QList() [217] Ui_Dialog::setupUi(QDialog*)
+  [72] QTypedArrayData<unsigned short>::data() [66] QList<QString>::~QList() [78] QByteArray::size() const
+  [85] QMessageLogContext::QMessageLogContext(char const*, int, char const*, char const*) [50] QList<QString>::~QList() [79] QByteArray::constData() const
+  [10] QBasicAtomicInteger<int>::ref() [88] QList<QString>::operator=(QList<QString> const&) [218] QLatin1String::size() const
+   [7] QBasicAtomicInteger<int>::deref() [180] QList<UniClient>::QList() [219] QLatin1String::latin1() const
+ [138] QListSpecialMethods<PrivateMessage>::QListSpecialMethods() [181] QList<UniClient>::~QList() [12] QScopedPointer<QObjectData, QScopedPointerDeleter<QObjectData> >::operator->() const
+ [139] QListSpecialMethods<QList<PrivateMessage> >::QListSpecialMethods() [182] QList<ACore::ASett>::node_destruct(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [2] QBasicAtomicInteger<int>::load() const
+ [140] QListSpecialMethods<AChate>::QListSpecialMethods() [55] QList<ACore::ASett>::node_construct(QList<ACore::ASett>::Node*, ACore::ASett const&) [220] QFlag::operator unsigned int() const
+  [95] QListSpecialMethods<AQuest>::QListSpecialMethods() [183] QList<ACore::ASett>::detach_helper_grow(int, int) [91] QList<UniKey>::size() const
+ [141] QListSpecialMethods<Client>::QListSpecialMethods() [17] QList<ACore::ASett>::Node::t() [113] QList<UniKey>::value(int) const
+ [142] QListSpecialMethods<UniKey>::QListSpecialMethods() [56] QList<ACore::ASett>::append(ACore::ASett const&) [46] QList<QString>::size() const
+ [143] QListSpecialMethods<AServer>::QListSpecialMethods() [42] QList<ACore::ASett>::detach() [47] QList<QString>::value(int) const
+  [49] QListSpecialMethods<QString>::QListSpecialMethods() [184] QList<ACore::ASett>::dealloc(QListData::Data*) [20] QList<ACore::ASett>::size() const
+ [144] QListSpecialMethods<UniClient>::QListSpecialMethods() [43] QList<ACore::ASett>::replace(int, ACore::ASett const&) [19] QList<ACore::ASett>::value(int) const
+ [145] QListSpecialMethods<ACore::ASett>::QListSpecialMethods() [106] QList<ACore::ASett>::node_copy(QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*, QList<ACore::ASett>::Node*) [221] QRect::height() const
+ [146] Form::Form(QWidget*)  [185] QList<ACore::ASett>::QList() [114] QSize::width() const
+ [147] Form::~Form()         [186] QList<ACore::ASett>::~QList() [115] QSize::height() const
+ [148] Form::~Form()          [57] QList<ACore::ASett>::operator<<(ACore::ASett const&) [60] QDebug::Stream::testFlag(QDebug::Stream::FormatFlag) const
+ [149] AChat::LoadSettings() [187] QList<QList<PrivateMessage> >::QList() [222] QFlags<Qt::WindowType>::operator|(Qt::WindowType) const
+ [150] AChat::CheckBoxUpdate() [188] QList<QList<PrivateMessage> >::~QList() [116] QObject::connect(QObject const*, char const*, char const*, Qt::ConnectionType) const
+ [151] AChat::GetServersList() [24] QRect::QRect(int, int, int, int) [80] QString::size() const
+ [152] AChat::functionA()     [44] QSize::QSize(int, int) [51] QString::isEmpty() const
+ [153] AChat::AChat()         [74] QTime::QTime()         [81] QString::constData() const
+ [154] AChat::~AChat()       [189] Style::Style()         [82] QString::operator==(char const*) const
+ [155] AChat::~AChat()       [190] Style::~Style()       [223] QWidget::geometry() const
+ [156] ACore::ALog::SaveLog() [107] Client::Client()      [15] QListData::at(int) const
+ [157] ACore::ALog::SetFile(QString) [108] Client::~Client() [61] QListData::end() const
+ [158] ACore::ALog::ALog()   [191] Dialog::qt_static_metacall(QObject*, QMetaObject::Call, int, void**) [13] QListData::size() const
+ [159] ACore::ALog::~ALog()  [192] Dialog::on_checkBox_stateChanged(int) [29] QListData::begin() const
+  [63] ACore::ALog::operator<<(QString) [193] Dialog::Dialog(QWidget*) [30] QtPrivate::RefCount::isShared() const
+  [18] ACore::ASett::ASett(ACore::ASett const&) [194] Dialog::~Dialog() [92] void std::swap<QListData::Data*>(QListData::Data*&, QListData::Data*&)
+  [53] ACore::ASett::ASett() [195] Dialog::~Dialog()      [36] operator new(unsigned int, void*)
+  [16] ACore::ASett::~ASett() [58] QDebug::maybeQuote(char) [224] operator|(Qt::WindowType, Qt::WindowType)
+  [37] ACore::ASett::operator=(ACore::ASett const&) [89] QDebug::maybeSpace() [68] operator+(char const*, QString const&)
+  [64] ACore::dtime()         [90] QDebug::operator<<(QString const&) [31] operator+(QString const&, char const*)
+ [160] ACore::timeEx(QTime)  [196] QFlags<Qt::WindowType>::QFlags(QFlag) [69] operator+(QString const&, QString const&)
+ [161] ACore::ASettings::LoadSettings() [26] QFlags<Qt::WindowType>::QFlags(int QFlags<Qt::WindowType>::Private::*)
+ [162] ACore::ASettings::SaveSettings() [109] QFlags<Qt::WindowType>::QFlags(Qt::WindowType)
