@@ -225,7 +225,7 @@ public:
         temp.msg=msg;
         MessageList << temp;
     }
-    void WriteServerList(QMap<QString,QVariant> reply)
+    void WriteServerList(RecursionArray reply)
     {
         int Servers=0,AllServers=0;
         ServersList.clear();
@@ -233,7 +233,7 @@ public:
         for(int i=0;i<keys.size();i++)
         {
             AServer tmp;
-            QMap<QString,QVariant> tmp2=reply.value(keys.value(i)).toMap();
+            RecursionArray tmp2=reply.value(keys.value(i)).toMap();
             tmp.name=tmp2.value("name").toString();
             tmp.ping=tmp2.value("ping").toString().toFloat();
             tmp.url=tmp2.value("url").toString().replace("<space>"," ");
@@ -280,7 +280,7 @@ public:
         }
         post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);
     }
-    QString OnlinetoHTML(QMap<QString,QVariant> Map)
+    QString OnlinetoHTML(RecursionArray Map)
     {
         QString HTML;
         QList<QString> keys=Map.keys();
@@ -289,7 +289,7 @@ public:
         {
             QString Coloring;
             Client tmp;
-            QMap<QString,QVariant> nMap=Map.value(QString::number(i)).toMap();
+            RecursionArray nMap=Map.value(QString::number(i)).toMap();
             tmp.id=nMap.value("userId").toString().toInt();
             tmp=ClientList.value(ClientList.indexOf(tmp));
             if(nMap.value("userOnlineStatus").toString()=="403") {Coloring="#0F0";}
@@ -381,7 +381,7 @@ public:
         MessageList.clear();
         }
     }
-    void SMStoValues(QMap<QString,QVariant> Map,bool isClear)
+    void SMStoValues(RecursionArray Map,bool isClear)
     {
         if(Map.isEmpty()) return;
         QList<QString> keys=Map.keys();
@@ -389,7 +389,7 @@ public:
         for(int i=0;i<keys.size();i++)
         {
             PrivateMessage Temp;
-            QMap<QString,QVariant> ValueMap=Map.value(QString::number(i)).toMap();
+            RecursionArray ValueMap=Map.value(QString::number(i)).toMap();
             Temp.ClientID=ValueMap.value("idUser").toString().toInt();
             Temp.id=ValueMap.value("id").toString().toInt();
             Temp.isRealLS=true;
@@ -592,6 +592,9 @@ public:
         setings=new ASettings(SetPath+"/.config/ClusterChat.ini");
         #endif
         MyClient.com_id=0;
+        RecursionArray tmpp;
+        tmpp.fromYumFormat("Value:Name1\nValue2:Name2\nValues:\n Value1:1\n Value2:2\nValue3:3");
+        qDebug() << tmpp.toYUMFormat();
         ServerType=true;
         ADD_DEBUG QString::number(R.KabinUI->pushButton->geometry().height() );
         errors=new QSettings(SetPath+"/.ClusterChat/Errors.txt", QSettings::IniFormat);
@@ -712,14 +715,14 @@ public:
         TEXT.replace(QRegExp("SIZE=([0-9]*)"),"<font size=\\1>");
         return TEXT;
     }
-    void WriteClients(QMap<QString,QVariant> Map)
+    void WriteClients(RecursionArray Map)
     {
         QList<QString> keys=Map.keys();
         QString result;
         for(int i=0;i<keys.size();i++)
         {
             Client temp;
-            QMap<QString,QVariant> ValueMap=Map.value(QString::number(i)).toMap();
+            RecursionArray ValueMap=Map.value(QString::number(i)).toMap();
             if(ValueMap.value("userOnlineStatus").toString()=="403") temp.Active=true;
             else temp.Active=false;
             temp.id=ValueMap.value("userId").toString().toInt();
@@ -773,11 +776,11 @@ public:
 public slots:
     void getReplyFinished(ANetworkReply reply) //Принят ответ сервера
     {
-        QMap<QString,QVariant> ValuesMap = splitStringHTML(reply.TextReply);
-        QMap<QString,QVariant> ReplyMap=ValuesMap.value("arg").toMap();
+        RecursionArray ValuesMap;ValuesMap.fromHTMLTegsFormat(reply.TextReply);
+        RecursionArray ReplyMap=ValuesMap.value("arg").toMap();
         QString Text;
         Text=ValuesMap.value("key").toString();
-        if(isDebug)qDebug() << printMap(ValuesMap);
+        if(isDebug)qDebug() << ValuesMap.print();
         int Type=reply.Type;
         if(Text.toInt() > 300 && Text.toInt() <600)
         {
@@ -842,7 +845,7 @@ public slots:
             for(int i=0;i<keys.size();i++)
             {
                 Client temp;
-                QMap<QString,QVariant> ValueMap=ReplyMap.value(QString::number(i)).toMap();
+                RecursionArray ValueMap=ReplyMap.value(QString::number(i)).toMap();
                 if(ValueMap.value("onlineStatus").toString()!="403") temp.Active=true;
                 else temp.Active=false;
                 temp.name=ValueMap.value("real_name").toString();
@@ -894,7 +897,7 @@ public slots:
         case tGetMy:
         {
             if(isDebug)R.LoadWindowUI->label_2->setText("Получение списка пользователей");
-            QMap<QString,QVariant> MyClientMap=ReplyMap.value("0").toMap();
+            RecursionArray MyClientMap=ReplyMap.value("0").toMap();
             MyClient.name=MyClientMap.value("real_name").toString();
             MyClient.id=MyClientMap.value("id").toString().toInt();
             MyClient.color=MyClientMap.value("colored").toString();
@@ -937,7 +940,7 @@ public slots:
             R.KabinUI->listWidget_4->clear();
             MapFind(i,ReplyMap,keys)
             {
-                QMap<QString,QVariant> ValueMap=ReplyMap.value(keys.value(i)).toMap();
+                RecursionArray ValueMap=ReplyMap.value(keys.value(i)).toMap();
                 UniClient tmp;
                 tmp.date=ValueMap.value("date").toString();
                 tmp.idUser=ValueMap.value("idUser").toString().toInt();
@@ -967,7 +970,7 @@ public slots:
             for(int i=0;i<keys.size();i++)
             {
                 AChate temp2;
-                QMap<QString,QVariant> ValueMap=ReplyMap.value(QString::number(i)).toMap();
+                RecursionArray ValueMap=ReplyMap.value(QString::number(i)).toMap();
                 temp2.KomID=ValueMap.value("id").toString() .toInt();
                 temp2.CreatedID=ValueMap.value("idUserCreat").toString() .toInt();
                 temp2.Name=ValueMap.value("nameTextRoom").toString() ;

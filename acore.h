@@ -146,51 +146,7 @@ QStringList splitStringArgs(QString value)
     ReturnValue << _value;
     return ReturnValue;
 }
-QMap<QString,QVariant> splitStringHTML(QString value)
-{
-   QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
-   int i=0;
-   while(i<value.size()) //Главный цикл
-    {
-        int iMin=value.indexOf("<",i); //Поиск символа <
-        if(iMin<0) break;
-        int iMax=value.indexOf(">",iMin); //Поиск символа >
-        if(iMax<0) break;
-        QString NameValue;//Имя переменной
-        NameValue=value.mid(iMin+1,iMax-iMin-1);
-        int nextiMin=value.indexOf("<"+NameValue+">",iMax); //Поиск <ИмяПеременной>
-        int nMax=value.indexOf("</"+NameValue+">",iMax); //Поиск закрывающего тега
-        if(nextiMin!=-1) if(nextiMin<nMax) //Если существует еще по крайней мере один <ИмяПеременной>
-        {
-            int numNextiMin=0; //Колличество включений <ИмяПеременной>
-            while(nextiMin!=-1 && nextiMin<nMax) //Получаю колличество включений
-            {nextiMin=value.indexOf("<"+NameValue+">",nextiMin+1);
-            numNextiMin+=1; }
-            while(numNextiMin!=0) //Использую колличество включений для определения последнего закрывающего тега
-            {nMax=value.indexOf("</"+NameValue+">",nMax+1);
-            numNextiMin-=1;}
-        }
-         if(nMax<0) //Если nMax невалидный
-        {
-            i=iMax+2;
-        }
-        else {
-        QString sValue; //Значение переменной
-        sValue=value.mid(iMax+1,nMax-iMax-1);
-        QMap<QString,QVariant> temp=splitStringHTML(sValue); //Рекурсия
-        if(sValue.isEmpty() || NameValue.isEmpty()) {
-            int tmp=iMax-iMin;
-            i=nMax+tmp;
-            continue; }
-        if(temp.isEmpty()) //Если рекурсия не нашла других значений переменной
-        ReturnValue[NameValue] = sValue; //Запись элемента в Map
-        else
-        ReturnValue[NameValue] = temp; //Запись элемента в Map
-        int tmp=iMax-iMin; //Переход к следующему
-        i=nMax+tmp;}
-    }
-    return ReturnValue; //Возврат готового Map
-}
+
 QString printList(QList<QVariant> List)
 {
     QString ReturnValue="[";
@@ -232,22 +188,7 @@ QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator
 }
 
 
-QString UnsplitStringHTML(QMap<QString,QVariant> Map)
-{
-    QString ReturnValue;
-    int i=0;
-    QList<QString> keys=Map.keys();
-    while(i<keys.size())
-    {
-        ReturnValue+="<"+keys.value(i)+">";
-        QString tmp= UnsplitStringHTML(Map.value(keys.value(i)).toMap());
-        if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
-        else ReturnValue+=tmp;
-        ReturnValue+="</"+keys.value(i)+">";
-        i++;
-    }
-    return ReturnValue;
-}
+
 QString QtHtmlRecoder(QString html)
 {
     QString result=html_find(html,REPLACE_TEXT_I,"</p>");
@@ -463,6 +404,198 @@ QString dataEx(int year,int month,int day)
     if(day>0) result+=QString::number(day)+"d ";
     return result;
 }
+enum ArrayFormates
+{
+    StdHTMLTagesFormat,
+    YumFormat,
+    IniFormat,
+    ExtraHTMLTagesFormat
+};
+class RecursionArray : public QMap<QString,QVariant>
+{
+private:
+    QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="")
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        if(keys.size()<=0) return "";
+        ReturnValue+=Tabulator+"QMap("+NameMap+")\n"+Tabulator+"{\n";
+        while(i<keys.size())
+        {
+            QString NameKey=keys.value(i);
+            QVariant tmp=Map.value(NameKey);
+            if(tmp.type()!=QVariant::Map) ReturnValue+=Tabulator+"   ["+NameKey+"] = ";
+            if(tmp.type()==QVariant::String) ReturnValue+= Map.value(NameKey).toString();
+            else if(tmp.type()==QVariant::ByteArray) ReturnValue+= QString(Map.value(NameKey).toByteArray());
+            else if(tmp.type()==QVariant::List) ReturnValue+=printList(Map.value(NameKey).toList());
+            else if(tmp.type()==QVariant::Int) ReturnValue+=QString::number(Map.value(NameKey).toInt());
+            else if(tmp.type()==QVariant::Double) ReturnValue+=QString::number(Map.value(NameKey).toDouble());
+            else if(tmp.type()==QVariant::Map) {
+                ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
+            }
+            else ReturnValue+="Unkown()";
+            ReturnValue+="\n";
+            i++;
+        }
+        ReturnValue+=Tabulator+"}";
+        return ReturnValue;
+    }
+    QString _toHTMLTegsFormat(RecursionArray Map)
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        while(i<keys.size())
+        {
+            ReturnValue+="<"+keys.value(i)+">";
+            QString tmp= _toHTMLTegsFormat(Map.value(keys.value(i)).toMap());
+            if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
+            else ReturnValue+=tmp;
+            ReturnValue+="</"+keys.value(i)+">";
+            i++;
+        }
+        return ReturnValue;
+    }
+    QString _toYUMFormat(RecursionArray Map,QString Tabulator="")
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        while(i<keys.size())
+        {
+            ReturnValue+="\n"+Tabulator+keys.value(i)+":";
+            QString tmp= _toYUMFormat(Map.value(keys.value(i)).toMap(),Tabulator+" ");
+            if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
+            else ReturnValue+=tmp;
+            i++;
+        }
+        return ReturnValue;
+    }
+    QString printList(QList<QVariant> List)
+    {
+        QString ReturnValue="[";
+        QVariant Value0=List.value(0);
+        if(Value0.type()==QVariant::String) if(!Value0.toString().isEmpty()) ReturnValue+=Value0.toString();
+        for(int i=1;i<List.size();i++)
+        {
+            QVariant Value=List.value(i);
+            if(Value.type()==QVariant::String) if(!Value.toString().isEmpty())
+                ReturnValue+=","+Value.toString();
+        }
+        ReturnValue+="]";
+        return ReturnValue;
+    }
+public:
+    QMap<QString,QVariant> fromYumFormat(QString yum,QString level="", bool isReturn=false)
+    {
+        QStringList fromBR=yum.split("\n");
+        QMap<QString,QVariant> ReturnMap;
+        for(int i=0;i<fromBR.size();i++)
+        {
+            QString ValueString=fromBR.value(i);
+            if(level.size()>0) ValueString.remove(0,level.size());
+            if(ValueString.toLocal8Bit()[0]=='#') continue;
+            int position=ValueString.indexOf(":");
+            if(position<=0) continue;
+            QString NameValue=ValueString.mid(0,position);
+            QString Value=ValueString.mid(position+1);
+            if(!Value.isEmpty())
+            {
+                 if(isReturn) ReturnMap[NameValue]=Value;
+                 else operator [](NameValue)=Value;
+            }
+            else
+            {
+                int unusedsize=0;bool stop=true; QString sendString,nextLevel;
+                nextLevel=level+ " ";
+                while (stop) {
+
+                    if(fromBR.value(i+unusedsize+1).mid(0,nextLevel.size())==nextLevel){
+                        unusedsize++;
+                        sendString+=fromBR.value(i+unusedsize)+"\n";
+                    }
+                    else stop=false;
+                }
+                qDebug() << sendString;
+                QMap<QString,QVariant> ValueMap=fromYumFormat(sendString,nextLevel,true);
+                if(isReturn) ReturnMap[NameValue]=ValueMap;
+                else operator [](NameValue)=ValueMap;
+                i+=unusedsize;
+            }
+        }
+        return ReturnMap;
+    }
+    RecursionArray(QMap<QString,QVariant> h)
+    {
+        QMap::operator =(h);
+    }
+    RecursionArray()
+    {
+    }
+    QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false)
+    {
+       QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
+       int i=0;
+       while(i<value.size()) //Главный цикл
+        {
+            int iMin=value.indexOf("<",i); //Поиск символа <
+            if(iMin<0) break;
+            int iMax=value.indexOf(">",iMin); //Поиск символа >
+            if(iMax<0) break;
+            QString NameValue;//Имя переменной
+            NameValue=value.mid(iMin+1,iMax-iMin-1);
+            int nextiMin=value.indexOf("<"+NameValue+">",iMax); //Поиск <ИмяПеременной>
+            int nMax=value.indexOf("</"+NameValue+">",iMax); //Поиск закрывающего тега
+            if(nextiMin!=-1) if(nextiMin<nMax) //Если существует еще по крайней мере один <ИмяПеременной>
+            {
+                int numNextiMin=0; //Колличество включений <ИмяПеременной>
+                while(nextiMin!=-1 && nextiMin<nMax) //Получаю колличество включений
+                {nextiMin=value.indexOf("<"+NameValue+">",nextiMin+1);
+                numNextiMin+=1; }
+                while(numNextiMin!=0) //Использую колличество включений для определения последнего закрывающего тега
+                {nMax=value.indexOf("</"+NameValue+">",nMax+1);
+                numNextiMin-=1;}
+            }
+             if(nMax<0) //Если nMax невалидный
+            {
+                i=iMax+2;
+            }
+            else {
+            QString sValue; //Значение переменной
+            sValue=value.mid(iMax+1,nMax-iMax-1);
+            QMap<QString,QVariant> temp=fromHTMLTegsFormat(sValue,true); //Рекурсия
+
+            if(sValue.isEmpty() || NameValue.isEmpty()) {
+                int tmp=iMax-iMin;
+                i=nMax+tmp;
+                continue; }
+            if(temp.isEmpty()) //Если рекурсия не нашла других значений переменной
+                if(isReturn) ReturnValue[NameValue]=sValue;
+                else operator [](NameValue)=sValue; //Запись элемента в Map
+            else
+                if(isReturn) ReturnValue[NameValue]=temp;
+                else operator [](NameValue)=temp; //Запись элемента в Map
+            int tmp=iMax-iMin; //Переход к следующему
+            i=nMax+tmp;}
+        }
+        return ReturnValue; //Возврат готового Map
+    }
+    QString toHTMLTegsFormat()
+    {
+        return _toHTMLTegsFormat(*this);
+    }
+    QString toYUMFormat()
+    {
+        return _toYUMFormat(*this);
+    }
+    QString print()
+    {
+        return printMap(*this);
+    }
+
+};
+
 }
 #endif // ACORE
 
