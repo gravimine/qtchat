@@ -6,9 +6,6 @@
 QMAKE_CXXFLAGS_DEBUG += -pg
 QMAKE_LFLAGS_DEBUG += -pg
 QT       += core gui network
-android {
-    QT += androidextras
-}
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = UChat

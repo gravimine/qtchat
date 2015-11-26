@@ -26,6 +26,8 @@ private slots:
 
     void on_checkBox_5_stateChanged(int arg1);
 
+    void on_checkBox_7_stateChanged(int arg1);
+
     void on_listWidget_clicked(const QModelIndex &index);
 
         void on_listWidget_3_clicked(const QModelIndex &index);

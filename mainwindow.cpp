@@ -21,6 +21,7 @@
 #define API_VERSION "2.3"
 #define IS_DEBUG "false"
 #define TIMER_SENDLS 300
+#define SENSORE_STRING "[цензура]"
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define EXTRA_NETWORK false
 using namespace ACore;
@@ -366,6 +367,12 @@ public:
             ClusterChat.SendM(QString::number(qSin(ArgList.value(1).toDouble()*M_PI/180)));
             return true;
         }
+        else if(cmd=="/valid")
+        {
+            if(ArgList.value(1).isEmpty()) SendMessage("Неверные аргументы");
+            ClusterChat.SendM(SencureString(ArgList.value(1)));
+            return true;
+        }
         else if(cmd=="/sendls")
         {
             if(ArgList.value(1).isEmpty()) SendMessage("Невозможно отправить пустое сообщение");
@@ -481,6 +488,7 @@ public:
         setings->AddKey("Login","");
         setings->AddKey("Pass","");
         setings->AddKey("Server","");
+        setings->AddKey("Sencure","true");
         setings->LoadSettings();
         R.LoadMenuUI->lineEdit->setText(setings->GetKey("Login"));
         R.LoadMenuUI->lineEdit_2->setText(setings->GetKey("Pass"));
@@ -488,6 +496,10 @@ public:
         isSmiles=true;}
         else
         {isSmiles=false;}
+        if(setings->GetKey("Sencure")=="true"){R.KabinUI->checkBox_7->setChecked(1);
+        isCensure=true;}
+        else
+        {isCensure=false;}
         if(setings->GetKey("Debug")=="true"){R.KabinUI->checkBox_2->setChecked(1);
         isDebug=true;}
         else
@@ -642,8 +654,15 @@ public:
         delete setings;
         delete styles;
         delete timersendls;
-        log<< "Exit " + timeEx(timer3);
+        ADD_DEBUG "Exit " + timeEx(timer3);
     }
+    QString SencureString(QString str)
+    {
+        return str.replace(QRegExp("сука"),SENSORE_STRING).replace(QRegExp("пид[^/s]р[^/s]{2}"),SENSORE_STRING)
+                .replace(QRegExp("еба[^/s]{3}"),SENSORE_STRING).replace(QRegExp("ху[й|и|е][^/s]{3}"),SENSORE_STRING)
+                .replace(QRegExp("блядь"),SENSORE_STRING);
+    }
+
     ASettings *setings;
     void Registration(QString Login,QString name_and_family, QString Pass,QString EMail)
     {
@@ -670,10 +689,14 @@ public:
         }
         else
         {
-        if(!isSendCommand(Text))
-            post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(Text
+        if(!isSendCommand(Text)){
+            if(!isCensure) post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(Text
                                                                         .replace("%","%25").replace("&","%26")
                                                                         .replace("+","%2B"),false),tNewLS);
+            else post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(SencureString(Text)
+                                                                                                  .replace("%","%25").replace("&","%26")
+                                                                                                  .replace("+","%2B"),false),tNewLS);
+        }
         //if(!isSendCommand(Text)) post("type=sendmsg&message="+Text.replace("&","%26"),tNewLS);
         else SendCommand(Text);
         }
@@ -734,7 +757,7 @@ public:
             temp.id=ValueMap.value("userId").toString().toInt();
             if(!ClientList.contains(temp))
             {
-                if(isDebug)R.LoadWindowUI->label_2->setText("Получение информации о пользователях");
+                if(isDebug)R.LoadWindowUI->label_2->setText(tr("Получение информации о пользователях"));
                 if(result=="") result+=QString::number(temp.id);
                 else result+="/"+QString::number(temp.id);
             }
@@ -761,8 +784,11 @@ public:
             Client ClientLS=GetClient(ssLS.ClientID);
             QStringList ListX=ssLS.time.split(":");
             QStringList ListY=ssLS.data.split("-");
-            allLS+=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
-                    .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg)).arg(dataTimeEx(ListX.value(2).toInt(),ListX.value(1).toInt(),ListX.value(0).toInt(),ListY.value(0).toInt(),ListY.value(1).toInt(),ListY.value(2).toInt()));
+            QString str=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
+                    .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg))
+                    .arg(dataTimeEx(ListX.value(2).toInt(),ListX.value(1).toInt(),ListX.value(0).toInt(),ListY.value(0).toInt(),ListY.value(1).toInt(),ListY.value(2).toInt()));
+            if(!isCensure) allLS+=str;
+            else allLS+=SencureString( str );
             nummers++;
             if(numLS<ssLS.id && !bool(ssLS.msg.isEmpty()))
             {
@@ -775,7 +801,7 @@ public:
         }
         HTML=Styled.Main.arg(allLS);
         if(!TextMessages.isEmpty() && MyClient.id != temp && !R.MainUI->textEdit->hasFocus()) {
-            SendDialogMessage(TextMessages,"<center><b>Новое Сообщение");
+            SendDialogMessage(TextMessages,tr("<center><b>Новое Сообщение"));
             log<< "Send Dialog Message ID: "+ QString::number(ShowID)+" Text:"+ TextMessages;}
         return HTML;
     }
@@ -797,7 +823,7 @@ public slots:
 
         if(reply.TextError!="Unknown error"&&reply.TextError!="Неизвестная ошибка")
         {
-            SendErrorMessage("Ошибка при получении данных с сервера "+reply.TextError);
+            SendErrorMessage(tr("Ошибка при получении данных с сервера ")+reply.TextError);
         }
         switch (Type) {
         case tUnkown:
@@ -817,12 +843,12 @@ public slots:
                     s.key=ValuesMap.value("сlientUnigue").toString();
                     if(!UniKeyList.contains(s)) UniKeyList << s;
                 }
-                R.LoadWindowUI->label_2->setText("Вход на сервер. Подождите...");
+                R.LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
                 R.LoadWindow->show();
                 log<< "login on";
             }
             else{
-                SendMessage("Ошибка авторизации");log<< "login Error: "+ Text;
+                SendMessage(tr("Ошибка авторизации"));log<< "login Error: "+ Text;
                 SendMessage(Text); MyClient.Active=false;}
             break;
         }
@@ -837,7 +863,7 @@ public slots:
         }
         case tSetInfo:
         {
-            if(Text=="402") SendMessage("Ошибка изменения. Код ошибки:"+Text);
+            if(Text=="402") SendMessage(tr("Ошибка изменения. Код ошибки:")+Text);
             break;
         }
         case tOnlineList:
@@ -870,14 +896,14 @@ public slots:
                 R.KabinUI->listWidget_2->addItem(temp.name);
                 ClientList << temp;
             }
-            if(isDebug) R.LoadWindowUI->label_2->setText("Получение списка доступных комнат");
+            if(isDebug) R.LoadWindowUI->label_2->setText(tr("Получение списка доступных комнат"));
             QString postiString;
             for(int i=0;i<ChatsList.size();i++)
             {
                 int RoomID=ChatsList.value(i).KomID;
                 if(RoomID!=MyClient.com_id) postiString+="/"+QString::number(RoomID);
             }
-            if(MyClient.com_id!=0)post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);
+            if(MyClient.com_id!=0)post( tr("type=onlineUsersRoom&room=") +QString::number(MyClient.com_id)+postiString,tOnlineList);
             else post("type=onlineUsersRoom&room="+postiString,tOnlineList);
             break;
         }
@@ -1165,6 +1191,11 @@ void Dialog::on_checkBox_stateChanged(int arg1)
 {
     if(arg1==2) {CluChat->setings->SetKey("Login",R.LoadMenuUI->lineEdit->text());
     CluChat->setings->SetKey("Pass",R.LoadMenuUI->lineEdit_2->text());}
+}
+void Kabinet::on_checkBox_7_stateChanged(int arg1)
+{
+    if(arg1==2) {CluChat->setings->SetKey("Sencure","true");}
+    else {CluChat->setings->SetKey("Sencure","false");}
 }
 
 void Kabinet::on_checkBox_5_stateChanged(int arg1)

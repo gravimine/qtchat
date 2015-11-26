@@ -240,7 +240,6 @@ public:
     {
         Main=new QSettings(patch,QSettings::IniFormat);
     }
-
     QString GetKey(QString _key)
     {
         QString temp;
@@ -377,8 +376,8 @@ QString dataTimeEx(int second, int minutes=0,int hour=0,int year=0,int month=0,i
          int amin=GetOstatok(tmp,60);
          int asec=GetOstatok(our,60);
 
-    if(timedate.daysTo(datatime)>0) result+=QString::number(-datatime.daysTo(timedate))+"d ";
-    if(ahour>0) result+=QString::number(ahour)+"h ";
+    if(ahour/24>0) result+=QString::number(ahour/24)+"d ";
+    if(GetOstatok(ahour,24)>0) result+=QString::number(GetOstatok(ahour,24))+"h ";
     if(amin>0) result+=QString::number(amin)+"min ";
     if(asec>0) result+=QString::number(asec)+"s ";
 
