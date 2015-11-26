@@ -1178,6 +1178,7 @@ release/mainwindow.moc: C:/Qt/5.4/mingw491_32/include/QtCore/QString \
 		C:/Qt/5.4/mingw491_32/include/QtCore/QDate \
 		amath.h \
 		C:/Qt/5.4/mingw491_32/include/QtGui/QMatrix \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qmath.h \
 		aclientserver.h \
 		C:/Qt/5.4/mingw491_32/include/QtNetwork/QTcpSocket \
 		anetwork.h \
@@ -1605,6 +1606,7 @@ release/mainwindow.o: mainwindow.cpp C:/Qt/5.4/mingw491_32/include/QtCore/QStrin
 		C:/Qt/5.4/mingw491_32/include/QtCore/QDate \
 		amath.h \
 		C:/Qt/5.4/mingw491_32/include/QtGui/QMatrix \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qmath.h \
 		aclientserver.h \
 		C:/Qt/5.4/mingw491_32/include/QtNetwork/QTcpSocket \
 		anetwork.h \

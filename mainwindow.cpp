@@ -18,7 +18,7 @@
 #include "auimanager.h"
 #define INIT_CLIENT "Qt"
 #define INIT_VERSION "8.1"
-#define API_VERSION "2.1"
+#define API_VERSION "2.3"
 #define IS_DEBUG "false"
 #define TIMER_SENDLS 300
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
@@ -358,6 +358,12 @@ public:
         {
             if(ArgList.value(1).isEmpty()||ArgList.value(2).isEmpty()) SendMessage("Неверные аргументы");
             for(int i=0;i<=ArgList.value(1).toInt();i++) {SendLS(ArgList.value(2));}
+            return true;
+        }
+        else if(cmd=="/sin")
+        {
+            if(ArgList.value(1).toDouble()<0 || ArgList.value(1).toDouble() > 180) SendMessage("Неверные аргументы");
+            ClusterChat.SendM(QString::number(qSin(ArgList.value(1).toDouble()*M_PI/180)));
             return true;
         }
         else if(cmd=="/sendls")
@@ -754,8 +760,9 @@ public:
                     .replace(":{}","<IMG src=\":/res/default/zloi.png\">");
             Client ClientLS=GetClient(ssLS.ClientID);
             QStringList ListX=ssLS.time.split(":");
+            QStringList ListY=ssLS.data.split("-");
             allLS+=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
-                    .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg)).arg(timeEx(ListX.value(1).toInt(),ListX.value(2).toInt(),ListX.value(0).toInt()));
+                    .arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg)).arg(dataTimeEx(ListX.value(2).toInt(),ListX.value(1).toInt(),ListX.value(0).toInt(),ListY.value(0).toInt(),ListY.value(1).toInt(),ListY.value(2).toInt()));
             nummers++;
             if(numLS<ssLS.id && !bool(ssLS.msg.isEmpty()))
             {

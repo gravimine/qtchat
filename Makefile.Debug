@@ -13,10 +13,10 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DUNICODE -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_NEEDS_QMAIN
 CFLAGS        = -pipe -fno-keep-inline-dllexport -g -Wall -Wextra $(DEFINES)
-CXXFLAGS      = -pipe -fno-keep-inline-dllexport -g -pg -pg -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
+CXXFLAGS      = -pipe -fno-keep-inline-dllexport -g -pg -frtti -Wall -Wextra -fexceptions -mthreads $(DEFINES)
 INCPATH       = -I'.' -I'C:/Qt/5.4/mingw491_32/include' -I'C:/Qt/5.4/mingw491_32/include/QtWidgets' -I'C:/Qt/5.4/mingw491_32/include/QtGui' -I'C:/Qt/5.4/mingw491_32/include/QtNetwork' -I'C:/Qt/5.4/mingw491_32/include/QtCore' -I'debug' -I'.' -I'C:/Qt/5.4/mingw491_32/mkspecs/win32-g++' 
 LINKER      =        g++
-LFLAGS        =        -pg -pg -Wl,-subsystem,windows -mthreads
+LFLAGS        =        -pg -Wl,-subsystem,windows -mthreads
 LIBS        =        -lglu32 -lopengl32 -lgdi32 -luser32 -lmingw32 -LC:/Qt/5.4/mingw491_32/lib -lqtmaind -LC:\mingw491\mingw32\lib -LC:\Utils\icu32_53_1_mingw482\lib -LC:\utils\postgresql\pgsql\lib -LC:\utils\mysql\mysql\lib -LC:\opensll\lib -lshell32 -LC:\Qt\5.4\mingw491_32/lib -lQt5Widgetsd -lQt5Guid -lQt5Networkd -lQt5Cored 
 QMAKE         = C:/Qt/5.4/mingw491_32/bin/qmake.exe
 IDC           = idc
@@ -1178,6 +1178,7 @@ debug/mainwindow.moc: C:/Qt/5.4/mingw491_32/include/QtCore/QString \
 		C:/Qt/5.4/mingw491_32/include/QtCore/QDate \
 		amath.h \
 		C:/Qt/5.4/mingw491_32/include/QtGui/QMatrix \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qmath.h \
 		aclientserver.h \
 		C:/Qt/5.4/mingw491_32/include/QtNetwork/QTcpSocket \
 		anetwork.h \
@@ -1605,6 +1606,7 @@ debug/mainwindow.o: mainwindow.cpp C:/Qt/5.4/mingw491_32/include/QtCore/QString 
 		C:/Qt/5.4/mingw491_32/include/QtCore/QDate \
 		amath.h \
 		C:/Qt/5.4/mingw491_32/include/QtGui/QMatrix \
+		C:/Qt/5.4/mingw491_32/include/QtCore/qmath.h \
 		aclientserver.h \
 		C:/Qt/5.4/mingw491_32/include/QtNetwork/QTcpSocket \
 		anetwork.h \

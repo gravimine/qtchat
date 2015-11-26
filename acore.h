@@ -9,6 +9,7 @@
 #include <QThread>
 #include <QByteArray>
 #include <QDate>
+#include <QDateTime>
 #include "amath.h"
 #define MAX_MESSAGE_BOX 2
 #define REPLACE_TEXT_I "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
@@ -85,7 +86,7 @@ public:
     }
 
 
-private:
+protected:
     int MessageBoxNumber;
     QString ProgramName;
 };
@@ -122,7 +123,7 @@ QStringList splitStringArgs(QString value)
 {
     QString _value;
     QStringList ReturnValue;
-    bool isBlock;
+    bool isBlock=false;
     for(int i=0;i<value.size();i++)
     {
         if(value[i]=='\"'){
@@ -146,49 +147,6 @@ QStringList splitStringArgs(QString value)
     ReturnValue << _value;
     return ReturnValue;
 }
-
-QString printList(QList<QVariant> List)
-{
-    QString ReturnValue="[";
-    QVariant Value0=List.value(0);
-    if(Value0.type()==QVariant::String) if(!Value0.toString().isEmpty()) ReturnValue+=Value0.toString();
-    for(int i=1;i<List.size();i++)
-    {
-        QVariant Value=List.value(i);
-        if(Value.type()==QVariant::String) if(!Value.toString().isEmpty())
-            ReturnValue+=","+Value.toString();
-    }
-    ReturnValue+="]";
-    return ReturnValue;
-}
-QString printMap(QMap<QString,QVariant> Map,QString NameMap="",QString Tabulator="")
-{
-    QString ReturnValue;
-    int i=0;
-    QList<QString> keys=Map.keys();
-    if(keys.size()<=0) return "";
-    ReturnValue+=Tabulator+"QMap("+NameMap+")\n"+Tabulator+"{\n";
-    while(i<keys.size())
-    {
-        QString NameKey=keys.value(i);
-        QVariant tmp=Map.value(NameKey);
-        if(tmp.type()!=QVariant::Map) ReturnValue+=Tabulator+"   ["+NameKey+"] = ";
-        if(tmp.type()==QVariant::String) ReturnValue+= Map.value(NameKey).toString();
-        else if(tmp.type()==QVariant::ByteArray) ReturnValue+= QString(Map.value(NameKey).toByteArray());
-        else if(tmp.type()==QVariant::List) ReturnValue+=printList(Map.value(NameKey).toList());
-        else if(tmp.type()==QVariant::Map) {
-            ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
-        }
-        else ReturnValue+="Unkown()";
-        ReturnValue+="\n";
-        i++;
-    }
-    ReturnValue+=Tabulator+"}";
-    return ReturnValue;
-}
-
-
-
 QString QtHtmlRecoder(QString html)
 {
     QString result=html_find(html,REPLACE_TEXT_I,"</p>");
@@ -250,7 +208,7 @@ public:
     {
         patch=data;
     }
-private:
+protected:
     QString patch;
 };
 
@@ -338,7 +296,7 @@ public:
         Main->sync();
     }
 
-private:
+protected:
     QList<ASett> config;
 };
 QString dtime()
@@ -402,6 +360,29 @@ QString dataEx(int year,int month,int day)
     if(year>0) result+=QString::number(year)+"year ";
     if(month>0) result+=QString::number(month)+"m ";
     if(day>0) result+=QString::number(day)+"d ";
+    return result;
+}
+QString dataTimeEx(int second, int minutes=0,int hour=0,int year=0,int month=0,int day=0)
+{
+    QString result;
+    QDateTime timedate;
+    QDate date; date.setDate(year,month,day);
+    QTime time; time.setHMS(hour,minutes,second);
+    timedate.setDate(date);
+    timedate.setTime(time);
+    QDateTime datatime;datatime=QDateTime::currentDateTime();
+    int our=timedate.secsTo(datatime);
+    int tmp=our/60;
+         int ahour=tmp/60;
+         int amin=GetOstatok(tmp,60);
+         int asec=GetOstatok(our,60);
+
+    if(timedate.daysTo(datatime)>0) result+=QString::number(-datatime.daysTo(timedate))+"d ";
+    if(ahour>0) result+=QString::number(ahour)+"h ";
+    if(amin>0) result+=QString::number(amin)+"min ";
+    if(asec>0) result+=QString::number(asec)+"s ";
+
+
     return result;
 }
 enum ArrayFormates

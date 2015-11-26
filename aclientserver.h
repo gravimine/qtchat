@@ -7,7 +7,7 @@
 #include <anetwork.h>
 class ATcpNetwork : public ANetwork {
 Q_OBJECT
-private:
+protected:
     QTcpSocket* m_pTcpSocket;
     quint16     m_nNextBlockSize;
     int Type; //Тип запроса

@@ -24,7 +24,7 @@ struct ANetworkReply
 class ANetwork : public QObject
 {
     Q_OBJECT
-private:
+protected:
 QNetworkAccessManager *Network;
 int Type; //Тип запроса
 bool isSendPost; //Дебаг и отправленЛиПост
