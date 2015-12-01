@@ -405,10 +405,59 @@ QString DeleteQuotes(QString str)
     else return str;
 }
 
+
+
 class RecursionArray : public QMap<QString,QVariant>
 {
 private:
-    QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="")
+    QString _toHTMLTegsFormat(RecursionArray Map)
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        while(i<keys.size())
+        {
+            ReturnValue+="<"+keys.value(i)+">";
+            QString tmp= _toHTMLTegsFormat(Map.value(keys.value(i)).toMap());
+            if(tmp.isEmpty()) ReturnValue+=VariantToString(Map.value(keys.value(i)));
+            else ReturnValue+=tmp;
+            ReturnValue+="</"+keys.value(i)+">";
+            i++;
+        }
+        return ReturnValue;
+    }
+    QString _toYUMFormat(RecursionArray Map,QString Tabulator="")
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        while(i<keys.size())
+        {
+            ReturnValue+="\n"+Tabulator+keys.value(i)+":";
+            QString tmp= _toYUMFormat(Map.value(keys.value(i)).toMap(),Tabulator+" ");
+            if(tmp.isEmpty()) ReturnValue+=VariantToString(Map.value(keys.value(i)));
+            else ReturnValue+=tmp;
+            i++;
+        }
+        return ReturnValue;
+    }
+
+public:
+    static QString printList(QList<QVariant> List)
+    {
+        QString ReturnValue="[";
+        QVariant Value0=List.value(0);
+        if(Value0.type()==QVariant::String) if(!Value0.toString().isEmpty()) ReturnValue+=Value0.toString();
+        for(int i=1;i<List.size();i++)
+        {
+            QVariant Value=List.value(i);
+            if(Value.type()==QVariant::String) if(!Value.toString().isEmpty())
+                ReturnValue+=","+Value.toString();
+        }
+        ReturnValue+="]";
+        return ReturnValue;
+    }
+    static QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="")
     {
         QString ReturnValue;
         int i=0;
@@ -425,7 +474,11 @@ private:
             else if(tmp.type()==QVariant::List) ReturnValue+=printList(Map.value(NameKey).toList());
             else if(tmp.type()==QVariant::Int) ReturnValue+=QString::number(Map.value(NameKey).toInt());
             else if(tmp.type()==QVariant::Double) ReturnValue+=QString::number(Map.value(NameKey).toDouble());
-            else if(tmp.type()==QVariant::Bool) ReturnValue+=QString::number(Map.value(NameKey).toBool());
+            else if(tmp.type()==QVariant::Bool)
+            {
+                if(tmp.toBool()) ReturnValue+="true";
+                else ReturnValue+="false";
+            }
             else if(tmp.type()==QVariant::Map) {
                 ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
             }
@@ -436,52 +489,23 @@ private:
         ReturnValue+=Tabulator+"}";
         return ReturnValue;
     }
-    QString _toHTMLTegsFormat(RecursionArray Map)
+    static QString VariantToString(QVariant tmp)
     {
-        QString ReturnValue;
-        int i=0;
-        QList<QString> keys=Map.keys();
-        while(i<keys.size())
+        if(tmp.type()==QVariant::String) return  tmp.toString();
+        else if(tmp.type()==QVariant::ByteArray) return QString(tmp.toByteArray());
+        else if(tmp.type()==QVariant::List) return printList(tmp.toList());
+        else if(tmp.type()==QVariant::Int) return QString::number(tmp.toInt());
+        else if(tmp.type()==QVariant::Double) return QString::number(tmp.toDouble());
+        else if(tmp.type()==QVariant::Bool)
         {
-            ReturnValue+="<"+keys.value(i)+">";
-            QString tmp= _toHTMLTegsFormat(Map.value(keys.value(i)).toMap());
-            if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
-            else ReturnValue+=tmp;
-            ReturnValue+="</"+keys.value(i)+">";
-            i++;
+            if(tmp.toBool()) return "true";
+            else return "false";
         }
-        return ReturnValue;
-    }
-    QString _toYUMFormat(RecursionArray Map,QString Tabulator="")
-    {
-        QString ReturnValue;
-        int i=0;
-        QList<QString> keys=Map.keys();
-        while(i<keys.size())
-        {
-            ReturnValue+="\n"+Tabulator+keys.value(i)+":";
-            QString tmp= _toYUMFormat(Map.value(keys.value(i)).toMap(),Tabulator+" ");
-            if(tmp.isEmpty()) ReturnValue+=Map.value(keys.value(i)).toString();
-            else ReturnValue+=tmp;
-            i++;
+        else if(tmp.type()==QVariant::Map) {
+            return printMap(tmp.toMap());
         }
-        return ReturnValue;
+        else return "Unkown()";
     }
-    QString printList(QList<QVariant> List)
-    {
-        QString ReturnValue="[";
-        QVariant Value0=List.value(0);
-        if(Value0.type()==QVariant::String) if(!Value0.toString().isEmpty()) ReturnValue+=Value0.toString();
-        for(int i=1;i<List.size();i++)
-        {
-            QVariant Value=List.value(i);
-            if(Value.type()==QVariant::String) if(!Value.toString().isEmpty())
-                ReturnValue+=","+Value.toString();
-        }
-        ReturnValue+="]";
-        return ReturnValue;
-    }
-public:
     QMap<QString,QVariant> fromYumFormat(QString yum,QString level="", bool isReturn=false)
     {
         QStringList fromBR=yum.split("\n");
@@ -527,11 +551,10 @@ public:
         for(int i=0;i<fromBR.size();i++)
         {
             QString ValueString=fromBR.value(i);
-            //if(level.size()>0) ValueString.remove(0,level.size());
             ValueString=DeleteSpaceStart(ValueString);
-            if(ValueString.toLocal8Bit()[0]=='#') continue;
+            if(ValueString[0]=='#') continue;
             int position=ValueString.indexOf("=");
-            if(position<=0) continue;
+            if(position<=0 && ValueString.indexOf("{")<=0 && ValueString.indexOf("}")<=0) continue;
             QString NameValue=ValueString.mid(0,position);
             QString tmp=ValueString.mid(position+1);
             QStringList ListValued;
@@ -544,8 +567,8 @@ public:
             else if(ListValued.value(0)=="S") {if(!tmp.isEmpty()) Value=ListValued.value(2);}
             else if(ListValued.value(0)=="B")
             {
-                if(ListValued.value(2).toLower()=="false") Value=false;
-                else if(ListValued.value(2).toLower()=="true") Value=true;
+                if(ListValued.value(2).toLower().indexOf("false")>=0) Value=false;
+                else if(ListValued.value(2).toLower().indexOf("true")>=0) Value=true;
             }
             if(ValueString.indexOf("{")<=0)
             {
@@ -554,18 +577,22 @@ public:
             }
             else
             {
+
                 int unusedsize=0;bool stop=true; QString sendString;
                 while (stop) {
-                    QString x=DeleteSpaceStart(fromBR.value(i+unusedsize+1));
-                    if(x=="}") stop=false;
+                    QString x=fromBR.value(i+unusedsize+1);
+                    if(x.indexOf("}")>=0 || unusedsize>fromBR.size()-i) stop=false;
                     else {
                         unusedsize++;
                         sendString+=fromBR.value(i+unusedsize)+"\n";
                     }
                 }
+
                 QMap<QString,QVariant> ValueMap=fromCfgFormat(sendString,true);
-                if(isReturn) ReturnMap[NameValue]=ValueMap;
-                else operator [](NameValue)=ValueMap;
+                QString sNameValue=DeleteQuotes(ValueString.remove("{").split(" ").value(0));
+                qDebug() << ValueString;
+                if(isReturn) ReturnMap[sNameValue]=ValueMap;
+                else operator [](sNameValue)=ValueMap;
                 i+=unusedsize;
             }
         }

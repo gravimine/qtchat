@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     Loading *LoadWindow=new Loading;
     LoadWindow->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     int InitUI=timer->elapsed();
-    qDebug() << a.translate("Инициализация UI: ","InitUI")+QString::number(InitUI)+"мс";
+    qDebug() << "Инициализация UI: "+QString::number(InitUI)+"мс";
     WindMain->OnStart();
     qDebug() << "Старт программы: "+QString::number(timer->elapsed()-InitUI)+"мс";
     WindMain->OnRequest();

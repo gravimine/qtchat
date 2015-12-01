@@ -611,8 +611,10 @@ public:
         #endif
         MyClient.com_id=0;
         RecursionArray tmpp;
-        tmpp.fromCfgFormat("I:Value1=45\nB:\"Boolean I As\"=true\nS:Str=Cloda\nTestCategory {\nI:Value1=5\nI:Value2=4\n}");
+        tmpp.fromCfgFormat("I:Value1=45\nB:\"Boolean I As\"=true\nS:Str=Cloda\nTestCategory {\nI:Value1=5\nI:Value2=4\n}\nS:Str2=Lololo");
         qDebug() << tmpp.print();
+        QVariant testing=true;
+        qDebug() <<RecursionArray::VariantToString(testing);
         ServerType=true;
         ADD_DEBUG QString::number(R.KabinUI->pushButton->geometry().height() );
         errors=new QSettings(SetPath+"/.ClusterChat/Errors.txt", QSettings::IniFormat);
