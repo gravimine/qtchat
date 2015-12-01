@@ -391,6 +391,20 @@ enum ArrayFormates
     IniFormat,
     ExtraHTMLTagesFormat
 };
+QString DeleteSpaceStart(QString str)
+{
+    int deleteSize=0;
+    for(int i=0;str.toLocal8Bit()[i]==' ';i++) deleteSize++;
+    return str.remove(0,deleteSize);
+}
+
+QString DeleteQuotes(QString str)
+{
+    if(str[0]=='"' && str[str.size()-1]=='"')
+    return str.remove(0,1).remove(str.size()-2,1);
+    else return str;
+}
+
 class RecursionArray : public QMap<QString,QVariant>
 {
 private:
@@ -411,6 +425,7 @@ private:
             else if(tmp.type()==QVariant::List) ReturnValue+=printList(Map.value(NameKey).toList());
             else if(tmp.type()==QVariant::Int) ReturnValue+=QString::number(Map.value(NameKey).toInt());
             else if(tmp.type()==QVariant::Double) ReturnValue+=QString::number(Map.value(NameKey).toDouble());
+            else if(tmp.type()==QVariant::Bool) ReturnValue+=QString::number(Map.value(NameKey).toBool());
             else if(tmp.type()==QVariant::Map) {
                 ReturnValue+=printMap(Map.value(NameKey).toMap(),NameKey,Tabulator+"   ");
             }
@@ -497,8 +512,58 @@ public:
                     }
                     else stop=false;
                 }
-                qDebug() << sendString;
                 QMap<QString,QVariant> ValueMap=fromYumFormat(sendString,nextLevel,true);
+                if(isReturn) ReturnMap[NameValue]=ValueMap;
+                else operator [](NameValue)=ValueMap;
+                i+=unusedsize;
+            }
+        }
+        return ReturnMap;
+    }
+    QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false)
+    {
+        QStringList fromBR=yum.split("\n");
+        QMap<QString,QVariant> ReturnMap;
+        for(int i=0;i<fromBR.size();i++)
+        {
+            QString ValueString=fromBR.value(i);
+            //if(level.size()>0) ValueString.remove(0,level.size());
+            ValueString=DeleteSpaceStart(ValueString);
+            if(ValueString.toLocal8Bit()[0]=='#') continue;
+            int position=ValueString.indexOf("=");
+            if(position<=0) continue;
+            QString NameValue=ValueString.mid(0,position);
+            QString tmp=ValueString.mid(position+1);
+            QStringList ListValued;
+            ListValued << NameValue.mid(0,1);
+            ListValued << NameValue.mid(2);
+            ListValued << ValueString.mid(position+1);
+            NameValue=DeleteQuotes(ListValued.value(1));
+            QVariant Value;
+            if(ListValued.value(0)=="I") Value=ListValued.value(2).toInt();
+            else if(ListValued.value(0)=="S") {if(!tmp.isEmpty()) Value=ListValued.value(2);}
+            else if(ListValued.value(0)=="B")
+            {
+                if(ListValued.value(2).toLower()=="false") Value=false;
+                else if(ListValued.value(2).toLower()=="true") Value=true;
+            }
+            if(ValueString.indexOf("{")<=0)
+            {
+                 if(isReturn) ReturnMap[NameValue]=Value;
+                 else operator [](NameValue)=Value;
+            }
+            else
+            {
+                int unusedsize=0;bool stop=true; QString sendString;
+                while (stop) {
+                    QString x=DeleteSpaceStart(fromBR.value(i+unusedsize+1));
+                    if(x=="}") stop=false;
+                    else {
+                        unusedsize++;
+                        sendString+=fromBR.value(i+unusedsize)+"\n";
+                    }
+                }
+                QMap<QString,QVariant> ValueMap=fromCfgFormat(sendString,true);
                 if(isReturn) ReturnMap[NameValue]=ValueMap;
                 else operator [](NameValue)=ValueMap;
                 i+=unusedsize;

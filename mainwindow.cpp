@@ -611,8 +611,8 @@ public:
         #endif
         MyClient.com_id=0;
         RecursionArray tmpp;
-        tmpp.fromYumFormat("Value:Name1\nValue2:Name2\nValues:\n Value1:1\n Value2:2\nValue3:3");
-        qDebug() << tmpp.toYUMFormat();
+        tmpp.fromCfgFormat("I:Value1=45\nB:\"Boolean I As\"=true\nS:Str=Cloda\nTestCategory {\nI:Value1=5\nI:Value2=4\n}");
+        qDebug() << tmpp.print();
         ServerType=true;
         ADD_DEBUG QString::number(R.KabinUI->pushButton->geometry().height() );
         errors=new QSettings(SetPath+"/.ClusterChat/Errors.txt", QSettings::IniFormat);
