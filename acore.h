@@ -18,6 +18,14 @@
 //#define REPLACE_TEXT_II "<body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">"
 namespace ACore
 {
+enum ArrayFormates
+{
+    StdHTMLTagesFormat,
+    YumFormat,
+    IniFormat,
+    CfgFormat,
+    ExtraHTMLTagesFormat
+};
 class RecursionArray : public QMap<QString,QVariant>
 {
 private:
@@ -37,14 +45,46 @@ public:
     QString toYUMFormat();
     QString toCFGFormat();
     QString print();
-
 };
-
-QString dtime();
+class ALog : public QStringList
+{
+public:
+    void SaveLog();
+    QString toString();
+    QString toHTML();
+    void operator <<(QString h);
+    void addInfo(QString h);
+    void addError(QString h);
+    void SetFile(QString data);
+protected:
+    QString patch;
+};
+class ASettings : public RecursionArray
+{
+public:
+    ASettings(QString patch,ArrayFormates format);
+    void LoadSettings();
+    void SaveSettings();
+protected:
+    QString file;
+    ArrayFormates FileFormat;
+};
 class AAppCore
 {
 public:
-    void SendM(QString text)
+    void SendM(QString text);
+    void Error(QString text);
+    bool MessageQuest(QString text);
+    void SetProgramName(QString name);
+    AAppCore();
+    ~AAppCore();
+    AAppCore(QString ProgName);
+protected:
+    int MessageBoxNumber;
+    QString ProgramName;
+};
+QString dtime();
+void AAppCore::SendM(QString text)
     {
         MessageBoxNumber++;
         if(MessageBoxNumber>MAX_MESSAGE_BOX)
@@ -62,7 +102,7 @@ public:
         delete pmbx;
         MessageBoxNumber--;
     }
-    void Error(QString text)
+    void AAppCore::Error(QString text)
     {
         qDebug() << "Критическая ошибка: "+text;
         QMessageBox* pmbx =
@@ -72,7 +112,7 @@ public:
         pmbx->exec();
         delete pmbx;
     }
-    bool MessageQuest(QString text)
+    bool AAppCore::MessageQuest(QString text)
     {
         qDebug() << "Вопрос: "+text;
         QMessageBox* pmbx =
@@ -88,30 +128,24 @@ public:
         else return false;
     }
 
-    void SetProgramName(QString name)
+    void AAppCore::SetProgramName(QString name)
     {
         ProgramName=name;
     }
-    AAppCore()
+    AAppCore::AAppCore()
     {
         MessageBoxNumber=0;
         ProgramName="NULL";
     }
-    ~AAppCore()
+    AAppCore::~AAppCore()
     {
 
     }
-    AAppCore(QString ProgName)
+    AAppCore::AAppCore(QString ProgName)
     {
         MessageBoxNumber=0;
         ProgramName=ProgName;
     }
-
-
-protected:
-    int MessageBoxNumber;
-    QString ProgramName;
-};
 class Sleeper: public QThread
 {
 public:
@@ -180,10 +214,7 @@ QString SpecialSybmolCoder(QString value,bool isDecode)
     else return value.replace("/k0001","<").replace("/k0002",">");
 }
 
-class ALog : public QStringList
-{
-public:
-    void SaveLog()
+void ALog::SaveLog()
     {
         QFile logging;
         logging.setFileName(patch);
@@ -196,7 +227,7 @@ public:
         logging.close();
         clear();
     }
-    QString toString()
+    QString ALog::toString()
     {
         QString result;
         for(int i=0;i<size();i++)
@@ -205,7 +236,7 @@ public:
         }
         return result;
     }
-    QString toHTML()
+    QString ALog::toHTML()
     {
         QString result;
         for(int i=0;i<size();i++)
@@ -214,26 +245,22 @@ public:
         }
         return result;
     }
-    void operator <<(QString h)
+    void ALog::operator <<(QString h)
     {
         append(dtime()+h);
     }
-    void addInfo(QString h)
+    void ALog::addInfo(QString h)
     {
         append("[info]"+dtime()+h);
     }
-    void addError(QString h)
+    void ALog::addError(QString h)
     {
         append("[error]"+dtime()+h);
     }
-    void SetFile(QString data)
+    void ALog::SetFile(QString data)
     {
         patch=data;
     }
-protected:
-    QString patch;
-};
-
 struct ASett
 {
     QString value;
@@ -245,24 +272,14 @@ struct ASett
         else return false;
     }
 };
-enum ArrayFormates
-{
-    StdHTMLTagesFormat,
-    YumFormat,
-    IniFormat,
-    CfgFormat,
-    ExtraHTMLTagesFormat
-};
-class ASettings : public RecursionArray
-{
-public:
-    ASettings(QString patch,ArrayFormates format)
+
+ASettings::ASettings(QString patch,ArrayFormates format)
     {
         file=patch;
         FileFormat=format;
     }
 
-    void LoadSettings()
+    void ASettings::LoadSettings()
     {
         QFile stream;
         stream.setFileName(file);
@@ -281,7 +298,7 @@ public:
         }
         }
     }
-    void SaveSettings()
+    void ASettings::SaveSettings()
     {
         QFile stream;
         stream.setFileName(file);
@@ -300,11 +317,6 @@ public:
         }
         }
     }
-
-protected:
-    QString file;
-    ArrayFormates FileFormat;
-};
 QString dtime()
 {
     QTime time=QTime::currentTime();
