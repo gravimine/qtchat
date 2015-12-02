@@ -18,6 +18,28 @@
 //#define REPLACE_TEXT_II "<body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">"
 namespace ACore
 {
+class RecursionArray : public QMap<QString,QVariant>
+{
+private:
+    QString _toHTMLTegsFormat(RecursionArray Map);
+    QString _toYUMFormat(RecursionArray Map,QString Tabulator="");
+    QString _toCFGFormat(RecursionArray Map);
+public:
+    static QString printList(QList<QVariant> List);
+    static QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="");
+    static QString VariantToString(QVariant tmp);
+    QMap<QString,QVariant> fromYumFormat(QString yum,QString level="", bool isReturn=false);
+    QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false);
+    RecursionArray(QMap<QString,QVariant> h);
+    RecursionArray();
+    QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false);
+    QString toHTMLTegsFormat();
+    QString toYUMFormat();
+    QString toCFGFormat();
+    QString print();
+
+};
+
 QString dtime();
 class AAppCore
 {
@@ -223,80 +245,65 @@ struct ASett
         else return false;
     }
 };
-
-class ASettings
+enum ArrayFormates
+{
+    StdHTMLTagesFormat,
+    YumFormat,
+    IniFormat,
+    CfgFormat,
+    ExtraHTMLTagesFormat
+};
+class ASettings : public RecursionArray
 {
 public:
-    QSettings* Main;
-    void AddKey(QString _key,QString _stdtext)
+    ASettings(QString patch,ArrayFormates format)
     {
-        ASett temp;
-        temp.key=_key;
-        temp.value_std=_stdtext;
-        temp.value=_stdtext;
-        config << temp;
-    }
-    ASettings(QString patch)
-    {
-        Main=new QSettings(patch,QSettings::IniFormat);
-    }
-    QString GetKey(QString _key)
-    {
-        QString temp;
-        for(int i=0;i<config.size();i++)
-        {
-            if(config.value(i).key==_key)
-            {
-                temp=config.value(i).value;
-            }
-        }
-        return temp;
-    }
-    QString AddGetKey(QString _key,QString _stdvalue)
-    {
-        AddKey(_key,_stdvalue);
-        return Main->value(_key,_stdvalue).toString();
-    }
-
-    void SetKey(QString _key,QString _value)
-    {
-        for(int i=0;i<config.size();i++)
-        {
-            if(config.value(i).key==_key)
-            {
-                ASett temp=config.value(i);
-                temp.value=_value;
-                config.replace(i,temp);
-            }
-        }
+        file=patch;
+        FileFormat=format;
     }
 
     void LoadSettings()
     {
-        for(int i=0;i<config.size();i++)
+        QFile stream;
+        stream.setFileName(file);
+        stream.open(QIODevice::ReadOnly);
+        switch(FileFormat)
         {
-            SetKey(config.value(i).key,Main->value(config.value(i).key,config.value(i).value_std).toString());
+        case CfgFormat:
+        {
+            fromCfgFormat(stream.readAll());
+            break;
+        }
+        case YumFormat:
+        {
+            fromYumFormat(stream.readAll());
+            break;
+        }
         }
     }
-    void toStandart() //По умолчанию
-    {
-        for(int i=0;i<config.size();i++)
-        {
-            config.value(i).value=config.value(i).value_std;
-        }
-    }
-
     void SaveSettings()
     {
-        for(int i=0;i<config.size();i++)
+        QFile stream;
+        stream.setFileName(file);
+        stream.open(QIODevice::WriteOnly);
+        switch(FileFormat)
         {
-            Main->setValue(config.value(i).key,config.value(i).value.toLocal8Bit());
+        case CfgFormat:
+        {
+            stream.write(toCFGFormat().toLocal8Bit());
+            break;
         }
-        Main->sync();
+        case YumFormat:
+        {
+            stream.write(toYUMFormat().toLocal8Bit());
+            break;
+        }
+        }
     }
 
 protected:
-    QList<ASett> config;
+    QString file;
+    ArrayFormates FileFormat;
 };
 QString dtime()
 {
@@ -384,13 +391,7 @@ QString dataTimeEx(int second, int minutes=0,int hour=0,int year=0,int month=0,i
 
     return result;
 }
-enum ArrayFormates
-{
-    StdHTMLTagesFormat,
-    YumFormat,
-    IniFormat,
-    ExtraHTMLTagesFormat
-};
+
 QString DeleteSpaceStart(QString str)
 {
     int deleteSize=0;
@@ -407,10 +408,7 @@ QString DeleteQuotes(QString str)
 
 
 
-class RecursionArray : public QMap<QString,QVariant>
-{
-private:
-    QString _toHTMLTegsFormat(RecursionArray Map)
+QString RecursionArray::_toHTMLTegsFormat(RecursionArray Map)
     {
         QString ReturnValue;
         int i=0;
@@ -426,7 +424,7 @@ private:
         }
         return ReturnValue;
     }
-    QString _toYUMFormat(RecursionArray Map,QString Tabulator="")
+    QString RecursionArray::_toYUMFormat(RecursionArray Map,QString Tabulator)
     {
         QString ReturnValue;
         int i=0;
@@ -441,9 +439,39 @@ private:
         }
         return ReturnValue;
     }
+    QString RecursionArray::_toCFGFormat(RecursionArray Map)
+    {
+        QString ReturnValue;
+        int i=0;
+        QList<QString> keys=Map.keys();
+        while(i<keys.size())
+        {
+            QString TypeValue;
+            QVariant Value=Map.value(keys.value(i));
+            if(Value.type()==QVariant::String) TypeValue="S";
+            else if(Value.type()==QVariant::Int) TypeValue="I";
+            else if(Value.type()==QVariant::Bool) TypeValue="B";
+            else
+            {
+                i++;
+                continue;
+            }
 
-public:
-    static QString printList(QList<QVariant> List)
+            QString tmp= _toCFGFormat(Map.value(keys.value(i)).toMap());
+            if(tmp.isEmpty())
+            {
+                ReturnValue+="\n"+TypeValue+":"+keys.value(i)+"=";
+                ReturnValue+=VariantToString(Map.value(keys.value(i)));
+            }
+            else
+            {
+                ReturnValue+="\n"+keys.value(i)+" {\n"+tmp+"\n}";
+            }
+            i++;
+        }
+        return ReturnValue;
+    }
+QString RecursionArray::printList(QList<QVariant> List)
     {
         QString ReturnValue="[";
         QVariant Value0=List.value(0);
@@ -457,7 +485,7 @@ public:
         ReturnValue+="]";
         return ReturnValue;
     }
-    static QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="")
+QString RecursionArray::printMap(RecursionArray Map,QString NameMap,QString Tabulator)
     {
         QString ReturnValue;
         int i=0;
@@ -489,7 +517,7 @@ public:
         ReturnValue+=Tabulator+"}";
         return ReturnValue;
     }
-    static QString VariantToString(QVariant tmp)
+QString RecursionArray::VariantToString(QVariant tmp)
     {
         if(tmp.type()==QVariant::String) return  tmp.toString();
         else if(tmp.type()==QVariant::ByteArray) return QString(tmp.toByteArray());
@@ -506,7 +534,7 @@ public:
         }
         else return "Unkown()";
     }
-    QMap<QString,QVariant> fromYumFormat(QString yum,QString level="", bool isReturn=false)
+    QMap<QString,QVariant> RecursionArray::fromYumFormat(QString yum,QString level, bool isReturn)
     {
         QStringList fromBR=yum.split("\n");
         QMap<QString,QVariant> ReturnMap;
@@ -544,7 +572,7 @@ public:
         }
         return ReturnMap;
     }
-    QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false)
+    QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn)
     {
         QStringList fromBR=yum.split("\n");
         QMap<QString,QVariant> ReturnMap;
@@ -598,14 +626,14 @@ public:
         }
         return ReturnMap;
     }
-    RecursionArray(QMap<QString,QVariant> h)
+    RecursionArray::RecursionArray(QMap<QString,QVariant> h)
     {
         QMap::operator =(h);
     }
-    RecursionArray()
+    RecursionArray::RecursionArray()
     {
     }
-    QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false)
+    QMap<QString,QVariant> RecursionArray::fromHTMLTegsFormat(QString value, bool isReturn)
     {
        QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
        int i=0;
@@ -653,20 +681,22 @@ public:
         }
         return ReturnValue; //Возврат готового Map
     }
-    QString toHTMLTegsFormat()
+    QString RecursionArray::toHTMLTegsFormat()
     {
         return _toHTMLTegsFormat(*this);
     }
-    QString toYUMFormat()
+    QString RecursionArray::toYUMFormat()
     {
         return _toYUMFormat(*this);
     }
-    QString print()
+    QString RecursionArray::toCFGFormat()
+    {
+        return _toCFGFormat(*this);
+    }
+    QString RecursionArray::print()
     {
         return printMap(*this);
     }
-
-};
 
 }
 #endif // ACORE

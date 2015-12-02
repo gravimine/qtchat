@@ -19,7 +19,7 @@
 #define INIT_CLIENT "Qt"
 #define INIT_VERSION "8.1"
 #define API_VERSION "2.3"
-#define IS_DEBUG "false"
+#define IS_DEBUG false
 #define TIMER_SENDLS 300
 #define SENSORE_STRING "[цензура]"
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
@@ -319,7 +319,7 @@ public:
                     InitServerUrl=ServersList.value(i).url;
                     ServerType=true;
                 }
-                setings->SetKey("Server",ServersList.value(i).url);
+                setings->operator[]("Server")=ServersList.value(i).url;
                 ADD_DEBUG "Server url: "+ServersList.value(i).url;
             }
         }
@@ -482,31 +482,28 @@ public:
     }
     void LoadSettings()
     {
-        setings->AddKey("Debug",IS_DEBUG);
-        setings->AddKey("TimeFormat","[%1:%2:%3]");
-        setings->AddKey("Smiles","true");
-        setings->AddKey("Login","");
-        setings->AddKey("Pass","");
-        setings->AddKey("Server","");
-        setings->AddKey("Sencure","true");
+        setings->operator []("Debug")=IS_DEBUG;
+        setings->operator []("TimeFormat")="[%1:%2:%3]";
+        setings->operator []("Smiles")=true;
+        setings->operator []("Sencure")=true;
         setings->LoadSettings();
-        R.LoadMenuUI->lineEdit->setText(setings->GetKey("Login"));
-        R.LoadMenuUI->lineEdit_2->setText(setings->GetKey("Pass"));
-        if(setings->GetKey("Smiles")=="true"){R.KabinUI->checkBox->setChecked(1);
+        R.LoadMenuUI->lineEdit->setText(setings->operator []("Login").toString());
+        R.LoadMenuUI->lineEdit_2->setText(setings->operator []("Pass").toString());
+        if(setings->operator []("Smiles").toBool()){R.KabinUI->checkBox->setChecked(1);
         isSmiles=true;}
         else
         {isSmiles=false;}
-        if(setings->GetKey("Sencure")=="true"){R.KabinUI->checkBox_7->setChecked(1);
+        if(setings->operator []("Sencure").toBool()){R.KabinUI->checkBox_7->setChecked(1);
         isCensure=true;}
         else
         {isCensure=false;}
-        if(setings->GetKey("Debug")=="true"){R.KabinUI->checkBox_2->setChecked(1);
+        if(setings->operator []("Debug").toBool()){R.KabinUI->checkBox_2->setChecked(1);
         isDebug=true;}
         else
         {isDebug=false;}
         QStringList List1,List2;
-        List1=setings->Main->value("KeysList1").toStringList();
-        List2=setings->Main->value("KeysList2").toStringList();
+        List1=setings->operator []("KeysList1").toStringList();
+        List2=setings->operator []("KeysList2").toStringList();
         for(int i=0;i<List1.size();i++)
         {
             UniKey s;
@@ -514,14 +511,14 @@ public:
             s.key=List2.value(i);
             UniKeyList << s;
         }
-        Server=QNetworkRequest(QUrl(setings->GetKey("Server")));
-        InitServerUrl=setings->GetKey("Server");
+        Server=QNetworkRequest(QUrl(setings->operator []("Server").toString()));
+        InitServerUrl=setings->operator []("Server").toString();
     }
     void CheckBoxUpdate()
     {
-        if(setings->GetKey("Smiles")=="true") R.KabinUI->checkBox->setChecked(1);
+        if(setings->operator []("Smiles").toBool()) R.KabinUI->checkBox->setChecked(1);
         else R.KabinUI->checkBox->setChecked(0);
-        if(setings->GetKey("Debug")=="true") R.KabinUI->checkBox->setChecked(1);
+        if(setings->operator []("Debug").toBool()) R.KabinUI->checkBox->setChecked(1);
         else R.KabinUI->checkBox->setChecked(0);
         if(!R.LoadMenuUI->lineEdit_2->text().isEmpty()) R.LoadMenuUI->checkBox->setChecked(1);
         else R.LoadMenuUI->checkBox->setChecked(0);
@@ -604,7 +601,7 @@ public:
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
         TimeStart=QTime::currentTime();
         #ifdef Q_OS_WIN32
-        setings=new ASettings(SetPath+"/.ClusterChat/settings.ini");
+        setings=new ASettings(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
         #endif
         #ifdef Q_OS_LINUX
         setings=new ASettings(SetPath+"/.config/ClusterChat.ini");
@@ -627,7 +624,6 @@ public:
         timer=new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
         connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
-        setings->Main->beginGroup("Main");
         errors->beginGroup("Errors");
         styles->beginGroup("Styles");
         numLS=0;
@@ -648,9 +644,8 @@ public:
             List1 << s.StringID;
             List2 << s.key;
         }
-        setings->Main->setValue("KeysList1",List1);
-        setings->Main->setValue("KeysList2",List2);
-        setings->Main->sync();
+        setings->operator []("KeysList1")=List1;
+        setings->operator []("KeysList2")=List2;
         delete timer;
         delete errors;
         delete setings;
@@ -848,6 +843,7 @@ public slots:
                 R.LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
                 R.LoadWindow->show();
                 log<< "login on";
+                qDebug() << setings->print();
             }
             else{
                 SendMessage(tr("Ошибка авторизации"));log<< "login Error: "+ Text;
@@ -1191,30 +1187,30 @@ void Kabinet::on_pushButton_clicked()
 }
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
-    if(arg1==2) {CluChat->setings->SetKey("Login",R.LoadMenuUI->lineEdit->text());
-    CluChat->setings->SetKey("Pass",R.LoadMenuUI->lineEdit_2->text());}
+    if(arg1==2) {CluChat->setings->operator []("Login")=R.LoadMenuUI->lineEdit->text();
+    CluChat->setings->operator []("Pass")=R.LoadMenuUI->lineEdit_2->text();}
 }
 void Kabinet::on_checkBox_7_stateChanged(int arg1)
 {
-    if(arg1==2) {CluChat->setings->SetKey("Sencure","true");}
-    else {CluChat->setings->SetKey("Sencure","false");}
+    if(arg1==2) {CluChat->setings->operator []("Sencure")=true;}
+    else {CluChat->setings->operator []("Sencure")=false;}
 }
 
 void Kabinet::on_checkBox_5_stateChanged(int arg1)
 {
-    if(arg1==2) {CluChat->setings->SetKey("VirtualHost","true");}
-    else {CluChat->setings->SetKey("VirtualHost","false");}
+    if(arg1==2) {CluChat->setings->operator []("VirtualHost")=true;}
+    else {CluChat->setings->operator []("VirtualHost")=false;}
 }
 
 void Kabinet::on_checkBox_clicked(bool checked)
 {
-    if(checked) {CluChat->setings->SetKey("Smiles","true");}
-    else CluChat->setings->SetKey("Smiles","false");
+    if(checked) {CluChat->setings->operator []("Smiles")=true;}
+    else CluChat->setings->operator []("Smiles")=false;
 }
 void Kabinet::on_checkBox_2_clicked(bool checked)
 {
-    if(checked) {CluChat->setings->SetKey("Debug","true");}
-    else CluChat->setings->SetKey("Debug","false");
+    if(checked) {CluChat->setings->operator []("Debug")=true;}
+    else CluChat->setings->operator []("Debug")=false;
 }
 void MainWindow::OnStart()
 {
