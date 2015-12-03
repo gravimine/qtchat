@@ -16,6 +16,7 @@ public:
     ~MainWindow();
     void OnStart();
     void OnRequest();
+    Ui::MainWindow *ui;
 private slots:
     void on_commandLinkButton_clicked();
     void on_pushButton_2_clicked();
@@ -31,8 +32,7 @@ private slots:
     void on_action_9_triggered();
     void on_action_5_triggered();
     void on_action_8_triggered();
-private:
-    Ui::MainWindow *ui;
+
 };
 
 #endif // MAINWINDOW_H

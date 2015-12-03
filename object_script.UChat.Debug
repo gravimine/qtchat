@@ -1,6 +1,10 @@
 INPUT(
 ./debug/main.o
 ./debug/mainwindow.o
+./debug/achat.o
+./debug/acore.o
+./debug/anetwork.o
+./debug/ui.o
 ./debug/qrc_app.o
 ./debug/moc_mainwindow.o
 ./debug/moc_dialog.o
@@ -10,4 +14,5 @@ INPUT(
 ./debug/moc_anetwork.o
 ./debug/moc_aclientserver.o
 ./debug/moc_loading.o
+./debug/moc_achat.o
 );

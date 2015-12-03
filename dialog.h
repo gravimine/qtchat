@@ -14,7 +14,7 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
-
+Ui::Dialog *ui;
 private slots:
     void on_pushButton_clicked();
 
@@ -26,9 +26,6 @@ private slots:
 
     void on_pushButton_3_clicked();
 
-
-private:
-    Ui::Dialog *ui;
 };
 
 #endif // DIALOG_H

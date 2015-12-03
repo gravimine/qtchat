@@ -14,7 +14,7 @@ class registr : public QDialog
 public:
     explicit registr(QWidget *parent = 0);
     ~registr();
-
+Ui::registr *ui;
 private slots:
     void on_pushButton_2_clicked();
 
@@ -22,8 +22,6 @@ private slots:
 
     void on_pushButton_3_clicked();
 
-private:
-    Ui::registr *ui;
 };
 
 #endif // REGISTR_H

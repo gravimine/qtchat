@@ -8,9 +8,12 @@
 #include <QTime>
 #include <QString>
 #include <QDebug>
+#include "auimanager.h"
+UIModule *R;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    R=new UIModule();
     QTime* timer=new QTime();
     timer->start();
     MainWindow *WindMain=new MainWindow;
@@ -23,6 +26,18 @@ int main(int argc, char *argv[])
     Loading *LoadWindow=new Loading;
     LoadWindow->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     int InitUI=timer->elapsed();
+    R->Kabin=WindKabinet;
+    R->KabinUI=WindKabinet->ui;
+    R->LoadMenu=WindDialog;
+    R->LoadMenuUI=WindDialog->ui;
+    R->LoadWindow=LoadWindow;
+    R->LoadWindowUI=LoadWindow->ui;
+    R->Main=WindMain;
+    R->MainUI=WindMain->ui;
+    R->Message=WindMessage;
+    R->MessageUI=WindMessage->ui;
+    R->Reg=WindRegis;
+    R->RegUI=WindRegis->ui;
     qDebug() << "Инициализация UI: "+QString::number(InitUI)+"мс";
     WindMain->OnStart();
     qDebug() << "Старт программы: "+QString::number(timer->elapsed()-InitUI)+"мс";

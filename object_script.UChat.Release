@@ -1,6 +1,10 @@
 INPUT(
 ./release/main.o
 ./release/mainwindow.o
+./release/achat.o
+./release/acore.o
+./release/anetwork.o
+./release/ui.o
 ./release/qrc_app.o
 ./release/moc_mainwindow.o
 ./release/moc_dialog.o
@@ -10,4 +14,5 @@ INPUT(
 ./release/moc_anetwork.o
 ./release/moc_aclientserver.o
 ./release/moc_loading.o
+./release/moc_achat.o
 );

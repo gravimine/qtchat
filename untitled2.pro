@@ -12,7 +12,11 @@ TARGET = UChat
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    achat.cpp \
+    acore.cpp \
+    anetwork.cpp \
+    ui.cpp
 
 HEADERS  += mainwindow.h \
     dialog.h \
@@ -24,7 +28,8 @@ HEADERS  += mainwindow.h \
     aclientserver.h \
     auimanager.h \
     loading.h \
-    amath.h
+    amath.h \
+    achat.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \

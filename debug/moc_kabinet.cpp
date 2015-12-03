@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_Kabinet_t {
-    QByteArrayData data[16];
-    char stringdata[294];
+    QByteArrayData data[17];
+    char stringdata[321];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,19 +37,21 @@ QT_MOC_LITERAL(4, 37, 21), // "on_checkBox_2_clicked"
 QT_MOC_LITERAL(5, 59, 21), // "on_pushButton_clicked"
 QT_MOC_LITERAL(6, 81, 26), // "on_checkBox_5_stateChanged"
 QT_MOC_LITERAL(7, 108, 4), // "arg1"
-QT_MOC_LITERAL(8, 113, 21), // "on_listWidget_clicked"
-QT_MOC_LITERAL(9, 135, 5), // "index"
-QT_MOC_LITERAL(10, 141, 23), // "on_listWidget_3_clicked"
-QT_MOC_LITERAL(11, 165, 23), // "on_listWidget_2_clicked"
-QT_MOC_LITERAL(12, 189, 32), // "on_pushButton_CreateRoom_clicked"
-QT_MOC_LITERAL(13, 222, 23), // "on_pushButton_4_clicked"
-QT_MOC_LITERAL(14, 246, 23), // "on_pushButton_2_clicked"
-QT_MOC_LITERAL(15, 270, 23) // "on_listWidget_4_clicked"
+QT_MOC_LITERAL(8, 113, 26), // "on_checkBox_7_stateChanged"
+QT_MOC_LITERAL(9, 140, 21), // "on_listWidget_clicked"
+QT_MOC_LITERAL(10, 162, 5), // "index"
+QT_MOC_LITERAL(11, 168, 23), // "on_listWidget_3_clicked"
+QT_MOC_LITERAL(12, 192, 23), // "on_listWidget_2_clicked"
+QT_MOC_LITERAL(13, 216, 32), // "on_pushButton_CreateRoom_clicked"
+QT_MOC_LITERAL(14, 249, 23), // "on_pushButton_4_clicked"
+QT_MOC_LITERAL(15, 273, 23), // "on_pushButton_2_clicked"
+QT_MOC_LITERAL(16, 297, 23) // "on_listWidget_4_clicked"
 
     },
     "Kabinet\0on_checkBox_clicked\0\0checked\0"
     "on_checkBox_2_clicked\0on_pushButton_clicked\0"
     "on_checkBox_5_stateChanged\0arg1\0"
+    "on_checkBox_7_stateChanged\0"
     "on_listWidget_clicked\0index\0"
     "on_listWidget_3_clicked\0on_listWidget_2_clicked\0"
     "on_pushButton_CreateRoom_clicked\0"
@@ -64,7 +66,7 @@ static const uint qt_meta_data_Kabinet[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      12,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -72,30 +74,32 @@ static const uint qt_meta_data_Kabinet[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   69,    2, 0x08 /* Private */,
-       4,    1,   72,    2, 0x08 /* Private */,
-       5,    0,   75,    2, 0x08 /* Private */,
-       6,    1,   76,    2, 0x08 /* Private */,
-       8,    1,   79,    2, 0x08 /* Private */,
-      10,    1,   82,    2, 0x08 /* Private */,
-      11,    1,   85,    2, 0x08 /* Private */,
-      12,    0,   88,    2, 0x08 /* Private */,
-      13,    0,   89,    2, 0x08 /* Private */,
-      14,    0,   90,    2, 0x08 /* Private */,
-      15,    1,   91,    2, 0x08 /* Private */,
+       1,    1,   74,    2, 0x08 /* Private */,
+       4,    1,   77,    2, 0x08 /* Private */,
+       5,    0,   80,    2, 0x08 /* Private */,
+       6,    1,   81,    2, 0x08 /* Private */,
+       8,    1,   84,    2, 0x08 /* Private */,
+       9,    1,   87,    2, 0x08 /* Private */,
+      11,    1,   90,    2, 0x08 /* Private */,
+      12,    1,   93,    2, 0x08 /* Private */,
+      13,    0,   96,    2, 0x08 /* Private */,
+      14,    0,   97,    2, 0x08 /* Private */,
+      15,    0,   98,    2, 0x08 /* Private */,
+      16,    1,   99,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    7,
-    QMetaType::Void, QMetaType::QModelIndex,    9,
-    QMetaType::Void, QMetaType::QModelIndex,    9,
-    QMetaType::Void, QMetaType::QModelIndex,    9,
+    QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void, QMetaType::QModelIndex,   10,
+    QMetaType::Void, QMetaType::QModelIndex,   10,
+    QMetaType::Void, QMetaType::QModelIndex,   10,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QModelIndex,    9,
+    QMetaType::Void, QMetaType::QModelIndex,   10,
 
        0        // eod
 };
@@ -109,13 +113,14 @@ void Kabinet::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 1: _t->on_checkBox_2_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: _t->on_pushButton_clicked(); break;
         case 3: _t->on_checkBox_5_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: _t->on_listWidget_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
-        case 5: _t->on_listWidget_3_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
-        case 6: _t->on_listWidget_2_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
-        case 7: _t->on_pushButton_CreateRoom_clicked(); break;
-        case 8: _t->on_pushButton_4_clicked(); break;
-        case 9: _t->on_pushButton_2_clicked(); break;
-        case 10: _t->on_listWidget_4_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 4: _t->on_checkBox_7_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->on_listWidget_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 6: _t->on_listWidget_3_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 7: _t->on_listWidget_2_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 8: _t->on_pushButton_CreateRoom_clicked(); break;
+        case 9: _t->on_pushButton_4_clicked(); break;
+        case 10: _t->on_pushButton_2_clicked(); break;
+        case 11: _t->on_listWidget_4_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -146,13 +151,13 @@ int Kabinet::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 12)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
 }

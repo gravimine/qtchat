@@ -14,8 +14,6 @@ class Loading : public QWidget
 public:
     explicit Loading(QWidget *parent = 0);
     ~Loading();
-
-private:
     Ui::Loading *ui;
 };
 

@@ -15,7 +15,7 @@ class Kabinet : public QDialog
 public:
     explicit Kabinet(QWidget *parent = 0);
     ~Kabinet();
-
+Ui::Kabinet *ui;
 private slots:
 
     void on_checkBox_clicked(bool checked);
@@ -37,8 +37,6 @@ private slots:
          void on_pushButton_2_clicked();
          void on_listWidget_4_clicked(const QModelIndex &index);
 
-private:
-    Ui::Kabinet *ui;
 };
 
 #endif // KABINET_H
