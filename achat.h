@@ -13,9 +13,9 @@
 #include <QTime>
 #include <QTextBrowser>
 #include <QTextCodec>
-#include "anetwork.h"
+#include "ACore/anetwork.h"
 #include "auimanager.h"
-#include "acore.h"
+#include "ACore/acore.h"
 #define ADD_DEBUG log<<
 #define INIT_CLIENT "Qt"
 #define INIT_VERSION "8.1"

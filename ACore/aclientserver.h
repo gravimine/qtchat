@@ -4,7 +4,7 @@
 #include <QTime>
 #include <QString>
 #include <QByteArray>
-#include <anetwork.h>
+#include <ACore/anetwork.h>
 class ATcpNetwork : public ANetwork {
 	Q_OBJECT
 protected:

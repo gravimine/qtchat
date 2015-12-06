@@ -163,6 +163,7 @@ Makefile: untitled2.pro C:/Qt/5.4/mingw491_32/mkspecs/win32-g++/qmake.conf C:/Qt
 		C:/Qt/5.4/mingw491_32/mkspecs/features/exclusive_builds.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/default_pre.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/win32/default_pre.prf \
+		ACore/ACore.pri \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/resolve_config.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/exclusive_builds_post.prf \
 		C:/Qt/5.4/mingw491_32/mkspecs/features/default_post.prf \
@@ -291,6 +292,7 @@ C:/Qt/5.4/mingw491_32/mkspecs/features/spec_post.prf:
 C:/Qt/5.4/mingw491_32/mkspecs/features/exclusive_builds.prf:
 C:/Qt/5.4/mingw491_32/mkspecs/features/default_pre.prf:
 C:/Qt/5.4/mingw491_32/mkspecs/features/win32/default_pre.prf:
+ACore/ACore.pri:
 C:/Qt/5.4/mingw491_32/mkspecs/features/resolve_config.prf:
 C:/Qt/5.4/mingw491_32/mkspecs/features/exclusive_builds_post.prf:
 C:/Qt/5.4/mingw491_32/mkspecs/features/default_post.prf:

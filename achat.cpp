@@ -1,5 +1,5 @@
 #include "achat.h"
-#include "aclientserver.h"
+#include "ACore/aclientserver.h"
 using namespace ACore;
 
 bool AChat::isSendCommand(QString message)
@@ -396,7 +396,7 @@ AChat::AChat()
 	setings=new ASettings(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
 	#endif
 	#ifdef Q_OS_LINUX
-	setings=new ASettings(SetPath+"/.config/ClusterChat.ini");
+	setings=new ASettings(SetPath+"/.config/ClusterChat.cfg");
 	#endif
 	MyClient.com_id=0;
 	RecursionArray tmpp;
