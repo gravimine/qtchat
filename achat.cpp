@@ -1,7 +1,12 @@
 #include "achat.h"
 #include "ACore/aclientserver.h"
+#include "ACore/abbcodec.h"
 using namespace ACore;
-
+AChate MyKomnata;
+AChat *CluChat;
+ACore::ASettings setings;
+bool isStart;
+ACore::AAppCore ClusterChat("ClusterChat");
 bool AChat::isSendCommand(QString message)
 {
 	if(message.toLatin1()[0]=='/') return true;
@@ -112,7 +117,7 @@ void AChat::SetServer(QString name)
 				InitServerUrl=ServersList.value(i).url;
 				ServerType=true;
 			}
-			setings->operator[]("Server")=ServersList.value(i).url;
+			setings["Server"]=ServersList.value(i).url;
 			ADD_DEBUG "Server url: "+ServersList.value(i).url;
 		}
 	}
@@ -239,14 +244,16 @@ QString AChat::GetErrorText(int ErrorID)
 }
 UniKey AChat::FindUniKey(QString id)
 {
+	UniKey result;
 	for(int i=0;i<UniKeyList.size();i++)
 	{
 		if(UniKeyList.value(i).StringID==id)
 		{
-			return UniKeyList.value(i);
+			result=UniKeyList.value(i);
 			break;
 		}
 	}
+	return result;
 }
 void AChat::login(QString loginit,QString passit,QString key)
 {
@@ -275,43 +282,44 @@ void AChat::GetFileErrors()
 }
 void AChat::LoadSettings()
 {
-	setings->operator []("Debug")=IS_DEBUG;
-	setings->operator []("TimeFormat")="[%1:%2:%3]";
-	setings->operator []("Smiles")=true;
-	setings->operator []("Sencure")=true;
-	setings->LoadSettings();
-	R->LoadMenuUI->lineEdit->setText(setings->operator []("Login").toString());
-	R->LoadMenuUI->lineEdit_2->setText(setings->operator []("Pass").toString());
-	if(setings->operator []("Smiles").toBool()){R->KabinUI->checkBox->setChecked(1);
+	setings["Debug"]=IS_DEBUG;
+	setings["TimeFormat"]="[%1:%2:%3]";
+	setings["Smiles"]=true;
+	setings["Sencure"]=true;
+	setings.LoadSettings();
+	R->LoadMenuUI->lineEdit->setText(setings["Login"].toString());
+	R->LoadMenuUI->lineEdit_2->setText(setings["Pass"].toString());
+	if(setings["Smiles"].toBool()){R->KabinUI->checkBox->setChecked(1);
 		isSmiles=true;}
 	else
 	{isSmiles=false;}
-	if(setings->operator []("Sencure").toBool()){R->KabinUI->checkBox_7->setChecked(1);
+	if(setings["Sencure"].toBool()){R->KabinUI->checkBox_7->setChecked(1);
 		isCensure=true;}
 	else
 	{isCensure=false;}
-	if(setings->operator []("Debug").toBool()){R->KabinUI->checkBox_2->setChecked(1);
+	if(setings["Debug"].toBool()){R->KabinUI->checkBox_2->setChecked(1);
 		isDebug=true;}
 	else
 	{isDebug=false;}
-	QStringList List1,List2;
-	List1=setings->operator []("KeysList1").toStringList();
-	List2=setings->operator []("KeysList2").toStringList();
-	for(int i=0;i<List1.size();i++)
+	RecursionArray KeysArray=setings["KeysList"].toMap();
+	for(int i=0;i<KeysArray.size();i++)
 	{
+		RecursionArray KeyArray=KeysArray.value(QString::number(i)).toMap();
 		UniKey s;
-		s.StringID=List1.value(i);
-		s.key=List2.value(i);
+		s.StringID=KeyArray.value("Client").toString();
+		s.key=KeyArray.value("Key").toString();
+		s.CookieCode=KeyArray.value("Cookie").toString();
 		UniKeyList << s;
 	}
-	Server=QNetworkRequest(QUrl(setings->operator []("Server").toString()));
-	InitServerUrl=setings->operator []("Server").toString();
+
+	Server=QNetworkRequest(QUrl(setings["Server"].toString()));
+	InitServerUrl=setings["Server"].toString();
 }
 void AChat::CheckBoxUpdate()
 {
-	if(setings->operator []("Smiles").toBool()) R->KabinUI->checkBox->setChecked(1);
+	if(setings["Smiles"].toBool()) R->KabinUI->checkBox->setChecked(1);
 	else R->KabinUI->checkBox->setChecked(0);
-	if(setings->operator []("Debug").toBool()) R->KabinUI->checkBox->setChecked(1);
+	if(setings["Debug"].toBool()) R->KabinUI->checkBox->setChecked(1);
 	else R->KabinUI->checkBox->setChecked(0);
 	if(!R->LoadMenuUI->lineEdit_2->text().isEmpty()) R->LoadMenuUI->checkBox->setChecked(1);
 	else R->LoadMenuUI->checkBox->setChecked(0);
@@ -375,12 +383,6 @@ Client AChat::GetClient(int id)
 	}
 	return returnClient;
 }
-void AChat::functionA()
-{
-	int sum = 0;
-	while (sum < 10e5)
-	sum++;
-}
 AChat::AChat()
 {
 	SetPath=QDir().homePath();
@@ -389,34 +391,23 @@ AChat::AChat()
 	log<< "Start";
 	ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
 	isStart=false;
-	functionA();
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 	TimeStart=QTime::currentTime();
 	#ifdef Q_OS_WIN32
-	setings=new ASettings(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
+	setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
 	#endif
 	#ifdef Q_OS_LINUX
-	setings=new ASettings(SetPath+"/.config/ClusterChat.cfg");
+	setings=new ASettings(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
 	#endif
 	MyClient.com_id=0;
-	RecursionArray tmpp;
-	tmpp.fromCfgFormat("I:Value1=45\nB:\"Boolean I As\"=true\nS:Str=Cloda\nTestCategory {\nI:Value1=5\nI:Value2=4\n}\nS:Str2=Lololo");
-	qDebug() << tmpp.print();
-	QVariant testing=true;
-	qDebug() <<RecursionArray::VariantToString(testing);
 	ServerType=true;
 	ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
-	errors=new QSettings(SetPath+"/.ClusterChat/Errors.txt", QSettings::IniFormat);
-	errors->setIniCodec(QTextCodec::codecForName("UTF-8"));
-	styles=new QSettings(SetPath+"/.ClusterChat/Style.ini", QSettings::IniFormat);
 	connect(this, SIGNAL(ARequest(ANetworkReply)),this, SLOT(getReplyFinished(ANetworkReply)));
 	//Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
 	timersendls=new QTimer(this);
 	timer=new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
 	connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
-	errors->beginGroup("Errors");
-	styles->beginGroup("Styles");
 	numLS=0;
 	isReloadHostory=false;
 	HistoryNumberLS=0;
@@ -425,22 +416,20 @@ AChat::AChat()
 AChat::~AChat()
 {
 	log.SaveLog();
-	setings->SaveSettings();
-	QStringList List1,List2;
 
+	QMap<QString,QVariant> KeysArray;
 	for(int i=0;i<UniKeyList.size();i++)
 	{
-		UniKey s;
-		s=UniKeyList.value(i);
-		List1 << s.StringID;
-		List2 << s.key;
+		QMap<QString,QVariant> KeyArray;
+		UniKey s=UniKeyList.value(i);
+		KeyArray["Client"]=s.StringID;
+		KeyArray["Key"]=s.key;
+		KeyArray["Cookie"]=s.CookieCode;
+		KeysArray[QString::number(i)]=KeyArray;
 	}
-	setings->operator []("KeysList1")=List1;
-	setings->operator []("KeysList2")=List2;
+	setings["KeysList"]=KeysArray;
+	setings.SaveSettings();
 	delete timer;
-	delete errors;
-	delete setings;
-	delete styles;
 	delete timersendls;
 	ADD_DEBUG "Exit " + timeEx(timer3);
 }
@@ -626,12 +615,12 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 					UniKey s;
 					s.StringID=MyUniKey;
 					s.key=ValuesMap.value("сlientUnigue").toString();
+					s.CookieCode=ValuesMap.value("userUnigue").toString();
 					if(!UniKeyList.contains(s)) UniKeyList << s;
 				}
 				R->LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
 				R->LoadWindow->show();
 				log<< "login on";
-				qDebug() << setings->print();
 			}
 			else{
 				SendMessage(tr("Ошибка авторизации"));log<< "login Error: "+ Text;

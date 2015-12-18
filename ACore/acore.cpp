@@ -308,6 +308,15 @@ namespace ACore
 		FileFormat=format;
 	}
 
+	ASettings::ASettings()
+	{
+	}
+
+	void ASettings::setPatch(QString patch,ArrayFormates format)
+	{
+		file=patch;
+		FileFormat=format;
+	}
 	void ASettings::LoadSettings()
 	{
 		QFile stream;
@@ -392,12 +401,12 @@ namespace ACore
 			if(Value.type()==QVariant::String) TypeValue="S";
 			else if(Value.type()==QVariant::Int) TypeValue="I";
 			else if(Value.type()==QVariant::Bool) TypeValue="B";
+			else if(Value.type()==QVariant::Map) {}
 			else
 			{
 				i++;
 				continue;
 			}
-
 			QString tmp= _toCFGFormat(Map.value(keys.value(i)).toMap());
 			if(tmp.isEmpty())
 			{

@@ -1,10 +1,14 @@
-SOURCES += ACore/acore.cpp \
-    ACore/anetwork.cpp \
-    $$PWD/aalgoritm.cpp
+SOURCES += $$PWD/acore.cpp \
+    $$PWD/anetwork.cpp \
+    $$PWD/aalgoritm.cpp \
+    $$PWD/abbcodec.cpp \
+    $$PWD/asound.cpp
 
-HEADERS  += ACore/acore.h \
-    ACore/anetwork.h \
-    ACore/aclientserver.h \
-    ACore/auimanager.h \
-    ACore/amath.h \
-    $$PWD/aalgoritm.h
+HEADERS  += $$PWD/acore.h \
+    $$PWD/anetwork.h \
+    $$PWD/aclientserver.h \
+    $$PWD/auimanager.h \
+    $$PWD/amath.h \
+    $$PWD/aalgoritm.h \
+    $$PWD/abbcodec.h \
+    $$PWD/asound.h

@@ -9,7 +9,7 @@
 #include <QFile>
 #include <QByteArray>
 #include <QVariant>
-
+#include <QAudioOutput>
 #include <QTime>
 #include <QTextBrowser>
 #include <QTextCodec>
@@ -27,7 +27,7 @@
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define EXTRA_NETWORK false
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
-static bool isStart;
+extern bool isStart;
 
 struct AChate
 {
@@ -46,6 +46,7 @@ struct UniKey
 {
 	QString key;
 	QString StringID;
+	QString CookieCode;
 	bool operator ==(UniKey h)
 	{
 		if(StringID==h.StringID) return true;
@@ -120,7 +121,7 @@ struct Client
 		else return false;
 	}
 };
-static ACore::AAppCore ClusterChat("ClusterChat");
+extern ACore::AAppCore ClusterChat;
 
 struct AServer
 {
@@ -147,7 +148,7 @@ struct Style
 	QString Notify;
 	QString OnlineList;
 };
-
+extern ACore::ASettings setings;
 void SendDialogMessage(QString Text,QString Title="");
 class AChat : public ANetwork
 {
@@ -158,6 +159,7 @@ private:
 	Client MyClient;
 	QString OnlineCashe;
 	QList<QString> SendLSList;
+	QAudioOutput audio;
 	QTime SendLSOnTime;
 	QList<PrivateMessage> MessageList;
 	QList< QList<PrivateMessage> > MessageListOther;
@@ -173,11 +175,9 @@ private:
 	QTime TimeStart;
 	QTimer *timersendls;
 	Style Styled;
-	QSettings *styles;
 	QString StylePath;
 	int numLS;
 	Client TimeClient;
-	QSettings *errors;
 	QTime timer3;
 	QTimer *timer;
 public:
@@ -209,11 +209,10 @@ public:
 	AChate GetRoom(int id);
 	Client FindClientOfIndex(QString id);
 	Client GetClient(int id);
-	void functionA();
 	AChat();
 	~AChat();
 	QString SencureString(QString str);
-	ACore::ASettings *setings;
+
 	void Registration(QString Login,QString name_and_family, QString Pass,QString EMail);
 	void SendLSTimer();
 	void SendLS(QString Text);
@@ -231,7 +230,8 @@ public:
 	void updateCaption(); //Таймер сработал
 	void updateCaption2();
 };
-static AChat *CluChat;
-static AChate MyKomnata;
+extern AChat *CluChat;
+extern AChate MyKomnata;
+
 #endif // ACHAT
 

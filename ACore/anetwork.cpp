@@ -98,7 +98,6 @@ void ANetwork::get(QString text, int Typ)
 		tmp.isPost=false;
 		Posts << tmp;
 	}
-	qDebug() << "Get:"+text;
 	//if(Type!=tAuth) if(isDebug)log<< dtime()+ "Get:"+ text;
 }
 
@@ -134,7 +133,6 @@ int nPort)
 }
 void ATcpNetwork::post(QString text, int Typ)
 {
-	qDebug() << "Post:"+text;
 	if(isSendPost==0) { m_pTcpSocket->write(text.toLocal8Bit()); Type=Typ;isSendPost=1;}
 	else
 	{
@@ -151,7 +149,6 @@ void ATcpNetwork::slotReadyRead()
 	_value.TextError="Unkown Error";
 	_value.TextReply=QString::fromUtf8(m_pTcpSocket->readAll());
 	_value.Type=Type;
-	qDebug() << "Return:"+_value.TextReply;
 	ARequestTcp(_value);
 	if(Posts.size()>=1)
 	{
@@ -161,7 +158,6 @@ void ATcpNetwork::slotReadyRead()
 		Posts.removeAt(0);
 	}
 	else isSendPost=0;
-	qDebug() << "Read";
 
 }
 void ATcpNetwork::slotError(QAbstractSocket::SocketError err)
@@ -183,5 +179,4 @@ void ATcpNetwork::slotError(QAbstractSocket::SocketError err)
 }
 void ATcpNetwork::slotConnected()
 {
-	qDebug() << "Connect";
 }

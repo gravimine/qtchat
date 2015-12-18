@@ -18,7 +18,6 @@ using namespace ACore;
 
 
 
-
 QTextBrowser *tmppp;
 
 
@@ -130,30 +129,33 @@ void Kabinet::on_pushButton_clicked()
 }
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
-    if(arg1==2) {CluChat->setings->operator []("Login")=R->LoadMenuUI->lineEdit->text();
-        CluChat->setings->operator []("Pass")=R->LoadMenuUI->lineEdit_2->text();}
+    if(arg1==2) {setings["Login"]=R->LoadMenuUI->lineEdit->text();
+        setings["Pass"]=R->LoadMenuUI->lineEdit_2->text();}
+    else
+      {setings["Login"]="";
+              setings["Pass"]="";}
 }
 void Kabinet::on_checkBox_7_stateChanged(int arg1)
 {
-	if(arg1==2) {CluChat->setings->operator []("Sencure")=true;}
-	else {CluChat->setings->operator []("Sencure")=false;}
+	if(arg1==2) {setings["Sencure"]=true;}
+	else {setings["Sencure"]=false;}
 }
 
 void Kabinet::on_checkBox_5_stateChanged(int arg1)
 {
-	if(arg1==2) {CluChat->setings->operator []("VirtualHost")=true;}
-	else {CluChat->setings->operator []("VirtualHost")=false;}
+	if(arg1==2) {setings["VirtualHost"]=true;}
+	else {setings["VirtualHost"]=false;}
 }
 
 void Kabinet::on_checkBox_clicked(bool checked)
 {
-	if(checked) {CluChat->setings->operator []("Smiles")=true;}
-	else CluChat->setings->operator []("Smiles")=false;
+	if(checked) {setings["Smiles"]=true;}
+	else setings["Smiles"]=false;
 }
 void Kabinet::on_checkBox_2_clicked(bool checked)
 {
-	if(checked) {CluChat->setings->operator []("Debug")=true;}
-	else CluChat->setings->operator []("Debug")=false;
+	if(checked) {setings["Debug"]=true;}
+	else setings["Debug"]=false;
 }
 void MainWindow::OnStart()
 {
@@ -200,7 +202,7 @@ void registr::on_pushButton_clicked()
 }
 void MainWindow::on_commandLinkButton_clicked()
 {
-    if(!R->MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(QtHtmlRecoder(R->MainUI->textEdit->toHtml()));
+    if(!R->MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(R->MainUI->textEdit->toPlainText().replace("\n","<br>"));
     R->MainUI->textEdit->setHtml("");
     R->MainUI->textEdit->setFocus();
 }

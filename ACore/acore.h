@@ -63,6 +63,8 @@ namespace ACore
 	{
 	public:
 		ASettings(QString patch,ArrayFormates format);
+		ASettings();
+		void setPatch(QString patch,ArrayFormates format);
 		void LoadSettings();
 		void SaveSettings();
 	protected:
