@@ -9,7 +9,6 @@
 #include <QFile>
 #include <QByteArray>
 #include <QVariant>
-#include <QAudioOutput>
 #include <QTime>
 #include <QTextBrowser>
 #include <QTextCodec>
@@ -52,6 +51,13 @@ struct UniKey
 		if(StringID==h.StringID) return true;
 		else return false;
 	}
+    UniKey() {}
+    UniKey(QString key1, QString StringID1,QString CookieCode1)
+    {
+        key=key1;
+        StringID=StringID1;
+        CookieCode=CookieCode1;
+    }
 };
 struct UniClient
 {
@@ -66,6 +72,17 @@ struct UniClient
 		if(key==h.key) return true;
 		else return false;
 	}
+};
+struct Smile
+{
+    QString code;
+    QString url;
+    Smile() {}
+    Smile(QString _code,QString _url)
+    {
+        code=_code;
+        url=_url;
+    }
 };
 enum ChatTypes
 {
@@ -159,11 +176,11 @@ private:
 	Client MyClient;
 	QString OnlineCashe;
 	QList<QString> SendLSList;
-	QAudioOutput audio;
 	QTime SendLSOnTime;
 	QList<PrivateMessage> MessageList;
-	QList< QList<PrivateMessage> > MessageListOther;
+    QList< QList<PrivateMessage> > MessageListOther;
 	QList<AServer> ServersList;
+    QList<Smile> SmilesList;
 	QList<Client> ClientList;
 	QList<AChate> ChatsList;
 	QList<UniKey> UniKeyList;
@@ -212,7 +229,7 @@ public:
 	AChat();
 	~AChat();
 	QString SencureString(QString str);
-
+    void RenderSmiles();
 	void Registration(QString Login,QString name_and_family, QString Pass,QString EMail);
 	void SendLSTimer();
 	void SendLS(QString Text);

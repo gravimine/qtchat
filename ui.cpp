@@ -1,4 +1,5 @@
 #include "auimanager.h"
+#include "achat.h"
 #include <QDesktopWidget>
 #include <QRect>
 #include <QPoint>
@@ -35,6 +36,13 @@ Loading::~Loading()
 	delete ui;
 }
 
+void Kabinet::on_tabWidget_currentChanged(int index)
+{
+    if(index==6)
+    {
+        CluChat->RenderSmiles();
+    }
+}
 
 Dialog::~Dialog(){delete ui;}
 registr::registr(QWidget *parent) :
@@ -91,12 +99,18 @@ void MainWindow::on_action_3_triggered()
 void MainWindow::on_action_11_triggered()
 {
 	R->Kabin->show();
-	R->KabinUI->tabWidget->setCurrentIndex(7);
+    R->KabinUI->tabWidget->setCurrentIndex(8);
 }
 void MainWindow::on_action_9_triggered()
 {
 	R->Kabin->show();
-	R->KabinUI->tabWidget->setCurrentIndex(6);
+    R->KabinUI->tabWidget->setCurrentIndex(7);
+}
+void MainWindow::on_action_4_triggered()
+{
+    R->Kabin->show();
+    R->KabinUI->tabWidget->setCurrentIndex(6);
+    CluChat->RenderSmiles();
 }
 void MainWindow::on_action_13_triggered()
 {

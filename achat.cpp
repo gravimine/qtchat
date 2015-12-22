@@ -31,6 +31,13 @@ void AChat::AddLS(int ClientID,QString msg)
 	temp.msg=msg;
 	MessageList << temp;
 }
+void AChat::RenderSmiles()
+{
+    QString str;
+    for(int i=0;i<SmilesList.size();i++) str+="<IMG src=\""+SmilesList.value(i).url+"\">  "+SmilesList.value(i).code+"<br><br>";
+    R->KabinUI->label->setText(str);
+}
+
 void AChat::WriteServerList(ACore::RecursionArray reply)
 {
 	int Servers=0,AllServers=0;
@@ -397,7 +404,7 @@ AChat::AChat()
 	setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
 	#endif
 	#ifdef Q_OS_LINUX
-	setings=new ASettings(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
+    setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
 	#endif
 	MyClient.com_id=0;
 	ServerType=true;
@@ -408,7 +415,9 @@ AChat::AChat()
 	timer=new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
 	connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
-	numLS=0;
+    numLS=0;
+    SmilesList << Smile(":)",":/res/smail.png") << Smile(":(",":/res/sadness.png")
+               << Smile(":пфф:",":/res/rukalico.png") << Smile(":{}",":/res/zloi.png");
 	isReloadHostory=false;
 	HistoryNumberLS=0;
 	TimerTick=0;
@@ -435,7 +444,7 @@ AChat::~AChat()
 }
 QString AChat::SencureString(QString str)
 {
-	return str.replace(QRegExp("сука"),SENSORE_STRING).replace(QRegExp("пид[^/s]р[^/s]{2}"),SENSORE_STRING)
+    return str.replace(QRegExp("сука"),SENSORE_STRING).replace(QRegExp("пид[^/s]р[^/s]{2}"),SENSORE_STRING)
 	.replace(QRegExp("еба[^/s]{3}"),SENSORE_STRING).replace(QRegExp("ху[й|и|е][^/s]{3}"),SENSORE_STRING)
 	.replace(QRegExp("блядь"),SENSORE_STRING);
 }
@@ -465,12 +474,12 @@ void AChat::SendLS(QString Text)
 	else
 	{
 		if(!isSendCommand(Text)){
-			if(!isCensure) post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(Text
-			.replace("%","%25").replace("&","%26")
-			.replace("+","%2B"),false),tNewLS);
-			else post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SpecialSybmolCoder(SencureString(Text)
-			.replace("%","%25").replace("&","%26")
-			.replace("+","%2B"),false),tNewLS);
+            if(!isCensure) post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+Text
+            .replace("%","%25")
+            .replace("&","%26").replace("+","%2B"),tNewLS);
+            else post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SencureString(Text)
+            .replace("%","%25")
+            .replace("&","%26").replace("+","%2B"),tNewLS);
 		}
 		//if(!isSendCommand(Text)) post("type=sendmsg&message="+Text.replace("&","%26"),tNewLS);
 		else SendCommand(Text);
@@ -552,10 +561,12 @@ QString AChat::ListToHTML()
 	{
 		PrivateMessage ssLS=MessageList.value(i);
 		ssLS.msg=Reformat(ssLS.msg);
-		ssLS.msg.replace(":)","<IMG src=\":/res/smail.png\">")
+        /*ssLS.msg.replace(":)","<IMG src=\":/res/smail.png\">")
+        .replace("\n","<br>")
 		.replace(":(","<IMG src=\":/res/sadness.png\">")
 		.replace(":пфф:","<IMG src=\":/res/rukalico.png\">")
-		.replace(":{}","<IMG src=\":/res/default/zloi.png\">");
+        .replace(":{}","<IMG src=\":/res/default/zloi.png\">");*/
+        for(int i=0;i<SmilesList.size();i++) ssLS.msg.replace(SmilesList.value(i).code,"<IMG src=\""+SmilesList.value(i).url+"\">");
 		Client ClientLS=GetClient(ssLS.ClientID);
 		QStringList ListX=ssLS.time.split(":");
 		QStringList ListY=ssLS.data.split("-");

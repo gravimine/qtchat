@@ -150,25 +150,42 @@ namespace ACore
 		timedate.setDate(date);
 		timedate.setTime(time);
 		QDateTime datatime;datatime=QDateTime::currentDateTime();
-		int our=timedate.secsTo(datatime);
-		int tmp=our/60;
-		int ahour=tmp/60;
-		int amin=GetOstatok(tmp,60);
-		int asec=GetOstatok(our,60);
+        unsigned int our=timedate.secsTo(datatime);
+        unsigned int tmp=our/60;
+        unsigned int ahour=tmp/60;
+        unsigned int amin=GetOstatok(tmp,60);
+        unsigned int asec=GetOstatok(our,60);
 
 		if(ahour/24>0) result+=QString::number(ahour/24)+"d ";
 		if(GetOstatok(ahour,24)>0) result+=QString::number(GetOstatok(ahour,24))+"h ";
 		if(amin>0) result+=QString::number(amin)+"min ";
 		if(asec>0) result+=QString::number(asec)+"s ";
-
-
 		return result;
 	}
-
+    QDateTime dataTimeEx(QDateTime timedate,QDateTime datatime=QDateTime::currentDateTime())
+    {
+        QDateTime result;
+        unsigned int our=timedate.secsTo(datatime);
+        unsigned int tmp=our/60;
+        unsigned int ahour=tmp/60;
+        unsigned int amin=GetOstatok(tmp,60);
+        unsigned int asec=GetOstatok(our,60);
+        QTime timed; QDate date;
+        unsigned int sec,min,hour,days;
+        if(ahour/24>0) days=ahour/24;
+        if(GetOstatok(ahour,24)>0) hour=GetOstatok(ahour,24);
+        if(amin>0) min=amin;
+        if(asec>0) sec=asec;
+        timed.setHMS(hour,min,sec);
+        date.addDays(days);
+        result.setDate(date);
+        result.setTime(timed);
+        return result;
+    }
 	QString DeleteSpaceStart(QString str)
 	{
 		int deleteSize=0;
-		for(int i=0;str.toLocal8Bit()[i]==' ';i++) deleteSize++;
+        for(int i=0;str[i]==' ';i++) deleteSize++;
 		return str.remove(0,deleteSize);
 	}
 
@@ -178,13 +195,13 @@ namespace ACore
 		return str.remove(0,1).remove(str.size()-2,1);
 		else return str;
 	}
-	int GetOstatok(float x,float k)
+    float GetOstatok(float x,float k)
 	{
 		float x1=x/k;
 		if((int)x1==(float)x1) return 0;
 		else
 		{
-			int x2=(int)x1*(int)k;
+            float x2=(int)x1*(int)k;
 			return x-x2;
 		}
 	}

@@ -30,6 +30,12 @@ struct BBCodeRule
     if(nameBBCode==h.nameBBCode) return true;
     else return false;
   }
+  BBCodeRule() {}
+  BBCodeRule(QString nameBBCode1,QString replaceHTML1)
+  {
+      nameBBCode=nameBBCode1;
+      replaceHTML=replaceHTML1;
+  }
 };
 
 

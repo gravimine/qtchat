@@ -19,23 +19,18 @@ Ui::Kabinet *ui;
 private slots:
 
     void on_checkBox_clicked(bool checked);
-
     void on_checkBox_2_clicked(bool checked);
-
     void on_pushButton_clicked();
-
     void on_checkBox_5_stateChanged(int arg1);
-
     void on_checkBox_7_stateChanged(int arg1);
-
+    void on_tabWidget_currentChanged(int index);
     void on_listWidget_clicked(const QModelIndex &index);
-
-        void on_listWidget_3_clicked(const QModelIndex &index);
-        void on_listWidget_2_clicked(const QModelIndex &index);
-        void on_pushButton_CreateRoom_clicked();
-         void on_pushButton_4_clicked();
-         void on_pushButton_2_clicked();
-         void on_listWidget_4_clicked(const QModelIndex &index);
+    void on_listWidget_3_clicked(const QModelIndex &index);
+    void on_listWidget_2_clicked(const QModelIndex &index);
+    void on_pushButton_CreateRoom_clicked();
+    void on_pushButton_4_clicked();
+    void on_pushButton_2_clicked();
+    void on_listWidget_4_clicked(const QModelIndex &index);
 
 };
 

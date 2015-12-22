@@ -32,7 +32,7 @@ private slots:
     void on_action_9_triggered();
     void on_action_5_triggered();
     void on_action_8_triggered();
-
+    void on_action_4_triggered();
 };
 
 #endif // MAINWINDOW_H

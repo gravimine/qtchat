@@ -47,6 +47,7 @@ void Kabinet::on_pushButton_CreateRoom_clicked()
 void  Kabinet::on_pushButton_2_clicked()
 {
 	CluChat->post("type=getUnigue",tGetUngine);
+
 }
 void Kabinet::on_pushButton_4_clicked()
 {
@@ -87,7 +88,6 @@ void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
     R->KabinUI->label_LastData_Uni->setText("Дата последнего входа: "+tmp.lastDate);
     R->KabinUI->label_Data_Uni->setText("Дата первого входа: "+tmp.date);
     R->KabinUI->label_IP_Uni->setText("IP адрес: "+tmp.ip);
-
 }
 
 void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
@@ -202,7 +202,7 @@ void registr::on_pushButton_clicked()
 }
 void MainWindow::on_commandLinkButton_clicked()
 {
-    if(!R->MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(R->MainUI->textEdit->toPlainText().replace("\n","<br>"));
+    if(!R->MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(R->MainUI->textEdit->toPlainText());
     R->MainUI->textEdit->setHtml("");
     R->MainUI->textEdit->setFocus();
 }

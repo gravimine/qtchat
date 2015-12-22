@@ -3,7 +3,8 @@
 # Project created by QtCreator 2015-06-09T16:56:23
 #
 #-------------------------------------------------
-QT       += core gui network multimedia
+QT       += core gui network
+#QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 include(ACore/ACore.pri)
 TARGET = UChat
