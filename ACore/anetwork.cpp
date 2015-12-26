@@ -2,7 +2,8 @@
 #include "aclientserver.h"
 void ANetwork::RealPost(QString posti)
 {
-	Network->post(Server,posti.toLocal8Bit().data());
+    qDebug() <<"RealPost:"+posti;
+    Network->post(Server,posti.toLocal8Bit().data());
 }
 void ANetwork::RealGet(QString geti)
 {
@@ -10,6 +11,7 @@ void ANetwork::RealGet(QString geti)
 }
 void ANetwork::getReplyFinished(QNetworkReply*reply)
 {
+
 
 	if(Type==RESERVE_CODE)
 	{
@@ -74,6 +76,7 @@ QList<QNetworkCookie> ANetwork::getCookies(QString url)
 
 void ANetwork::post(QString text, int Typ)
 {
+    qDebug() <<"Post:"+text;
 	if(isSendPost==0) {RealPost(text); Type=Typ;isSendPost=1;}
 	else
 	{

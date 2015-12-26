@@ -62,6 +62,12 @@ void Kabinet::on_pushButton_4_clicked()
 		CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),tRemoveRoom);
 	}
 }
+void Kabinet::on_pushButton_9_clicked()
+{
+    QString tmp=R->KabinUI->listWidget_4->currentItem()->text();
+    if(CluChat->currentUniKey().CookieCode!=tmp)CluChat->DelUniKey(tmp);
+    else ClusterChat.Error("Нельзя удалить текущий ключ доступа");
+}
 
 MainWindow::~MainWindow()
 {

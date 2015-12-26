@@ -104,6 +104,7 @@ enum ChatTypes
 	tAllNewLS,
 	tOnlineList,
 	tReg,
+    tDeleteUniKey,
 	tServerPixmap,
 	tGetMy
 };
@@ -185,10 +186,11 @@ private:
 	QList<AChate> ChatsList;
 	QList<UniKey> UniKeyList;
 	QList<UniClient> UniClientList;
-	QString MyUniKey,InitServerUrl;
-	QString ReportMessage, passworda,logina,SetPath;
-	int myID,HistoryNumberLS,TimerTick;
-	bool isSmiles,isReloadHostory,ServerType,isCensure;
+    QString InitServerUrl;
+    UniKey MyUniKey;
+    QString ReportMessage, passworda,logina,SetPath;
+    int myID,HistoryNumberLS,TimerTick,TexteCashe;
+    bool isSmiles,isReloadHostory,ServerType,isCensure,isNoPassMode;
 	QTime TimeStart;
 	QTimer *timersendls;
 	Style Styled;
@@ -202,6 +204,7 @@ public:
 	//void post(QString text, int Typ);
 	QString GetTextGroup(QString Groups);
 	void AddLS(int ClientID,QString msg);
+    void DelUniKey(QString key);
 	void WriteServerList(ACore::RecursionArray reply);
 	void LSUp();
 	void LSDown();
@@ -217,6 +220,7 @@ public:
 	void SendErrorMessage(QString text);
 	QString GetErrorText(int ErrorID);
 	UniKey FindUniKey(QString id);
+    UniKey currentUniKey();
 	void login(QString loginit,QString passit,QString key = "");
 	void GetFileErrors();
 	void LoadSettings();

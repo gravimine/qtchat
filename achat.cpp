@@ -265,20 +265,34 @@ UniKey AChat::FindUniKey(QString id)
 void AChat::login(QString loginit,QString passit,QString key)
 {
 	QString posti;
-	if(loginit.isEmpty() || passit.isEmpty()) SendMessage("Ошибка, поля Логин | Пароль не заполнены");
+
 	if(Server.url().toString().isEmpty()) SendMessage("Сервер не выбран");
 	if(key.isEmpty()){
 		UniKey s;
 		s.StringID=InitServerUrl+"."+loginit;
-		MyUniKey=s.StringID;
-		if(UniKeyList.contains(s))
-		posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue="+UniKeyList.value(UniKeyList.indexOf(s)).key+"&initV="+INIT_VERSION;
-		else posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue=?&initV="+INIT_VERSION;
+        MyUniKey=UniKeyList.value(UniKeyList.indexOf(s));
+        if(UniKeyList.contains(s)  && setings["NoPassword"]==true)
+        //posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue="+UniKeyList.value(UniKeyList.indexOf(s)).key+"&initV="+INIT_VERSION;
+        {
+            setCookie("userUnigue",MyUniKey.CookieCode);
+            MyClient.Active=true;
+            post("type=info&id=?",tGetMy);
+            R->LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
+            R->LoadWindow->show();
+            log<< "login on [NoPasswordMode]";
+        }
+        else{
+            if(loginit.isEmpty() || passit.isEmpty()) {SendMessage("Ошибка, поля Логин | Пароль не заполнены");
+            return;}
+            posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue=?&initV="+INIT_VERSION;
+        }
 	}
 	else {
+        if(loginit.isEmpty() || passit.isEmpty()) {SendMessage("Ошибка, поля Логин | Пароль не заполнены");
+        return;}
 		posti="type=auth&key="+key+"&login="+loginit+"&clientUnigue=?&pass="+passit+"&initialization="+INIT_CLIENT;
 	}
-	post(posti,tAuth);
+    if(!posti.isEmpty())post(posti,tAuth);
 	if(timer->isActive()) timer->stop();
 	log<< "login...";
 }
@@ -292,6 +306,8 @@ void AChat::LoadSettings()
 	setings["Debug"]=IS_DEBUG;
 	setings["TimeFormat"]="[%1:%2:%3]";
 	setings["Smiles"]=true;
+    setings["SettingsVersion"]=1.0;
+    setings["NoPassword"]=true;
 	setings["Sencure"]=true;
 	setings.LoadSettings();
 	R->LoadMenuUI->lineEdit->setText(setings["Login"].toString());
@@ -304,6 +320,10 @@ void AChat::LoadSettings()
 		isCensure=true;}
 	else
 	{isCensure=false;}
+    if(setings["NoPassword"].toBool()){R->KabinUI->checkBox_6->setChecked(1);
+        isNoPassMode=true;}
+    else
+    {isNoPassMode=false;}
 	if(setings["Debug"].toBool()){R->KabinUI->checkBox_2->setChecked(1);
 		isDebug=true;}
 	else
@@ -624,9 +644,10 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 				if(!ValuesMap.value("сlientUnigue").toString().isEmpty())
 				{
 					UniKey s;
-					s.StringID=MyUniKey;
+                    s.StringID=MyUniKey.StringID;
 					s.key=ValuesMap.value("сlientUnigue").toString();
 					s.CookieCode=ValuesMap.value("userUnigue").toString();
+                    MyUniKey=s;
 					if(!UniKeyList.contains(s)) UniKeyList << s;
 				}
 				R->LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
@@ -830,6 +851,12 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			else SendMessage("Ошибка: "+Text);
 			break;
 		}
+    case tDeleteUniKey:
+       {
+           if(Text=="403") break;
+           else
+           { ClusterChat.Error("Нельзя удалить текущий ключ доступа"); break; }
+       }
 	case tMessage:
 		{
 			if(Text=="303") break;
@@ -840,9 +867,16 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			}
 			else SMStoValues(ReplyMap.value("0").toMap(),false);
 			isStart=true;
-			QString Texte=ListToHTML();
-			R->MainUI->textBrowser->setHtml(Texte);
-			R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
+            QString Texte=ListToHTML();
+            QTextCursor s=R->MainUI->textBrowser->textCursor();
+            if(TexteCashe!=MessageList.length()){
+                R->MainUI->textBrowser->setHtml(Texte);
+                TexteCashe=MessageList.length();
+                QTextCursor k(R->MainUI->textBrowser->document());
+                k=s;
+                if(s.position()==0) R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
+                else R->MainUI->textBrowser->setTextCursor(k);
+            }
 			break;
 		}
 	default:
@@ -851,6 +885,24 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 	}
 	R->KabinUI->textBrowser->setText(log.toHTML());
 }
+void AChat::DelUniKey(QString key)
+{
+    post("type=setUnigue&typeCommand=delete&userUnigue="+key,tDeleteUniKey);
+    for(int i=0;i<UniClientList.size();i++)
+    {
+        if(UniClientList.value(i).key==key)
+        {
+            UniClientList.removeAt(i);
+        }
+    }
+    R->KabinUI->listWidget_4->clear();
+    for(int i=0;i<UniClientList.size();i++) R->KabinUI->listWidget_4->addItem(UniClientList.value(i).key);
+}
+UniKey AChat::currentUniKey()
+{
+    return MyUniKey;
+}
+
 void AChat::updateCaption() //Таймер сработал
 {
 	if(MyClient.Active)
