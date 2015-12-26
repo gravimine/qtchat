@@ -420,6 +420,12 @@ AChat::AChat()
 	log<< "Start";
 	ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
 	isStart=false;
+    TESTStruct test;
+    test.MyName="Name";
+    test.Key="MyKey";
+    RecursionArray text2;
+    text2 << &test;
+    qDebug() << text2.print();
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 	TimeStart=QTime::currentTime();
 	#ifdef Q_OS_WIN32

@@ -27,8 +27,27 @@ namespace ACore
 	};
     struct AbstractStruct
     {
-        virtual QString GetName();
-        virtual QMap<QString, QVariant> GetAllValues();
+    public:
+        virtual QString GetName()
+        { return QString(); }
+        virtual QMap<QString, QVariant> GetAllValues()
+        { return QMap<QString, QVariant>(); }
+    };
+    struct TESTStruct : public AbstractStruct
+    {
+        QString MyName,TeXt,Key,StrKey;
+        virtual QString GetName()
+        {
+            return MyName;
+        }
+        virtual QMap<QString, QVariant> GetAllValues()
+        {
+            QMap<QString, QVariant> result;
+            result["Text"]=TeXt;
+            result["key"]=Key;
+            result["strKey"]=StrKey;
+            return result;
+        }
     };
 
 	class RecursionArray : public QMap<QString,QVariant>
@@ -45,7 +64,7 @@ namespace ACore
 		QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false);
 		RecursionArray(QMap<QString,QVariant> h);
 		RecursionArray();
-        void operator<<(AbstractStruct h);
+        void operator<<(AbstractStruct* h);
 		QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false);
 		QString toHTMLTegsFormat();
 		QString toYUMFormat();

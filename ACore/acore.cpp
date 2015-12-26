@@ -150,11 +150,11 @@ namespace ACore
 		timedate.setDate(date);
 		timedate.setTime(time);
 		QDateTime datatime;datatime=QDateTime::currentDateTime();
-        unsigned int our=timedate.secsTo(datatime);
-        unsigned int tmp=our/60;
-        unsigned int ahour=tmp/60;
-        unsigned int amin=GetOstatok(tmp,60);
-        unsigned int asec=GetOstatok(our,60);
+        int our=timedate.secsTo(datatime);
+        int tmp=our/60;
+        int ahour=tmp/60;
+        int amin=GetOstatok(tmp,60);
+        int asec=GetOstatok(our,60);
 
 		if(ahour/24>0) result+=QString::number(ahour/24)+"d ";
 		if(GetOstatok(ahour,24)>0) result+=QString::number(GetOstatok(ahour,24))+"h ";
@@ -548,6 +548,11 @@ namespace ACore
 		}
 		return ReturnMap;
 	}
+    void RecursionArray::operator<<(AbstractStruct* h)
+    {
+        this->operator [](h->GetName())=h->GetAllValues();
+    }
+
 	QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn)
 	{
 		QStringList fromBR=yum.split("\n");
