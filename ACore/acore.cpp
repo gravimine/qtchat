@@ -264,7 +264,6 @@ namespace ACore
 	}
 	AAppCore::~AAppCore()
 	{
-
 	}
 	AAppCore::AAppCore(QString ProgName)
 	{
@@ -351,6 +350,11 @@ namespace ACore
 				fromYumFormat(stream.readAll());
 				break;
 			}
+        case StdHTMLTagesFormat:
+            {
+                fromHTMLTegsFormat(stream.readAll());
+                break;
+            }
 		}
 	}
 	void ASettings::SaveSettings()
@@ -370,6 +374,11 @@ namespace ACore
 				stream.write(toYUMFormat().toLocal8Bit());
 				break;
 			}
+        case StdHTMLTagesFormat:
+            {
+                stream.write(toHTMLTegsFormat().toLocal8Bit());
+                break;
+            }
 		}
 	}
 

@@ -269,8 +269,9 @@ void AChat::login(QString loginit,QString passit,QString key)
 	if(Server.url().toString().isEmpty()) SendMessage("Сервер не выбран");
 	if(key.isEmpty()){
 		UniKey s;
-		s.StringID=InitServerUrl+"."+loginit;
+        s.StringID=InitServerUrl+"."+loginit;
         MyUniKey=UniKeyList.value(UniKeyList.indexOf(s));
+        MyUniKey.StringID=InitServerUrl+"."+loginit;
         if(UniKeyList.contains(s)  && setings["NoPassword"]==true)
         //posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue="+UniKeyList.value(UniKeyList.indexOf(s)).key+"&initV="+INIT_VERSION;
         {
@@ -284,17 +285,18 @@ void AChat::login(QString loginit,QString passit,QString key)
         else{
             if(loginit.isEmpty() || passit.isEmpty()) {SendMessage("Ошибка, поля Логин | Пароль не заполнены");
             return;}
+            log<< "login...";
             posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue=?&initV="+INIT_VERSION;
         }
 	}
 	else {
         if(loginit.isEmpty() || passit.isEmpty()) {SendMessage("Ошибка, поля Логин | Пароль не заполнены");
         return;}
+        log<< "login...";
 		posti="type=auth&key="+key+"&login="+loginit+"&clientUnigue=?&pass="+passit+"&initialization="+INIT_CLIENT;
 	}
     if(!posti.isEmpty())post(posti,tAuth);
-	if(timer->isActive()) timer->stop();
-	log<< "login...";
+    if(timer->isActive()) timer->stop();
 }
 void AChat::GetFileErrors()
 {

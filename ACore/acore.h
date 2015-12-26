@@ -23,9 +23,14 @@ namespace ACore
 		StdHTMLTagesFormat,
 		YumFormat,
 		IniFormat,
-		CfgFormat,
-		ExtraHTMLTagesFormat
+        CfgFormat
 	};
+    struct AbstractStruct
+    {
+        virtual QString GetName();
+        virtual QMap<QString, QVariant> GetAllValues();
+    };
+
 	class RecursionArray : public QMap<QString,QVariant>
 	{
 	private:
@@ -40,6 +45,7 @@ namespace ACore
 		QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false);
 		RecursionArray(QMap<QString,QVariant> h);
 		RecursionArray();
+        void operator<<(AbstractStruct h);
 		QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false);
 		QString toHTMLTegsFormat();
 		QString toYUMFormat();

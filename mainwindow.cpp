@@ -138,7 +138,8 @@ void Dialog::on_checkBox_stateChanged(int arg1)
     if(arg1==2) {setings["Login"]=R->LoadMenuUI->lineEdit->text();
         setings["Pass"]=R->LoadMenuUI->lineEdit_2->text();}
     else
-      {setings["Login"]="";
+      {if(setings["NoPassword"]==false)setings["Login"]="";
+        else setings["Login"]=R->LoadMenuUI->lineEdit->text();
               setings["Pass"]="";}
 }
 void Kabinet::on_checkBox_7_stateChanged(int arg1)
@@ -165,7 +166,7 @@ void Kabinet::on_checkBox_2_clicked(bool checked)
 }
 void MainWindow::OnStart()
 {
-	CluChat=new AChat;
+    CluChat=new AChat();
 	CluChat->LoadSettings();
     CluChat->CheckBoxUpdate();
 }
