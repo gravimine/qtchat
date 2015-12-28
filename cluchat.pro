@@ -7,7 +7,7 @@ QT       += core gui network
 #QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 include(ACore/ACore.pri)
-TARGET = UChat
+TARGET = CluChat
 TEMPLATE = app
 
 SOURCES += main.cpp\

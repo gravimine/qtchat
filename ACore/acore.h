@@ -15,6 +15,10 @@
 #define REPLACE_TEXT_I "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
 #define MapFind(n,Map,keyd) QStringList keyd=Map.keys(); for(int n=0;n<keyd.size();n++)
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
+#define ASTRUCT_META_ENTER virtual QMap<QString, QVariant> GetAllValues() { QMap<QString, QVariant> result;
+#define ASTRUCT_META_END return result;}
+#define ASTRUCT_META_NAME(n) virtual QString GetName() {return n;}
+#define ASTRUCT_APPEND(name) result[#name]=name;
 //#define REPLACE_TEXT_II "<body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; font-weight:400; font-style:normal;\">"
 namespace ACore
 {
@@ -28,6 +32,11 @@ namespace ACore
     struct AbstractStruct
     {
     public:
+        bool operator==(AbstractStruct* h)
+        {
+            if(GetName()==h->GetName()) return true;
+            else return false;
+        }
         virtual QString GetName()
         { return QString(); }
         virtual QMap<QString, QVariant> GetAllValues()
@@ -36,18 +45,12 @@ namespace ACore
     struct TESTStruct : public AbstractStruct
     {
         QString MyName,TeXt,Key,StrKey;
-        virtual QString GetName()
-        {
-            return MyName;
-        }
-        virtual QMap<QString, QVariant> GetAllValues()
-        {
-            QMap<QString, QVariant> result;
-            result["Text"]=TeXt;
-            result["key"]=Key;
-            result["strKey"]=StrKey;
-            return result;
-        }
+        ASTRUCT_META_NAME(MyName)
+        ASTRUCT_META_ENTER
+            ASTRUCT_APPEND(TeXt)
+            ASTRUCT_APPEND(Key)
+            ASTRUCT_APPEND(StrKey)
+        ASTRUCT_META_END
     };
 
 	class RecursionArray : public QMap<QString,QVariant>
@@ -57,12 +60,12 @@ namespace ACore
 		QString _toYUMFormat(RecursionArray Map,QString Tabulator="");
 		QString _toCFGFormat(RecursionArray Map);
 	public:
-		static QString printList(QList<QVariant> List);
-		static QString printMap(RecursionArray Map,QString NameMap="",QString Tabulator="");
-		static QString VariantToString(QVariant tmp);
-		QMap<QString,QVariant> fromYumFormat(QString yum,QString level="", bool isReturn=false);
-		QMap<QString,QVariant> fromCfgFormat(QString yum, bool isReturn=false);
-		RecursionArray(QMap<QString,QVariant> h);
+        static QString printList(const QList<QVariant> List);
+        static QString printMap(const RecursionArray Map,const QString NameMap="",const QString Tabulator="");
+        static QString VariantToString(const QVariant tmp);
+        QMap<QString,QVariant> fromYumFormat(const QString yum,const QString level="",const bool isReturn=false);
+        QMap<QString,QVariant> fromCfgFormat(const QString yum,const bool isReturn=false);
+        RecursionArray(const QMap<QString,QVariant> h);
 		RecursionArray();
         void operator<<(AbstractStruct* h);
 		QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false);
@@ -77,12 +80,16 @@ namespace ACore
 		void SaveLog();
 		QString toString();
 		QString toHTML();
+        void SetCoutDebug(bool i);
 		void operator <<(QString h);
 		void addInfo(QString h);
 		void addError(QString h);
 		void SetFile(QString data);
+        ALog();
+        ~ALog();
 	protected:
 		QString patch;
+        bool isDebug;
 	};
 	class ASettings : public RecursionArray
 	{

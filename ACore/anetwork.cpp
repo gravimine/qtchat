@@ -2,7 +2,6 @@
 #include "aclientserver.h"
 void ANetwork::RealPost(QString posti)
 {
-    qDebug() <<"RealPost:"+posti;
     Network->post(Server,posti.toLocal8Bit().data());
 }
 void ANetwork::RealGet(QString geti)
@@ -76,7 +75,6 @@ QList<QNetworkCookie> ANetwork::getCookies(QString url)
 
 void ANetwork::post(QString text, int Typ)
 {
-    qDebug() <<"Post:"+text;
 	if(isSendPost==0) {RealPost(text); Type=Typ;isSendPost=1;}
 	else
 	{
@@ -87,7 +85,7 @@ void ANetwork::post(QString text, int Typ)
 		Posts << tmp;
 	}
 
-	//if(Type!=tAuth) if(isDebug)log<< dtime()+ "Post:"+ text;
+    if(isDebug)qDebug()<< "Post:"+ text;
 }
 void ANetwork::get(QString text, int Typ)
 {
@@ -101,7 +99,7 @@ void ANetwork::get(QString text, int Typ)
 		tmp.isPost=false;
 		Posts << tmp;
 	}
-	//if(Type!=tAuth) if(isDebug)log<< dtime()+ "Get:"+ text;
+    if(isDebug) qDebug()<< "Get:"+ text;
 }
 
 ATcpNetwork::ATcpNetwork()

@@ -257,6 +257,17 @@ namespace ACore
 	{
 		ProgramName=name;
 	}
+    void ALog::SetCoutDebug(bool i)
+    {
+        isDebug=i;
+    }
+    ALog::ALog()
+    {
+        isDebug=false;
+    }
+    ALog::~ALog()
+    {
+    }
 	AAppCore::AAppCore()
 	{
 		MessageBoxNumber=0;
@@ -304,14 +315,17 @@ namespace ACore
 	void ALog::operator <<(QString h)
 	{
 		append(dtime()+h);
+        if(isDebug) qDebug() << dtime()+h;
 	}
 	void ALog::addInfo(QString h)
 	{
 		append("[info]"+dtime()+h);
+        if(isDebug) qDebug() << "[info]"+dtime()+h;
 	}
 	void ALog::addError(QString h)
 	{
 		append("[error]"+dtime()+h);
+        if(isDebug) qDebug() << "[error]"+dtime()+h;
 	}
 	void ALog::SetFile(QString data)
 	{
@@ -599,7 +613,6 @@ namespace ACore
 
 				QMap<QString,QVariant> ValueMap=fromCfgFormat(sendString,true);
 				QString sNameValue=DeleteQuotes(ValueString.remove("{").split(" ").value(0));
-				qDebug() << ValueString;
 				if(isReturn) ReturnMap[sNameValue]=ValueMap;
 				else operator [](sNameValue)=ValueMap;
 				i+=unusedsize;

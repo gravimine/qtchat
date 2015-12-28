@@ -17,8 +17,8 @@
 #include "ACore/acore.h"
 #define ADD_DEBUG log<<
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "8.1"
-#define API_VERSION "2.3"
+#define INIT_VERSION "1.0.0"
+#define ACORE_VERSION "1.0.0"
 
 #define IS_DEBUG false
 #define TIMER_SENDLS 300
@@ -27,14 +27,24 @@
 #define EXTRA_NETWORK false
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
 extern bool isStart;
+struct PrivateMessage
+{
+    QString msg;
+    QString data;
+    QString time;
+    int id;
+    int ClientID;
+    bool isRealLS,isCommand;
+};
 
 struct AChate
 {
 	QString Name;
 	int CreatedID;
-	int KomID;
-	bool isOpen;
+    int KomID,endLS;
+    bool isOpen,isDostupe;
 	QList<int> ClientList;
+    QList<PrivateMessage> messages;
 	bool operator ==(AChate h)
 	{
 		if(KomID==h.KomID) return true;
@@ -108,16 +118,6 @@ enum ChatTypes
 	tServerPixmap,
 	tGetMy
 };
-struct PrivateMessage
-{
-	QString msg;
-	QString data;
-	QString time;
-	int id;
-	int ClientID;
-	bool isRealLS;
-};
-
 struct Client
 {
 	QString name;
@@ -178,7 +178,7 @@ private:
 	QString OnlineCashe;
 	QList<QString> SendLSList;
 	QTime SendLSOnTime;
-	QList<PrivateMessage> MessageList;
+    //QList<PrivateMessage> MessageList;
     QList< QList<PrivateMessage> > MessageListOther;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
@@ -189,13 +189,12 @@ private:
     QString InitServerUrl;
     UniKey MyUniKey;
     QString ReportMessage, passworda,logina,SetPath;
-    int myID,HistoryNumberLS,TimerTick,TexteCashe;
+    int myID,HistoryNumberLS,TimerTick,TexteCashe,CurrentChatIndex;
     bool isSmiles,isReloadHostory,ServerType,isCensure,isNoPassMode;
 	QTime TimeStart;
 	QTimer *timersendls;
 	Style Styled;
 	QString StylePath;
-	int numLS;
 	Client TimeClient;
 	QTime timer3;
 	QTimer *timer;
@@ -210,7 +209,7 @@ public:
 	void LSDown();
 	void ReloadHistory();
 	void ReloadAllSMS();
-	QString OnlinetoHTML(ACore::RecursionArray Map);
+    QString OnlinetoHTML(AChate room);
 	void SetServer(QString name);
 	AServer FindServer(QString name);
 	bool SendCommand(QString message);
@@ -241,6 +240,7 @@ public:
 	Client GetMyClient();
 	void exit();
 	void clearlist();
+    void SearchNewLS();
 	UniClient GetUniClient(QString key);
 	QString Reformat(QString TEXT);
 	void WriteClients(ACore::RecursionArray Map);
