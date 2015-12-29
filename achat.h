@@ -222,6 +222,8 @@ public:
     UniKey currentUniKey();
 	void login(QString loginit,QString passit,QString key = "");
 	void GetFileErrors();
+    void SendCommandAraim();
+    void SendCmd(QString cmd);
 	void LoadSettings();
 	void CheckBoxUpdate();
 	bool LoadStyle(QString path);

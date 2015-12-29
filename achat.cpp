@@ -31,6 +31,11 @@ void AChat::AddLS(int ClientID,QString msg)
 	temp.msg=msg;
     ChatsList[CurrentChatIndex].messages << temp;
 }
+void AChat::SendCommandAraim()
+{
+    if(GetKomnata()!=0) SendCmd("c:134:321");
+}
+
 void AChat::RenderSmiles()
 {
     QString str;
@@ -192,6 +197,16 @@ bool AChat::SendCommand(QString message)
 		ClusterChat.SendM(SencureString(ArgList.value(1)));
 		return true;
 	}
+    else if(cmd=="/araim")
+    {
+        SendCommandAraim();
+        return true;
+    }
+    else if(cmd=="/hi")
+    {
+        SendLS("Привет всем присутствующим в этом чудесном чате!");
+        return true;
+    }
 	else if(cmd=="/sendls")
 	{
 		if(ArgList.value(1).isEmpty()) SendMessage("Невозможно отправить пустое сообщение");
@@ -363,7 +378,7 @@ void AChat::LoadSettings()
 		s.CookieCode=KeyArray.value("Cookie").toString();
 		UniKeyList << s;
 	}
-
+    qDebug() << setings.print();
 	Server=QNetworkRequest(QUrl(setings["Server"].toString()));
 	InitServerUrl=setings["Server"].toString();
 }
@@ -447,7 +462,7 @@ AChat::AChat()
 	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 	TimeStart=QTime::currentTime();
 	#ifdef Q_OS_WIN32
-	setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
+    setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
 	#endif
 	#ifdef Q_OS_LINUX
     setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
@@ -532,6 +547,22 @@ void AChat::SendLS(QString Text)
 	SendLSOnTime.currentTime();
 	SendLSOnTime.start();
 }
+void AChat::SendCmd(QString cmd)
+{
+    if(SendLSOnTime.elapsed()<=TIMER_SENDLS) //Так делать нужно
+    {
+        if(!cmd.isEmpty()) SendLSList << cmd;
+        timersendls->start(TIMER_SENDLS);
+    }
+    else
+    {
+       post("type=sendmsg&c_"+QString::number(MyClient.com_id)+"_1="+cmd
+            .replace("%","%25")
+            .replace("&","%26").replace("+","%2B"),tNewLS);
+    }
+    SendLSOnTime.currentTime();
+    SendLSOnTime.start();
+}
 void AChat::GetServersList()
 {
 	get("http://monitor.cluster-chat.ml/index.php",tServerList);
@@ -599,10 +630,8 @@ void AChat::WriteClients(RecursionArray Map)
 QString AChat::ListToHTML()
 {
 	QString HTML;
-	QString TextMessages;
-	int temp=0,nummers=0;
+    int nummers=0;
 	QString allLS="";
-	int ShowID=0;
     for(int i=0;i<ChatsList.value(CurrentChatIndex).messages.size();i++)
 	{
         PrivateMessage ssLS=ChatsList.value(CurrentChatIndex).messages.value(i);
@@ -654,7 +683,8 @@ void AChat::SearchNewLS()
             if(!maxLS.isCommand)
             msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font>:"+maxLS.msg+"</b>";
             else{
-            if(maxLS.msg=="c:134:321") msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font> пытается вас разбудить</b>";}
+            if(maxLS.msg=="c:134:321") msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font> пытается вас разбудить</b>";
+            }
         }
     }
     if(!msgEnter.isEmpty() && !R->MainUI->textEdit->hasFocus())

@@ -86,6 +86,11 @@ void Kabinet::on_listWidget_clicked(const QModelIndex &index)
     R->KabinUI->label_serverinfo->setText("Описание сервера:\n"+tmp.information);
     R->KabinUI->label_region->setText("Регион: "+tmp.region);
 }
+void MainWindow::on_pushButton_clicked()
+{
+    CluChat->SendCommandAraim();
+}
+
 void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 {
 	UniClient tmp=CluChat->GetUniClient(index.data().toString());

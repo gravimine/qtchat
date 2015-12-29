@@ -58,7 +58,7 @@ namespace ACore
 	private:
 		QString _toHTMLTegsFormat(RecursionArray Map);
 		QString _toYUMFormat(RecursionArray Map,QString Tabulator="");
-		QString _toCFGFormat(RecursionArray Map);
+        QString _toCFGFormat(RecursionArray Map);
 	public:
         static QString printList(const QList<QVariant> List);
         static QString printMap(const RecursionArray Map,const QString NameMap="",const QString Tabulator="");

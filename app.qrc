@@ -5,9 +5,7 @@
         <file>res/rukalico.png</file>
         <file>res/zloi.png</file>
         <file>res/Loader.png</file>
-        <file>res/Send.png</file>
-        <file>res/Send2.png</file>
         <file>res/settings.png</file>
-        <file>res/noitce.png</file>
+        <file>res/time.png</file>
     </qresource>
 </RCC>

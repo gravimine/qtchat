@@ -429,8 +429,9 @@ namespace ACore
 		}
 		return ReturnValue;
 	}
-	QString RecursionArray::_toCFGFormat(RecursionArray Map)
-	{
+    QString RecursionArray::_toCFGFormat(RecursionArray Map)
+    {
+        bool isStart=true;
 		QString ReturnValue;
 		int i=0;
 		QList<QString> keys=Map.keys();
@@ -440,24 +441,27 @@ namespace ACore
 			QVariant Value=Map.value(keys.value(i));
 			if(Value.type()==QVariant::String) TypeValue="S";
 			else if(Value.type()==QVariant::Int) TypeValue="I";
+            else if(Value.type()==QVariant::Double) TypeValue="D";
 			else if(Value.type()==QVariant::Bool) TypeValue="B";
-			else if(Value.type()==QVariant::Map) {}
+            else if(Value.type()==QVariant::Map)
+            {
+                QString tmp= _toCFGFormat(Map.value(keys.value(i)).toMap());
+                if(!tmp.isEmpty()){
+                ReturnValue+="\n"+keys.value(i)+" {\n"+tmp+"\n}";
+                }
+                i++;
+                continue;
+            }
 			else
 			{
 				i++;
 				continue;
-			}
-			QString tmp= _toCFGFormat(Map.value(keys.value(i)).toMap());
-			if(tmp.isEmpty())
-			{
-				ReturnValue+="\n"+TypeValue+":"+keys.value(i)+"=";
-				ReturnValue+=VariantToString(Map.value(keys.value(i)));
-			}
-			else
-			{
-				ReturnValue+="\n"+keys.value(i)+" {\n"+tmp+"\n}";
-			}
+            }
+            if(!isStart)ReturnValue+="\n"+TypeValue+":"+keys.value(i)+"=";
+            else ReturnValue+=TypeValue+":"+keys.value(i)+"=";
+            ReturnValue+=VariantToString(Map.value(keys.value(i)));
 			i++;
+            if(isStart) isStart=false;
 		}
 		return ReturnValue;
 	}
@@ -567,7 +571,7 @@ namespace ACore
         this->operator [](h->GetName())=h->GetAllValues();
     }
 
-	QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn)
+    QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn) //FIXME
 	{
 		QStringList fromBR=yum.split("\n");
 		QMap<QString,QVariant> ReturnMap;
@@ -587,6 +591,7 @@ namespace ACore
 			NameValue=DeleteQuotes(ListValued.value(1));
 			QVariant Value;
 			if(ListValued.value(0)=="I") Value=ListValued.value(2).toInt();
+            if(ListValued.value(0)=="D") Value=ListValued.value(2).toDouble();
 			else if(ListValued.value(0)=="S") {if(!tmp.isEmpty()) Value=ListValued.value(2);}
 			else if(ListValued.value(0)=="B")
 			{
@@ -601,16 +606,27 @@ namespace ACore
 			else
 			{
 
-				int unusedsize=0;bool stop=true; QString sendString;
+                int unusedsize=0,balance=0;bool stop=true; QString sendString;
 				while (stop) {
 					QString x=fromBR.value(i+unusedsize+1);
-					if(x.indexOf("}")>=0 || unusedsize>fromBR.size()-i) stop=false;
-					else {
-						unusedsize++;
-						sendString+=fromBR.value(i+unusedsize)+"\n";
-					}
+                    if(unusedsize>fromBR.size()-i) stop=false;
+                    if(x.indexOf("{")>=0)
+                    {
+                        balance++;unusedsize++;sendString+=fromBR.value(i+unusedsize)+"\n";}
+                    else if(x.indexOf("}")>=0)
+                    {
+                        if(balance>0) {
+                            balance--;unusedsize++;sendString+=fromBR.value(i+unusedsize)+"\n";}
+                        else {
+                            stop=false;
+                        }
+                    }
+                    else
+                    {
+                        unusedsize++;
+                        sendString+=fromBR.value(i+unusedsize)+"\n";
+                    }
 				}
-
 				QMap<QString,QVariant> ValueMap=fromCfgFormat(sendString,true);
 				QString sNameValue=DeleteQuotes(ValueString.remove("{").split(" ").value(0));
 				if(isReturn) ReturnMap[sNameValue]=ValueMap;

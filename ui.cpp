@@ -17,7 +17,13 @@ void SendDialogMessage(QString Text,QString Title)
 	R->Message->move(center);
 	R->Message->show();
 }
-
+void MainWindow::on_action_10_triggered()
+{
+    ClusterChat.SendM("<b>Если аргумент для команды имеет пробелы, то его нужно заключить в кавычки</b>"
+                      "<br>/araim - будильник<br>/hi - поприветствовать всех"
+                      "<br>/valid [Текст] - проверить как будет выглядеть ваше сообщение после проверки Анти-Мат системой"
+                      "<br>/sendls [сообщение] - создание фейкового сообщения(видного только вам) с указанным текстом");
+}
 
 void Dialog::on_pushButton_3_clicked()
 {
