@@ -97,14 +97,12 @@ void AChat::ReloadAllSMS()
     if(MyKomnata.isDostupe){
     QString Texte=ListToHTML();
     QTextCursor s=R->MainUI->textBrowser->textCursor();
-    if(TexteCashe!=ChatsList[CurrentChatIndex].messages.length()){
-        R->MainUI->textBrowser->setHtml(Texte);
+    R->MainUI->textBrowser->setHtml(Texte);
         TexteCashe=ChatsList[CurrentChatIndex].messages.length();
         QTextCursor k(R->MainUI->textBrowser->document());
         k=s;
         if(s.position()==0) R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
         else R->MainUI->textBrowser->setTextCursor(k);
-    }
     R->MainUI->labelOnline->setText(OnlinetoHTML(MyKomnata));}
     else
     {
@@ -205,15 +203,13 @@ bool AChat::SendCommand(QString message)
 }
 void AChat::SetKomnata(int id)
 {
-	if(id!=KomnataID){
-		KomnataID=id;
+    KomnataID=id;
 		MyClient.com_id=id;
         for(int k=0;k<ChatsList.size();k++) {if(ChatsList.value(k).KomID==id) CurrentChatIndex=k;}
         MyKomnata=ChatsList.value(CurrentChatIndex);
 		ReloadAllSMS();
 		ADD_DEBUG "Комната выбрана: "+QString::number(id);
         //ChatsList[GetKomnata()].messages.clear();
-	}
 }
 void AChat::SMStoValues(ACore::RecursionArray Map,bool isClear)
 {
@@ -267,12 +263,10 @@ void AChat::SendErrorMessage(QString text)
 QString AChat::GetErrorText(int ErrorID)
 {
 	QString ErrorText;
-	if(ErrorID==517) ErrorText="Недостаточно привилегий";
-	else if(ErrorID==399) ErrorText="Ошибка неверные аргументы";
+    if(ErrorID==399) ErrorText="Ошибка неверные аргументы";
 	else if(ErrorID==404) ErrorText="Нет соединения с базой данных";
 	else if(ErrorID==419) ErrorText="Ошибка запрошеный скрипт не найден";
 	else if(ErrorID==408) ErrorText="Не верный пароль.";
-	else if(ErrorID==410) ErrorText="Ошибка вы не авторизированы";
 	else if(ErrorID==439) ErrorText="Ваш клиент не поддерживается";
 	else if(ErrorID==426) ErrorText="Вы исчерпали ллимит комнат";
 	else if(ErrorID==525) ErrorText="Регистрация на этом сервере запрещена";
@@ -301,7 +295,7 @@ void AChat::login(QString loginit,QString passit,QString key)
         s.StringID=InitServerUrl+"."+loginit;
         MyUniKey=UniKeyList.value(UniKeyList.indexOf(s));
         MyUniKey.StringID=InitServerUrl+"."+loginit;
-        if(UniKeyList.contains(s)  && setings["NoPassword"]==true)
+        if(UniKeyList.contains(s)  && setings["NoPassword"]==true && passit.isEmpty())
         //posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue="+UniKeyList.value(UniKeyList.indexOf(s)).key+"&initV="+INIT_VERSION;
         {
             setCookie("userUnigue",MyUniKey.CookieCode);
@@ -657,11 +651,15 @@ void AChat::SearchNewLS()
         if(!maxLS.msg.isEmpty() && MyClient.id != maxLS.ClientID && maxLS.id>ChatsList[i].endLS) {
             Client ClientLS=GetClient(maxLS.ClientID);
             ChatsList[i].endLS=maxLS.id;
-            msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font>:"+maxLS.msg+"</b>";}
+            if(!maxLS.isCommand)
+            msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font>:"+maxLS.msg+"</b>";
+            else{
+            if(maxLS.msg=="c:134:321") msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font> пытается вас разбудить</b>";}
+        }
     }
     if(!msgEnter.isEmpty() && !R->MainUI->textEdit->hasFocus())
     {
-        SendDialogMessage(msgEnter,tr("<center><b>Новое Сообщение"));
+        SendDialogMessage(msgEnter,tr("<FONT color=green size=4><center><B>Новое Сообщение!"));
         log<< "Send Dialog Message Text:"+ msgEnter;
     }
 }
@@ -704,6 +702,17 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 					s.CookieCode=ValuesMap.value("userUnigue").toString();
                     MyUniKey=s;
 					if(!UniKeyList.contains(s)) UniKeyList << s;
+                    else
+                    {
+                        for(int i=0;i<UniKeyList.size();i++)
+                        {
+                            if(UniKeyList.value(i).key!=s.key && UniKeyList.value(i).StringID==s.StringID)
+                            {
+                                UniKeyList.removeAt(i);
+                                UniKeyList << s;
+                            }
+                        }
+                    }
 				}
 				R->LoadWindowUI->label_2->setText(tr("Вход на сервер. Подождите..."));
 				R->LoadWindow->show();
@@ -791,6 +800,10 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 		}
 	case tGetMy:
 		{
+            if(ValuesMap.value("key").toString()=="517"){
+                SendMessage("Попытка авторизациии не удалась. Если вы используете беспарольный вход - заного введите пароль.");
+                R->LoadWindow->setHidden(1);
+                break;}
 			if(isDebug)R->LoadWindowUI->label_2->setText("Получение списка пользователей");
 			RecursionArray MyClientMap=ReplyMap.value("0").toMap();
 			MyClient.name=MyClientMap.value("real_name").toString();
@@ -929,6 +942,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			}
             else SMStoValues(ReplyMap,false);
 			isStart=true;
+            if(MyKomnata.KomID!=0){
             QString Texte=ListToHTML();
             QTextCursor s=R->MainUI->textBrowser->textCursor();
             if(TexteCashe!=ChatsList.value(CurrentChatIndex).messages.length()){
@@ -938,6 +952,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
                 k=s;
                 if(s.position()==0) R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
                 else R->MainUI->textBrowser->setTextCursor(k);
+            }
             }
             SearchNewLS();
 			break;

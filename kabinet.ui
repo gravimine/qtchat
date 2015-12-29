@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>8</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -982,7 +982,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>&lt;center&gt;Версия: 8.1&lt;br&gt;Версия ACore: 2.3&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;font color=red size=5&gt;Мультиплатформенный клиент Cluster-Chat&lt;/font&gt;&lt;br&gt;Разработчик клиента Gravit&lt;br&gt;Сервера предоставлены Ulin&lt;/font&gt;&lt;hr&gt;</string>
+      <string>&lt;center&gt;Версия: 1.0.1&lt;br&gt;Версия ACore: 1.0.0&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;font color=red size=5&gt;Мультиплатформенный клиент Cluster-Chat&lt;/font&gt;&lt;br&gt;Разработчик клиента Gravit&lt;br&gt;Сервера предоставлены Ulin&lt;/font&gt;&lt;hr&gt;</string>
      </property>
     </widget>
    </widget>

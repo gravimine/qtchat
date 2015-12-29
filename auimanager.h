@@ -13,7 +13,7 @@
 #include "loading.h"
 #include "ui_loading.h"
 
-#define VERSION_CLIENT QString("СlusterChat 1.0.0 ")
+#define VERSION_CLIENT QString("СlusterChat 1.0.1 ")
 class UIModule
 {
 public:

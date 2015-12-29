@@ -17,7 +17,7 @@
 #include "ACore/acore.h"
 #define ADD_DEBUG log<<
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "1.0.0"
+#define INIT_VERSION "1.0.1"
 #define ACORE_VERSION "1.0.0"
 
 #define IS_DEBUG false
