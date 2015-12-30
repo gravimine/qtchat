@@ -972,7 +972,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			}
             else SMStoValues(ReplyMap,false);
 			isStart=true;
-            if(MyKomnata.KomID!=0){
+            if(MyKomnata.KomID!=0 && MyKomnata.isDostupe){
             QString Texte=ListToHTML();
             QTextCursor s=R->MainUI->textBrowser->textCursor();
             if(TexteCashe!=ChatsList.value(CurrentChatIndex).messages.length()){

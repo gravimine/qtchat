@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>8</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -356,7 +356,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>70</y>
+       <y>100</y>
        <width>61</width>
        <height>16</height>
       </rect>
@@ -369,7 +369,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>70</y>
+       <y>100</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -382,7 +382,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>50</y>
+       <y>80</y>
        <width>71</width>
        <height>16</height>
       </rect>
@@ -395,7 +395,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>50</y>
+       <y>80</y>
        <width>161</width>
        <height>16</height>
       </rect>
@@ -421,7 +421,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>90</y>
+       <y>120</y>
        <width>101</width>
        <height>16</height>
       </rect>
@@ -433,10 +433,33 @@
     <widget class="QComboBox" name="comboBox">
      <property name="geometry">
       <rect>
-       <x>110</x>
-       <y>87</y>
+       <x>100</x>
+       <y>118</y>
        <width>161</width>
        <height>22</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>60</y>
+       <width>71</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;b&gt;Префикс</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEditPrefix">
+     <property name="geometry">
+      <rect>
+       <x>61</x>
+       <y>57</y>
+       <width>159</width>
+       <height>23</height>
       </rect>
      </property>
     </widget>
@@ -982,7 +1005,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>&lt;center&gt;Версия: 1.0.1&lt;br&gt;Версия ACore: 1.0.0&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;font color=red size=5&gt;Мультиплатформенный клиент Cluster-Chat&lt;/font&gt;&lt;br&gt;Разработчик клиента Gravit&lt;br&gt;Сервера предоставлены Ulin&lt;/font&gt;&lt;hr&gt;</string>
+      <string>&lt;center&gt;Версия: 1.0.2&lt;br&gt;Версия ACore: 1.0.1&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;font color=red size=5&gt;Мультиплатформенный клиент Cluster-Chat&lt;/font&gt;&lt;br&gt;Разработчик клиента Gravit&lt;br&gt;Сервера предоставлены Ulin&lt;/font&gt;&lt;hr&gt;</string>
      </property>
     </widget>
    </widget>
