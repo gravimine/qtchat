@@ -31,8 +31,10 @@ protected:
 	bool isSendPost; //Дебаг и отправленЛиПост
 	bool isPoste;
 	QList<AQuest> Posts;
+    QNetworkRequest Server;
 	void RealPost(QString posti);
 	void RealGet(QString geti);
+
 signals:
 	void ARequest(ANetworkReply reply);
 	void FileFinished(QString text);
@@ -40,10 +42,12 @@ signals:
 	void getReplyFinished(QNetworkReply*reply);
 
 public:
-	QNetworkRequest Server;
 	bool isDebug;
 	ANetwork();
-	~ANetwork();
+    ~ANetwork();
+    void setUrl(QString url);
+    QString url();
+    void setRawHeader(QByteArray name,QByteArray value);
 	void downloadFile(QString url);
 	void setCookie(QString name,QString value);
 	QString getCookie(QString name);

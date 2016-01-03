@@ -41,6 +41,8 @@ namespace ACore
         { return QString(); }
         virtual QMap<QString, QVariant> GetAllValues()
         { return QMap<QString, QVariant>(); }
+        bool FullRavno(AbstractStruct* h)
+        { if(GetAllValues()==h->GetAllValues()) return true; else return false; }
     };
     struct TESTStruct : public AbstractStruct
     {
@@ -74,8 +76,9 @@ namespace ACore
 		QString toCFGFormat();
 		QString print();
 	};
-	class ALog : public QStringList
+    class ALog : public QObject, public QStringList
 	{
+        Q_OBJECT
 	public:
 		void SaveLog();
 		QString toString();
@@ -90,6 +93,8 @@ namespace ACore
 	protected:
 		QString patch;
         bool isDebug;
+    signals:
+        void AddLog();
 	};
 	class ASettings : public RecursionArray
 	{
@@ -146,17 +151,13 @@ namespace ACore
 		}
 	};
 	QString timeEx(QTime starture);
-
 	QString timeEx(int second, int minutes=0,int hour=0);
-
-
 	QString dataEx(QDate starture);
 	QString dataEx(int year,int month,int day);
 	QString dataTimeEx(int second, int minutes=0,int hour=0,int year=0,int month=0,int day=0);
     QDateTime dataTimeEx(QDateTime timedate,QDateTime datatime);
-
 	QString DeleteSpaceStart(QString str);
-
+    bool isFullEmpry(QString str);
 	QString DeleteQuotes(QString str);
 
 }

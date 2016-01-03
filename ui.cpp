@@ -12,8 +12,8 @@ void SendDialogMessage(QString Text,QString Title)
 	QDesktopWidget desktop;
 	QRect rect = desktop.availableGeometry(desktop.primaryScreen()); // прямоугольник с размерами экрана
 	QPoint center = rect.center(); //координаты центра экрана
-	center.setX(center.x()*2 - (R->Message->width()/2) - 150);  // учитываем половину ширины окна
-	center.setY(center.y()*2 - (R->Message->height()/2) - 50);  // .. половину высоты
+    center.setX(center.x()*2 - (R->Message->width()) - 13);  // учитываем половину ширины окна
+    center.setY(center.y()*2 - (R->Message->height()) - 8);  // .. половину высоты
 	R->Message->move(center);
 	R->Message->show();
 }
@@ -47,6 +47,10 @@ void Kabinet::on_tabWidget_currentChanged(int index)
     if(index==6)
     {
         CluChat->RenderSmiles();
+    }
+    else if(index==8)
+    {
+        R->KabinUI->textBrowser->setText(logs.toHTML());
     }
 }
 
@@ -105,12 +109,12 @@ void MainWindow::on_action_3_triggered()
 void MainWindow::on_action_11_triggered()
 {
 	R->Kabin->show();
-    R->KabinUI->tabWidget->setCurrentIndex(8);
+    R->KabinUI->tabWidget->setCurrentIndex(9);
 }
 void MainWindow::on_action_9_triggered()
 {
 	R->Kabin->show();
-    R->KabinUI->tabWidget->setCurrentIndex(7);
+    R->KabinUI->tabWidget->setCurrentIndex(8);
 }
 void MainWindow::on_action_4_triggered()
 {

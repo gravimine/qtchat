@@ -15,9 +15,9 @@
 #include "ACore/anetwork.h"
 #include "auimanager.h"
 #include "ACore/acore.h"
-#define ADD_DEBUG log<<
+#define ADD_DEBUG logs<<
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "1.0.2"
+#define INIT_VERSION "1.0.3"
 #define ACORE_VERSION "1.0.1"
 
 #define IS_DEBUG false
@@ -26,7 +26,6 @@
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define EXTRA_NETWORK false
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
-extern bool isStart;
 struct PrivateMessage
 {
     QString msg;
@@ -36,7 +35,14 @@ struct PrivateMessage
     int ClientID;
     bool isRealLS,isCommand;
 };
-
+enum ProgramStatus
+{
+    Loading,
+    AuthServer,
+    Wait,
+    Exit
+};
+extern ProgramStatus isStart;
 struct AChate
 {
 	QString Name;
@@ -138,6 +144,15 @@ struct Client
 		if(id==h.id) return true;
 		else return false;
 	}
+    bool FullRavno(Client h)
+    {
+        if(id!=h.id) return false;
+        else if(name!=h.name) return false;
+        else if(prefix!=h.prefix) return false;
+        else if(status!=h.status) return false;
+        else if(group!=h.group) return false;
+        else return true;
+    }
 };
 extern ACore::AAppCore ClusterChat;
 
@@ -167,19 +182,18 @@ struct Style
 	QString OnlineList;
 };
 extern ACore::ASettings setings;
+extern ACore::ALog logs;
 void SendDialogMessage(QString Text,QString Title="");
 class AChat : public ANetwork
 {
 	Q_OBJECT
 private:
 	int KomnataID;
-	ACore::ALog log;
 	Client MyClient;
 	QString OnlineCashe;
 	QList<QString> SendLSList;
 	QTime SendLSOnTime;
     //QList<PrivateMessage> MessageList;
-    QList< QList<PrivateMessage> > MessageListOther;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
 	QList<Client> ClientList;
@@ -196,6 +210,7 @@ private:
 	Style Styled;
 	QString StylePath;
 	Client TimeClient;
+    AChate MyKomnata;
 	QTime timer3;
 	QTimer *timer;
 public:
@@ -226,6 +241,7 @@ public:
     void SendCmd(QString cmd);
 	void LoadSettings();
 	void CheckBoxUpdate();
+    AChate currentRoom();
 	bool LoadStyle(QString path);
 	AChate FindKomOfIndex(QString id);
 	AChate GetRoom(int id);
@@ -251,10 +267,10 @@ public:
 	public slots:
 	void getReplyFinished(ANetworkReply reply);
 	void updateCaption(); //Таймер сработал
+    void slotUpdateLogs();
 	void updateCaption2();
 };
 extern AChat *CluChat;
-extern AChate MyKomnata;
 
 #endif // ACHAT
 

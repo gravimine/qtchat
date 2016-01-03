@@ -127,14 +127,14 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>610</x>
+      <x>711</x>
       <y>370</y>
-      <width>29</width>
-      <height>27</height>
+      <width>37</width>
+      <height>36</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-image: url(:/res/time.png);</string>
+     <string notr="true">background-image: url(:/res/time.png);</string>
     </property>
     <property name="text">
      <string/>

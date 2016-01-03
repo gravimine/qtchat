@@ -1,5 +1,6 @@
 #include "anetwork.h"
 #include "aclientserver.h"
+#include <QNetworkProxy>
 void ANetwork::RealPost(QString posti)
 {
     Network->post(Server,posti.toLocal8Bit().data());
@@ -61,7 +62,7 @@ QString ANetwork::getCookie(QString name)
 	QNetworkCookie s;
 	s.setName(name.toLocal8Bit().data());
 	s.setDomain(Server.url().toString());
-	return cookies.value(cookies.indexOf(s)).value();
+    return cookies.value(cookies.indexOf(s)).value();
 }
 void ANetwork::clearCookie(QString url)
 {
@@ -101,7 +102,18 @@ void ANetwork::get(QString text, int Typ)
 	}
     if(isDebug) qDebug()<< "Get:"+ text;
 }
-
+void ANetwork::setUrl(QString url)
+{
+    Server.setUrl(url);
+}
+QString ANetwork::url()
+{
+    return Server.url().url();
+}
+void ANetwork::setRawHeader(QByteArray name,QByteArray value)
+{
+    Server.setRawHeader(name,value);
+}
 ATcpNetwork::ATcpNetwork()
 {
 	m_pTcpSocket = new QTcpSocket(this);

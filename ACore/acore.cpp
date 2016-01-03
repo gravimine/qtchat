@@ -188,7 +188,12 @@ namespace ACore
         for(int i=0;str[i]==' ';i++) deleteSize++;
 		return str.remove(0,deleteSize);
 	}
-
+    bool isFullEmpry(QString str)
+    {
+        int deleteSize=0;
+        for(int i=0;str[i]==' ' || str[i]=='\n';i++) deleteSize++;
+        return str.remove(0,deleteSize).isEmpty();
+    }
 	QString DeleteQuotes(QString str)
 	{
 		if(str[0]=='"' && str[str.size()-1]=='"')
@@ -316,16 +321,19 @@ namespace ACore
 	{
 		append(dtime()+h);
         if(isDebug) qDebug() << dtime()+h;
+        AddLog();
 	}
 	void ALog::addInfo(QString h)
 	{
 		append("[info]"+dtime()+h);
         if(isDebug) qDebug() << "[info]"+dtime()+h;
+        AddLog();
 	}
 	void ALog::addError(QString h)
 	{
 		append("[error]"+dtime()+h);
         if(isDebug) qDebug() << "[error]"+dtime()+h;
+        AddLog();
 	}
 	void ALog::SetFile(QString data)
 	{
@@ -571,7 +579,7 @@ namespace ACore
         this->operator [](h->GetName())=h->GetAllValues();
     }
 
-    QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn) //FIXME
+    QMap<QString,QVariant> RecursionArray::fromCfgFormat(QString yum, bool isReturn)
 	{
 		QStringList fromBR=yum.split("\n");
 		QMap<QString,QVariant> ReturnMap;

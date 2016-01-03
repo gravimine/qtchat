@@ -51,6 +51,7 @@ void  Kabinet::on_pushButton_2_clicked()
 }
 void Kabinet::on_pushButton_4_clicked()
 {
+    AChate MyKomnata=CluChat->currentRoom();
 	QString NameRoom=MyKomnata.Name;
 	if(MyKomnata.CreatedID!=CluChat->GetMyClient().id)
 	{
@@ -105,7 +106,6 @@ void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
 {
 	AChate tmp=CluChat->FindKomOfIndex(index.data().toString());
 	Client Creater=CluChat->GetClient(tmp.CreatedID);
-	MyKomnata=tmp;
     R->KabinUI->label_NameKom->setText("Имя комнаты: "+tmp.Name);
     R->KabinUI->label_NumKom->setText("Номер комнаты: "+QString::number(tmp.KomID));
     R->KabinUI->label_Creater->setText("Создатель комнаты: "+Creater.name);
@@ -141,10 +141,9 @@ void Kabinet::on_pushButton_clicked()
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
     if(arg1==2) {setings["Login"]=R->LoadMenuUI->lineEdit->text();
-        setings["Pass"]=R->LoadMenuUI->lineEdit_2->text();}
+        if(setings["NoPassword"]==false) setings["Pass"]=R->LoadMenuUI->lineEdit_2->text();}
     else
-      {if(setings["NoPassword"]==false)setings["Login"]="";
-        else setings["Login"]=R->LoadMenuUI->lineEdit->text();
+      {if(setings["NoPassword"]==true) setings["Login"]=R->LoadMenuUI->lineEdit->text();
               setings["Pass"]="";}
 }
 void Kabinet::on_checkBox_7_stateChanged(int arg1)
@@ -185,7 +184,7 @@ void Dialog::on_comboBox_activated(const QString &arg1)
 }
 void Dialog::on_pushButton_clicked()
 {
-    if(!CluChat->Server.url().isEmpty())
+    if(!CluChat->url().isEmpty())
     CluChat->login(R->LoadMenuUI->lineEdit->text(),R->LoadMenuUI->lineEdit_2->text());
 	else ClusterChat.SendM("Выберите сервер для входа");
 }
@@ -214,7 +213,7 @@ void registr::on_pushButton_clicked()
 }
 void MainWindow::on_commandLinkButton_clicked()
 {
-    if(!R->MainUI->textEdit->toPlainText().isEmpty()) CluChat->SendLS(R->MainUI->textEdit->toPlainText());
+    if(!isFullEmpry(R->MainUI->textEdit->toPlainText())) CluChat->SendLS(R->MainUI->textEdit->toPlainText());
     R->MainUI->textEdit->setHtml("");
     R->MainUI->textEdit->setFocus();
 }

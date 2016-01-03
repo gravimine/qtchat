@@ -7,7 +7,6 @@ SOURCES += $$PWD/acore.cpp \
 HEADERS  += $$PWD/acore.h \
     $$PWD/anetwork.h \
     $$PWD/aclientserver.h \
-    $$PWD/auimanager.h \
     $$PWD/amath.h \
     $$PWD/aalgoritm.h \
     $$PWD/abbcodec.h \

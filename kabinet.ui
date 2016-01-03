@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -107,78 +107,6 @@
       <string>Автоматический вход</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="checkBox_9">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>152</y>
-       <width>581</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Пользовательский стиль отображения сообщений (HTML)</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>170</y>
-       <width>491</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_6">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>170</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ОК</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox_10">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>195</y>
-       <width>581</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Пользовательское ДАТА/ВРЕМЯ</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>212</y>
-       <width>491</width>
-       <height>20</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_7">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>212</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>ОК</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -202,7 +130,7 @@
       <rect>
        <x>140</x>
        <y>10</y>
-       <width>431</width>
+       <width>361</width>
        <height>16</height>
       </rect>
      </property>
@@ -215,7 +143,7 @@
       <rect>
        <x>140</x>
        <y>50</y>
-       <width>431</width>
+       <width>361</width>
        <height>16</height>
       </rect>
      </property>
@@ -324,6 +252,19 @@
       <string/>
      </property>
     </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>0</y>
+       <width>101</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <attribute name="title">
@@ -356,7 +297,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>100</y>
+       <y>130</y>
        <width>61</width>
        <height>16</height>
       </rect>
@@ -369,7 +310,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>100</y>
+       <y>130</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -382,7 +323,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>80</y>
+       <y>110</y>
        <width>71</width>
        <height>16</height>
       </rect>
@@ -395,7 +336,7 @@
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>80</y>
+       <y>110</y>
        <width>161</width>
        <height>16</height>
       </rect>
@@ -421,7 +362,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>120</y>
+       <y>160</y>
        <width>101</width>
        <height>16</height>
       </rect>
@@ -433,10 +374,10 @@
     <widget class="QComboBox" name="comboBox">
      <property name="geometry">
       <rect>
-       <x>100</x>
-       <y>118</y>
-       <width>161</width>
-       <height>22</height>
+       <x>93</x>
+       <y>157</y>
+       <width>162</width>
+       <height>25</height>
       </rect>
      </property>
     </widget>
@@ -461,6 +402,19 @@
        <width>159</width>
        <height>23</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_9">
+     <property name="geometry">
+      <rect>
+       <x>-1</x>
+       <y>86</y>
+       <width>221</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Статус Онлайн виден</string>
      </property>
     </widget>
    </widget>
@@ -973,6 +927,103 @@
      </property>
      <property name="text">
       <string>Добавить</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_10">
+    <attribute name="title">
+     <string>Прокси</string>
+    </attribute>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>20</y>
+       <width>51</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Логин</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>50</y>
+       <width>54</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Пароль</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>80</y>
+       <width>54</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>URL</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>110</y>
+       <width>54</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Порт</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>16</y>
+       <width>161</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_2">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>45</y>
+       <width>161</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_5">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>77</y>
+       <width>201</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_6">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>110</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
      </property>
     </widget>
    </widget>
