@@ -83,12 +83,14 @@ QString ACore::replacerBBCode(QString str,QList<BBCodeRule> rules)
               BBArgs << BBArg;
             }
           BB.args=BBArgs;
-          int pos3=str.indexOf("["+namevalue+"]",pos2);
+          int pos3=str.indexOf("[/"+namevalue+"]",pos2);
           if(pos3>=0) BB.data=str.mid(pos2+1,pos3-pos2-1);
           QString replacecode=tmprule.replaceHTML;
-          replacecode=replacecode.replace("${text}",BB.data);
-          for(int j=0;j<BBArgs.size();j++) replacecode=replacecode.replace("${"+BBArgs.value(j).name+"}",BBArgs.value(j).data);
-          i=pos3+2;
+          replacecode.replace("${data}",BB.data);
+          for(int j=0;j<BBArgs.size();j++) replacecode.replace("${"+BBArgs.value(j).name+"}",BBArgs.value(j).data);
+          result.replace(str.mid(pos,(pos3+namevalue.size()+3)-pos),replacecode);
+          if(pos3>=0) i=pos3+2;
+          else i=pos2+2;
         }
     }
   return result;

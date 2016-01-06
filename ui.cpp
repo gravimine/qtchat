@@ -24,6 +24,10 @@ void MainWindow::on_action_10_triggered()
                       "<br>/valid [Текст] - проверить как будет выглядеть ваше сообщение после проверки Анти-Мат системой"
                       "<br>/sendls [сообщение] - создание фейкового сообщения(видного только вам) с указанным текстом");
 }
+void MainWindow::on_pushButton_4_clicked()
+{
+    R->MainUI->textEdit->append("[color color=red]Ваш текст[/color]");
+}
 
 void Dialog::on_pushButton_3_clicked()
 {

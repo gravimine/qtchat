@@ -15,10 +15,11 @@
 #include "ACore/anetwork.h"
 #include "auimanager.h"
 #include "ACore/acore.h"
+#include "ACore/abbcodec.h"
 #define ADD_DEBUG logs<<
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "1.0.4"
-#define ACORE_VERSION "1.0.1"
+#define INIT_VERSION "1.0.5"
+#define ACORE_VERSION "1.0.2"
 
 #define IS_DEBUG false
 #define TIMER_SENDLS 300
@@ -185,6 +186,7 @@ struct Style
 	QString TextMessage;
     QString AdvanceMessage;
 	QString Notify;
+    QString cmdAraim;
 	QString OnlineList;
 };
 extern ACore::ASettings setings;
@@ -205,6 +207,7 @@ private:
 	QList<Client> ClientList;
 	QList<AChate> ChatsList;
 	QList<UniKey> UniKeyList;
+    QList<ACore::BBCodeRule> BBCodeRules;
 	QList<UniClient> UniClientList;
     QString InitServerUrl;
     UniKey MyUniKey;

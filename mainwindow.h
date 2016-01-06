@@ -35,6 +35,7 @@ private slots:
     void on_action_4_triggered();
     void on_pushButton_clicked();
     void on_action_10_triggered();
+    void on_pushButton_4_clicked();
 };
 
 #endif // MAINWINDOW_H

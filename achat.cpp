@@ -397,11 +397,15 @@ bool AChat::LoadStyle(QString path)
 	style.setFileName(path);
 	QString data=QString(style.readAll());
     //if(data.isEmpty()) data="<table width=100%>%1</table>\n<tr><td>%1<font size=3 color=#%2>%3<font color=#000>:%4<td align=right>%5</tr>\n%1";
-    if(data.isEmpty()) data="{main}\n<font color=#AB11DB>{name}</font>({data} {time})<br>{message}<br>\n{message}<br>";
+    if(data.isEmpty()) data="{main}\n"
+                            "<font color=#AB11DB>{name}</font>({data} {time})<br>{message}<br>\n"
+                            "{message}<br>\n"
+                            "<b>{name} использовал команду \"<font color=#C3111D>Будильник</font>\" Просыпайтесь!</b><br>";
 	QStringList restyle=data.split("\n");
 	Styled.Main=restyle.value(0);
 	Styled.Message=restyle.value(1);
     Styled.AdvanceMessage=restyle.value(2);
+    Styled.cmdAraim=restyle.value(3);
     logs<< "Style loaded";
 	return true;
 }
@@ -473,6 +477,10 @@ AChat::AChat()
     setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
 	#endif
 	MyClient.com_id=0;
+    BBCodeRules << BBCodeRule("color","<font color=${color}>${data}</font>")
+                << BBCodeRule("size","<font size=${size}>${data}</font>")
+                << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
+                << BBCodeRule("pre","<pre>${data}</pre>");
 	ServerType=true;
 	ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
 	connect(this, SIGNAL(ARequest(ANetworkReply)),this, SLOT(getReplyFinished(ANetworkReply)));
@@ -528,13 +536,13 @@ void AChat::SendLSTimer()
 	QString posti;
     for(int i=0;i<SendLSList.size();i++){
     if(!SendLSList.value(i).isCommand)posti+="&m_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
-    SpecialSybmolCoder(SendLSList.value(i).text
-	.replace("%","%25").replace("&","%26")
-	.replace("+","%2B"),false);
+     QString::number(MyClient.com_id)+"_1="+SendLSList.value(i).text
+                        .replace("%","%25")
+                        .replace("&","%26").replace("+","%2B");
     else posti+="&c_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
-    SpecialSybmolCoder(SendLSList.value(i).text
+    SendLSList.value(i).text
     .replace("%","%25").replace("&","%26")
-    .replace("+","%2B"),false);
+    .replace("+","%2B");
     }
 	if(!posti.isEmpty())post("type=sendmsg"+posti,tNewLS);
 	SendLSList.clear();
@@ -556,7 +564,7 @@ void AChat::SendLS(QString Text)
 		if(!isSendCommand(Text)){
             if(!isCensure) post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+Text
             .replace("%","%25")
-            .replace("&","%26").replace("+","%2B"),tNewLS);
+            .replace("&","%26").replace("+","%2B"), tNewLS);
             else post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SencureString(Text)
             .replace("%","%25")
             .replace("&","%26").replace("+","%2B"),tNewLS);
@@ -655,25 +663,20 @@ QString AChat::ListToHTML()
 {
 	QString HTML;
     int nummers=0;
-	QString allLS="";
+    QString allLS="";
     int doClient=0;
     for(int i=0;i<ChatsList.value(CurrentChatIndex).messages.size();i++)
 	{
         PrivateMessage ssLS=ChatsList.value(CurrentChatIndex).messages.value(i);
-		ssLS.msg=Reformat(ssLS.msg);
+        ssLS.msg=replacerBBCode( Reformat(ssLS.msg),BBCodeRules);
         ssLS.msg.replace("\n","<br>");
-        /*ssLS.msg.replace(":)","<IMG src=\":/res/smail.png\">")
-        .replace("\n","<br>")
-		.replace(":(","<IMG src=\":/res/sadness.png\">")
-		.replace(":пфф:","<IMG src=\":/res/rukalico.png\">")
-        .replace(":{}","<IMG src=\":/res/default/zloi.png\">");*/
         for(int i=0;i<SmilesList.size();i++) ssLS.msg.replace(SmilesList.value(i).code,"<IMG src=\""+SmilesList.value(i).url+"\">");
 		Client ClientLS=GetClient(ssLS.ClientID);
         QString str;
         if(ssLS.isCommand)
         {
             QString commandText;
-            if(ssLS.msg=="c:134:321") commandText="<b>{name} использовал команду \"<font color=red>Будильник</font>\" Просыпайтесь!</b><br>";
+            if(ssLS.msg=="c:134:321") commandText=Styled.cmdAraim;
             str=commandText.replace("{name}",ClientLS.name);
             doClient=0;
         }
