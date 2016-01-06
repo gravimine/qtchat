@@ -116,7 +116,6 @@ void AChat::ReloadAllSMS()
 }
 QString AChat::OnlinetoHTML(AChate room)
 {
-	QString HTML;
     QList<int> List=room.ClientList;
 	QString allLS;
     for(int i=0;i<List.size();i++)
@@ -128,8 +127,7 @@ QString AChat::OnlinetoHTML(AChate room)
 		else {Coloring="#F00";}
 		if(!tmp.name.isEmpty())allLS+=QString("<font size=2 color=%1>%2 <font color=#000>| ").arg(Coloring).arg(tmp.name);
 	}
-	HTML=Styled.Main.arg(allLS);
-	return HTML;
+    return allLS;
 }
 void AChat::SetServer(QString name)
 {
@@ -398,11 +396,12 @@ bool AChat::LoadStyle(QString path)
 	QFile style;
 	style.setFileName(path);
 	QString data=QString(style.readAll());
-	if(data.isEmpty()) data="<table width=100%>%1</table>\n<tr><td>%1<font size=3 color=#%2>%3<font color=#000>:%4<td align=right>%5</tr>\n%1";
+    //if(data.isEmpty()) data="<table width=100%>%1</table>\n<tr><td>%1<font size=3 color=#%2>%3<font color=#000>:%4<td align=right>%5</tr>\n%1";
+    if(data.isEmpty()) data="{main}\n<font color=#AB11DB>{name}</font>({data} {time})<br>{message}<br>\n{message}<br>";
 	QStringList restyle=data.split("\n");
 	Styled.Main=restyle.value(0);
 	Styled.Message=restyle.value(1);
-	Styled.TextMessage=restyle.value(2);
+    Styled.AdvanceMessage=restyle.value(2);
     logs<< "Style loaded";
 	return true;
 }
@@ -527,11 +526,16 @@ void AChat::Registration(QString Login,QString name_and_family, QString Pass,QSt
 void AChat::SendLSTimer()
 {
 	QString posti;
-	for(int i=0;i<SendLSList.size();i++)
-	posti+="&m_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
-	SpecialSybmolCoder(SendLSList.value(i)
+    for(int i=0;i<SendLSList.size();i++){
+    if(!SendLSList.value(i).isCommand)posti+="&m_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
+    SpecialSybmolCoder(SendLSList.value(i).text
 	.replace("%","%25").replace("&","%26")
 	.replace("+","%2B"),false);
+    else posti+="&c_"+QString::number(MyClient.com_id)+"_"+QString::number(i+1)+"="+
+    SpecialSybmolCoder(SendLSList.value(i).text
+    .replace("%","%25").replace("&","%26")
+    .replace("+","%2B"),false);
+    }
 	if(!posti.isEmpty())post("type=sendmsg"+posti,tNewLS);
 	SendLSList.clear();
 	timersendls->stop();
@@ -540,7 +544,11 @@ void AChat::SendLS(QString Text)
 {
 	if(SendLSOnTime.elapsed()<=TIMER_SENDLS) //Так делать нужно
 	{
-		if(!Text.isEmpty()) SendLSList << Text;
+        if(!Text.isEmpty()) {
+            ASendLS s;
+            s.text=Text;
+            s.isCommand=false;
+            SendLSList << s;}
 		timersendls->start(TIMER_SENDLS);
 	}
 	else
@@ -563,7 +571,11 @@ void AChat::SendCmd(QString cmd)
 {
     if(SendLSOnTime.elapsed()<=TIMER_SENDLS) //Так делать нужно
     {
-        if(!cmd.isEmpty()) SendLSList << cmd;
+        if(!cmd.isEmpty()) {
+            ASendLS s;
+            s.text=cmd;
+            s.isCommand=true;
+            SendLSList << s;}
         timersendls->start(TIMER_SENDLS);
     }
     else
@@ -644,6 +656,7 @@ QString AChat::ListToHTML()
 	QString HTML;
     int nummers=0;
 	QString allLS="";
+    int doClient=0;
     for(int i=0;i<ChatsList.value(CurrentChatIndex).messages.size();i++)
 	{
         PrivateMessage ssLS=ChatsList.value(CurrentChatIndex).messages.value(i);
@@ -656,25 +669,31 @@ QString AChat::ListToHTML()
         .replace(":{}","<IMG src=\":/res/default/zloi.png\">");*/
         for(int i=0;i<SmilesList.size();i++) ssLS.msg.replace(SmilesList.value(i).code,"<IMG src=\""+SmilesList.value(i).url+"\">");
 		Client ClientLS=GetClient(ssLS.ClientID);
-		QStringList ListX=ssLS.time.split(":");
-		QStringList ListY=ssLS.data.split("-");
         QString str;
-        if(!ssLS.isCommand)str=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
-		.arg(ClientLS.name).arg(Styled.TextMessage.arg(ssLS.msg))
-		.arg(dataTimeEx(ListX.value(2).toInt(),ListX.value(1).toInt(),ListX.value(0).toInt(),ListY.value(0).toInt(),ListY.value(1).toInt(),ListY.value(2).toInt()));
-        else
+        if(ssLS.isCommand)
         {
             QString commandText;
-            if(ssLS.msg=="c:134:321") commandText="<b>использовал команду \"<font color=red>Будильник</font>\" Просыпайтесь!</b>";
-            str=Styled.Message.arg(ClientLS.prefix).arg(ClientLS.color)
-            .arg(ClientLS.name).arg(Styled.TextMessage.arg(commandText))
-            .arg(dataTimeEx(ListX.value(2).toInt(),ListX.value(1).toInt(),ListX.value(0).toInt(),ListY.value(0).toInt(),ListY.value(1).toInt(),ListY.value(2).toInt()));
+            if(ssLS.msg=="c:134:321") commandText="<b>{name} использовал команду \"<font color=red>Будильник</font>\" Просыпайтесь!</b><br>";
+            str=commandText.replace("{name}",ClientLS.name);
+            doClient=0;
+        }
+        else {
+        if(doClient==ClientLS.id)
+        {
+            str=QString(Styled.AdvanceMessage).replace("{message}",ssLS.msg);
+        }
+        else{
+        str=QString(Styled.Message).replace("{prefix}",ClientLS.prefix).replace("{color}",ClientLS.color)
+                .replace("{name}",ClientLS.name).replace("{data}",ssLS.data).replace("{time}",ssLS.time)
+                .replace("{message}",ssLS.msg);
+        doClient=ClientLS.id;
+        }
         }
 		if(!isCensure) allLS+=str;
 		else allLS+=SencureString( str );
 		nummers++;
 	}
-	HTML=Styled.Main.arg(allLS);
+    HTML=QString(Styled.Main).replace("{main}",allLS);
 	return HTML;
 }
 void AChat::SearchNewLS()

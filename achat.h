@@ -17,7 +17,7 @@
 #include "ACore/acore.h"
 #define ADD_DEBUG logs<<
 #define INIT_CLIENT "Qt"
-#define INIT_VERSION "1.0.3"
+#define INIT_VERSION "1.0.4"
 #define ACORE_VERSION "1.0.1"
 
 #define IS_DEBUG false
@@ -88,6 +88,11 @@ struct UniClient
 		if(key==h.key) return true;
 		else return false;
 	}
+};
+struct ASendLS
+{
+    QString text;
+    bool isCommand;
 };
 struct Smile
 {
@@ -178,6 +183,7 @@ struct Style
 	QString Main;
 	QString Message;
 	QString TextMessage;
+    QString AdvanceMessage;
 	QString Notify;
 	QString OnlineList;
 };
@@ -191,7 +197,7 @@ private:
 	int KomnataID;
 	Client MyClient;
 	QString OnlineCashe;
-	QList<QString> SendLSList;
+    QList<ASendLS> SendLSList;
 	QTime SendLSOnTime;
     //QList<PrivateMessage> MessageList;
 	QList<AServer> ServersList;
