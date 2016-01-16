@@ -26,6 +26,9 @@
       <height>21</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>Вверх</string>
+    </property>
     <property name="text">
      <string>^</string>
     </property>
@@ -38,6 +41,9 @@
       <width>21</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>Вниз</string>
     </property>
     <property name="text">
      <string/>
@@ -133,6 +139,9 @@ p, li { white-space: pre-wrap; }
       <height>36</height>
      </rect>
     </property>
+    <property name="whatsThis">
+     <string>Будильник</string>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-image: url(:/res/time.png);</string>
     </property>
@@ -148,6 +157,9 @@ p, li { white-space: pre-wrap; }
       <width>37</width>
       <height>36</height>
      </rect>
+    </property>
+    <property name="whatsThis">
+     <string>Цвет текста</string>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url(:/res/color.png);</string>

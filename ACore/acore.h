@@ -1,5 +1,5 @@
-#ifndef ACORE
-#define ACORE
+#ifndef ACORE_H
+#define ACORE_H
 #include <QSettings>
 #include <QString>
 #include <QList>

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     WindDialog->show();
     Form *WindMessage=new Form;
     registr *WindRegis=new registr;
-    WindMessage->setWindowFlags(Qt::Popup);
+    WindMessage->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     Kabinet *WindKabinet=new Kabinet;
     Loading *LoadWindow=new Loading;
     LoadWindow->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);

@@ -32,6 +32,7 @@ private slots:
     void on_pushButton_2_clicked();
     void on_listWidget_4_clicked(const QModelIndex &index);
     void on_pushButton_9_clicked();
+    void on_pushButton_6_clicked();
 
 };
 

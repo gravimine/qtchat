@@ -23,7 +23,8 @@ HEADERS  += mainwindow.h \
     auimanager.h \
     loading.h \
     achat.h \
-    achat.h
+    achat.h \
+    config.h
 
 FORMS    += mainwindow.ui \
     dialog.ui \

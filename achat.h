@@ -1,5 +1,5 @@
-#ifndef ACHAT
-#define ACHAT
+#ifndef ACHAT_H
+#define ACHAT_H
 #include <QString>
 #include <QMessageBox>
 #include <QNetworkRequest>
@@ -17,15 +17,7 @@
 #include "ACore/acore.h"
 #include "ACore/abbcodec.h"
 #define ADD_DEBUG logs<<
-#define INIT_CLIENT "Qt"
-#define INIT_VERSION "1.0.5"
-#define ACORE_VERSION "1.0.2"
-
-#define IS_DEBUG false
-#define TIMER_SENDLS 300
-#define SENSORE_STRING "[цензура]"
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
-#define EXTRA_NETWORK false
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
 struct PrivateMessage
 {
@@ -42,6 +34,13 @@ enum ProgramStatus
     AuthServer,
     Wait,
     Exit
+};
+enum UpdateType
+{
+    updateUniKey,
+    updateHistoryMessage,
+    updateMessage,
+    updateClients
 };
 extern ProgramStatus isStart;
 struct AChate
@@ -120,6 +119,7 @@ enum ChatTypes
 	tSetInfo,
 	tCreateRoom,
 	tRemoveRoom,
+    tUniDeleteAll,
 	tGetUngine,
 	tGetError,
 	tServerList,
@@ -177,6 +177,15 @@ struct AServer
 		if(url==h.url) return true;
 		else return false;
 	}
+    AServer() {}
+    AServer(QString _name,QString _url,QString _region,QString _status,QString _info)
+    {
+        name=_name;
+        url=_url;
+        region=_region;
+        status=_status;
+        information=_info;
+    }
 };
 
 struct Style
@@ -196,11 +205,9 @@ class AChat : public ANetwork
 {
 	Q_OBJECT
 private:
-	int KomnataID;
 	Client MyClient;
-	QString OnlineCashe;
     QList<ASendLS> SendLSList;
-	QTime SendLSOnTime;
+    QTime SendLSOnTime;
     //QList<PrivateMessage> MessageList;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
@@ -224,7 +231,6 @@ private:
 	QTimer *timer;
 public:
 	bool isSendCommand(QString message);
-	//void post(QString text, int Typ);
 	QString GetTextGroup(QString Groups);
 	void AddLS(int ClientID,QString msg);
     void DelUniKey(QString key);
@@ -233,6 +239,7 @@ public:
 	void LSDown();
 	void ReloadHistory();
 	void ReloadAllSMS();
+    void UniKeyDeleteAll();
     QString OnlinetoHTML(AChate room);
 	void SetServer(QString name);
 	AServer FindServer(QString name);
@@ -258,13 +265,12 @@ public:
 	Client GetClient(int id);
 	AChat();
 	~AChat();
-	QString SencureString(QString str);
     void RenderSmiles();
 	void Registration(QString Login,QString name_and_family, QString Pass,QString EMail);
 	void SendLSTimer();
 	void SendLS(QString Text);
 	void GetServersList();
-	Client GetMyClient();
+    Client currentClient();
 	void exit();
 	void clearlist();
     void SearchNewLS();

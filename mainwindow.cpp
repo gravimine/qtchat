@@ -49,11 +49,16 @@ void  Kabinet::on_pushButton_2_clicked()
 	CluChat->post("type=getUnigue",tGetUngine);
 
 }
+void Kabinet::on_pushButton_6_clicked()
+{
+    CluChat->UniKeyDeleteAll();
+}
+
 void Kabinet::on_pushButton_4_clicked()
 {
     AChate MyKomnata=CluChat->currentRoom();
 	QString NameRoom=MyKomnata.Name;
-	if(MyKomnata.CreatedID!=CluChat->GetMyClient().id)
+    if(MyKomnata.CreatedID!=CluChat->currentClient().id)
 	{
 		ClusterChat.SendM("Вы не владеете комнатой \""+NameRoom+"\".");
 	} else
@@ -132,7 +137,7 @@ void  Kabinet::on_listWidget_2_clicked(const QModelIndex &index)
 
 void Kabinet::on_pushButton_clicked()
 {
-	Client tmp=CluChat->GetMyClient();
+    Client tmp=CluChat->currentClient();
 	QString posti="type=setInfo&id="+QString::number(tmp.id);
     if(tmp.name!=R->KabinUI->lineEditMyName->text())
     posti+="&real_name="+R->KabinUI->lineEditMyName->text();

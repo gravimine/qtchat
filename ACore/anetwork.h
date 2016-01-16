@@ -1,5 +1,5 @@
-#ifndef ANETWORK
-#define ANETWORK
+#ifndef ANETWORK_H
+#define ANETWORK_H
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>

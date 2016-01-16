@@ -1,5 +1,5 @@
-#ifndef ACLIENTSERVER
-#define ACLIENTSERVER
+#ifndef ACLIENTSERVER_H
+#define ACLIENTSERVER_H
 #include <QTcpSocket>
 #include <QTime>
 #include <QString>

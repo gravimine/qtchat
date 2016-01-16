@@ -1,5 +1,5 @@
-#ifndef AMATH
-#define AMATH
+#ifndef AMATH_H
+#define AMATH_H
 #include <QMatrix>
 #include <qmath.h>
 namespace ACore

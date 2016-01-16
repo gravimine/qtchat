@@ -3,6 +3,8 @@
 #include <QDesktopWidget>
 #include <QRect>
 #include <QPoint>
+#include <QCloseEvent>
+#include "config.h"
 
 void SendDialogMessage(QString Text,QString Title)
 {
@@ -45,7 +47,15 @@ Loading::~Loading()
 {
 	delete ui;
 }
-
+void MainWindow::on_textBrowser_anchorClicked(const QUrl &arg1)
+{
+   QString linkURL=arg1.url();
+   QStringList linkList=linkURL.split(":");
+   if(linkList.value(0)=="client") {
+       R->MainUI->textEdit->append(linkList.value(1)+", ");
+       R->MainUI->textEdit->setFocus();
+   }
+}
 void Kabinet::on_tabWidget_currentChanged(int index)
 {
     if(index==6)
@@ -86,6 +96,13 @@ ui(new Ui::Kabinet)
 
 }
 Kabinet::~Kabinet(){delete ui;}
+
+void MainWindow::closeEvent ( QCloseEvent * e )
+{
+    Q_UNUSED(e)
+    if(isStart==Wait) qApp->closeAllWindows();
+}
+
 
 void Form::on_pushButton_clicked()
 {

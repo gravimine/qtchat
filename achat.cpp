@@ -1,6 +1,7 @@
 #include "achat.h"
 #include "ACore/aclientserver.h"
 #include "ACore/abbcodec.h"
+#include "config.h"
 using namespace ACore;
 AChat *CluChat;
 ACore::ASettings setings;
@@ -12,6 +13,11 @@ bool AChat::isSendCommand(QString message)
 	if(message.toLatin1()[0]=='/') return true;
 	else return false;
 }
+void AChat::UniKeyDeleteAll()
+{
+    post("type=setUnigue&typeCommand=deleteAll",tUniDeleteAll);
+}
+
 QString AChat::GetTextGroup(QString Groups)
 {
 	QString ReturnText="<font color=#0F0>Пользователь";
@@ -72,6 +78,8 @@ void AChat::WriteServerList(ACore::RecursionArray reply)
 		AllServers++; ServersList<<tmp;
 	}
     logs<<QString::number(Servers)+" ot "+QString::number(AllServers)+" Servers";
+    ServersList << AServer("localhost","http://localhost/index.php","RU","403","local server in this computer");
+    R->LoadMenuUI->comboBox->addItem("localhost");
     if(url().isEmpty()) setUrl(ServersList.value(0).url);
 }
 void AChat::LSUp()
@@ -177,22 +185,10 @@ bool AChat::SendCommand(QString message)
 		else post(ArgList.value(1),tUnkown);
 		return true;
 	}
-	else if(cmd=="/flood")
-	{
-		if(ArgList.value(1).isEmpty()||ArgList.value(2).isEmpty()) SendMessage("Неверные аргументы");
-		for(int i=0;i<=ArgList.value(1).toInt();i++) {SendLS(ArgList.value(2));}
-		return true;
-	}
 	else if(cmd=="/sin")
 	{
 		if(ArgList.value(1).toDouble()<0 || ArgList.value(1).toDouble() > 180) SendMessage("Неверные аргументы");
 		ClusterChat.SendM(QString::number(qSin(ArgList.value(1).toDouble()*M_PI/180)));
-		return true;
-	}
-	else if(cmd=="/valid")
-	{
-		if(ArgList.value(1).isEmpty()) SendMessage("Неверные аргументы");
-		ClusterChat.SendM(SencureString(ArgList.value(1)));
 		return true;
 	}
     else if(cmd=="/araim")
@@ -216,7 +212,6 @@ bool AChat::SendCommand(QString message)
 }
 void AChat::SetKomnata(int id)
 {
-    KomnataID=id;
 		MyClient.com_id=id;
         for(int k=0;k<ChatsList.size();k++) {if(ChatsList.value(k).KomID==id) CurrentChatIndex=k;}
         MyKomnata=ChatsList.value(CurrentChatIndex);
@@ -263,7 +258,7 @@ void AChat::SendMessage(QString text)
 	tim1=timer->isActive();
 	if(tim1) timer->stop();
 	ClusterChat.SendM(text);
-    if(tim1) timer->start(4000);
+    if(tim1) timer->start(TIMER_DELAY);
 }
 void AChat::SendErrorMessage(QString text)
 {
@@ -271,7 +266,7 @@ void AChat::SendErrorMessage(QString text)
 	tim1=timer->isActive();
 	if(tim1) timer->stop();
 	ClusterChat.Error("Произошла ошибка при выполнении программы\nИнформация об ошибке:\n"+text+"\nЕсли ошибка повторится, обратитесь к разработчику или администратору сервера.");
-    if(tim1) timer->start(4000);
+    if(tim1) timer->start(TIMER_DELAY);
 }
 QString AChat::GetErrorText(int ErrorID)
 {
@@ -335,6 +330,8 @@ void AChat::login(QString loginit,QString passit,QString key)
     if(!posti.isEmpty())post(posti,tAuth);
     if(timer->isActive()) timer->stop();
 }
+
+
 void AChat::GetFileErrors()
 {
 	get("http://server-ClusterChat.esy.es/fileinfo.php",tGetError);
@@ -347,7 +344,7 @@ void AChat::LoadSettings()
 	setings["Smiles"]=true;
     setings["SettingsVersion"]=1.0;
     setings["NoPassword"]=true;
-	setings["Sencure"]=true;
+    setings["Sencure"]=true; //OUTDATE Не используется
 	setings.LoadSettings();
 	R->LoadMenuUI->lineEdit->setText(setings["Login"].toString());
     if(setings["NoPassword"]==false) R->LoadMenuUI->lineEdit_2->setText(setings["Pass"].toString());
@@ -397,8 +394,8 @@ bool AChat::LoadStyle(QString path)
 	style.setFileName(path);
 	QString data=QString(style.readAll());
     //if(data.isEmpty()) data="<table width=100%>%1</table>\n<tr><td>%1<font size=3 color=#%2>%3<font color=#000>:%4<td align=right>%5</tr>\n%1";
-    if(data.isEmpty()) data="{main}\n"
-                            "<font color=#AB11DB>{name}</font>({data} {time})<br>{message}<br>\n"
+    if(data.isEmpty()) data="<html>{main}</html>\n"
+                            "<a href=\"client:{name}\"><font color=#AB11DB>{name}</font></a>({data} {time})<br>{message}<br>\n"
                             "{message}<br>\n"
                             "<b>{name} использовал команду \"<font color=#C3111D>Будильник</font>\" Просыпайтесь!</b><br>";
 	QStringList restyle=data.split("\n");
@@ -487,6 +484,7 @@ AChat::AChat()
 	//Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
 	timersendls=new QTimer(this);
 	timer=new QTimer(this);
+    R->MainUI->textBrowser->setOpenLinks(false);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
     connect(&logs, SIGNAL(AddLog()), this, SLOT(slotUpdateLogs()));
 	connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
@@ -519,13 +517,6 @@ AChat::~AChat()
 void AChat::slotUpdateLogs()
 {
     if(R->KabinUI->tabWidget->currentIndex()==8) R->KabinUI->textBrowser->setText(logs.toHTML());
-}
-
-QString AChat::SencureString(QString str)
-{
-    return str.replace(QRegExp("сука"),SENSORE_STRING).replace(QRegExp("пид[^/s]р[^/s]{2}"),SENSORE_STRING)
-	.replace(QRegExp("еба[^/s]{3}"),SENSORE_STRING).replace(QRegExp("ху[й|и|е][^/s]{3}"),SENSORE_STRING)
-	.replace(QRegExp("блядь"),SENSORE_STRING);
 }
 void AChat::Registration(QString Login,QString name_and_family, QString Pass,QString EMail)
 {
@@ -562,12 +553,9 @@ void AChat::SendLS(QString Text)
 	else
 	{
 		if(!isSendCommand(Text)){
-            if(!isCensure) post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+Text
+            post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+Text
             .replace("%","%25")
             .replace("&","%26").replace("+","%2B"), tNewLS);
-            else post("type=sendmsg&m_"+QString::number(MyClient.com_id)+"_1="+SencureString(Text)
-            .replace("%","%25")
-            .replace("&","%26").replace("+","%2B"),tNewLS);
 		}
 		//if(!isSendCommand(Text)) post("type=sendmsg&message="+Text.replace("&","%26"),tNewLS);
 		else SendCommand(Text);
@@ -600,7 +588,7 @@ void AChat::GetServersList()
 	get("http://monitor.cluster-chat.ml/index.php",tServerList);
     logs<<"Get server info...";
 }
-Client AChat::GetMyClient()
+Client AChat::currentClient()
 {
 	return MyClient;
 }
@@ -611,10 +599,12 @@ void AChat::exit()
 }
 void AChat::clearlist()
 {
-    ChatsList[CurrentChatIndex].messages.clear();
+    ChatsList.clear();
 	ClientList.clear();
-	OnlineCashe.clear();
 	UniClientList.clear();
+    R->MainUI->listWidget->clear();
+    R->KabinUI->listWidget_3->clear();
+    R->KabinUI->listWidget_2->clear();
 	Client s;
 	s.com_id=0;
 	MyClient=s;
@@ -655,8 +645,13 @@ void AChat::WriteClients(RecursionArray Map)
 		}
 	}
     QString rooms;
-    for(int i=0;i<ChatsList.size();i++){if(ChatsList.value(i).KomID!=GetKomnata()) rooms+="/"+QString::number(ChatsList.value(i).KomID);}
-            post("type=msglist&room="+rooms,tMessage);isReloadHostory=false;
+    for(int i=0;i<ChatsList.size();i++)
+    {
+        if(ChatsList.value(i).KomID!=GetKomnata()) rooms+="/"+QString::number(ChatsList.value(i).KomID);
+    }
+            if(isStart!=Wait) post("type=msglist&room="+rooms,tMessage);
+            else post("type=msglist&new=true&room="+rooms,tMessage);
+            isReloadHostory=false;
 	SendLSOnTime.start();
 }
 QString AChat::ListToHTML()
@@ -692,8 +687,7 @@ QString AChat::ListToHTML()
         doClient=ClientLS.id;
         }
         }
-		if(!isCensure) allLS+=str;
-		else allLS+=SencureString( str );
+        allLS+=str;
 		nummers++;
 	}
     HTML=QString(Styled.Main).replace("{main}",allLS);
@@ -802,6 +796,12 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			if(Text=="402") SendMessage(tr("Ошибка изменения. Код ошибки:")+Text);
 			break;
 		}
+    case tUniDeleteAll:
+        {
+            if(Text=="402") SendMessage(tr("Ошибка удаления. Код ошибки:")+Text);
+            else post("type=getUnigue",tGetUngine);
+            break;
+        }
 	case tOnlineList:
 		{
             R->MainUI->labelOnline->setText(OnlinetoHTML(MyKomnata));
@@ -866,7 +866,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 		}
 	case tGetMy:
 		{
-            if(ValuesMap.value("key").toString()=="517"){
+            if(ValuesMap.value("key").toString()=="517" || ValuesMap.value("key").toString()=="410"){
                 SendMessage("Попытка авторизациии не удалась. Если вы используете беспарольный вход - заного введите пароль.");
                 R->LoadWindow->setHidden(1);
                 break;}
@@ -919,6 +919,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 	case tGetUngine:
 		{
 			R->KabinUI->listWidget_4->clear();
+            UniClientList.clear();
 			MapFind(i,ReplyMap,keys)
 			{
 				RecursionArray ValueMap=ReplyMap.value(keys.value(i)).toMap();
@@ -930,8 +931,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 				tmp.ip=ValueMap.value("ip").toString();
 				tmp.key=ValueMap.value("unigie").toString();
 				tmp.lastDate=ValueMap.value("lastDate").toString();
-				if(!UniClientList.contains(tmp)) {
-					UniClientList << tmp;}
+                UniClientList << tmp;
 			}
 
 			for(int i=0;i<UniClientList.size();i++) R->KabinUI->listWidget_4->addItem(UniClientList.value(i).key);
@@ -979,7 +979,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			R->Main->show();
 			R->LoadWindow->setHidden(1);
 			R->LoadMenu->setHidden(1);
-            timer->start(4000);
+            timer->start(TIMER_DELAY);
             QString tmp;
             for(int i=0;i<result.size();i++) tmp+="/"+result.value(i);
             tmp.remove(0,1);
@@ -1050,9 +1050,16 @@ void AChat::updateCaption() //Таймер сработал
 {
 	if(MyClient.Active)
 	{
-        if(TimerTick!=5) {QString rooms;for(int i=0;i<ChatsList.size();i++){ if(ChatsList.value(i).KomID!=GetKomnata()) rooms+="/"+QString::number(ChatsList.value(i).KomID);}
+        if(TimerTick!=TIMER_TICK_RELOAD) {
+            QString rooms;
+            for(int i=0;i<ChatsList.size();i++)
+            {
+                if(ChatsList.value(i).KomID!=GetKomnata())
+                    rooms+="/"+QString::number(ChatsList.value(i).KomID);
+            }
             if(MyClient.com_id!=0) post("type=msglist&new=true&room="+QString::number(GetKomnata())+rooms,tMessage);}
-			else {QString postiString;
+            else {
+            QString postiString;
 				for(int i=0;i<ChatsList.size();i++)
 				{
 					int RoomID=ChatsList.value(i).KomID;

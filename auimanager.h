@@ -1,5 +1,5 @@
-#ifndef AUIMANAGER
-#define AUIMANAGER
+#ifndef AUIMANAGER_H
+#define AUIMANAGER_H
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialog.h"
@@ -12,8 +12,6 @@
 #include "ui_kabinet.h"
 #include "loading.h"
 #include "ui_loading.h"
-
-#define VERSION_CLIENT QString("СlusterChat 1.0.5 ")
 class UIModule
 {
 public:

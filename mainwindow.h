@@ -16,6 +16,7 @@ public:
     ~MainWindow();
     void OnStart();
     void OnRequest();
+    void closeEvent ( QCloseEvent * e );
     Ui::MainWindow *ui;
 private slots:
     void on_commandLinkButton_clicked();
@@ -36,6 +37,7 @@ private slots:
     void on_pushButton_clicked();
     void on_action_10_triggered();
     void on_pushButton_4_clicked();
+    void on_textBrowser_anchorClicked(const QUrl &arg1);
 };
 
 #endif // MAINWINDOW_H
