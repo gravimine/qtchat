@@ -4,8 +4,8 @@
 #include <QTime>
 #include <QString>
 #include <QByteArray>
-#include <ACore/anetwork.h>
-class ATcpNetwork : public ANetwork {
+#include "anetwork.h"
+class ATcpNetwork : public ANetwork::ANetworkAccessManager {
 	Q_OBJECT
 protected:
 	QTcpSocket* m_pTcpSocket;
@@ -13,7 +13,7 @@ protected:
 	int Type; //Тип запроса
 	bool isSendPost;
 	bool isPoste;
-	QList<AQuest> Posts;
+    QList<ANetwork::AQuest> Posts;
 public:
 	ATcpNetwork();
 	void  ConnectToServer(QString url,int port);
@@ -26,7 +26,7 @@ public:
 	void slotError(QAbstractSocket::SocketError err);
 	void slotConnected();
 signals:
-	void ARequestTcp(ANetworkReply reply);
+    void ARequestTcp(ANetwork::ANetworkReply reply);
 };
 #endif // ACLIENTSERVER
 

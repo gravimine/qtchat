@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>355</width>
-    <height>185</height>
+    <width>421</width>
+    <height>232</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,9 +20,9 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>42</y>
-     <width>261</width>
-     <height>20</height>
+     <y>57</y>
+     <width>303</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -34,12 +34,12 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>421</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>&lt;H1&gt;&lt;i&gt;&lt;center&gt;Авторизация&lt;/center&gt;&lt;/i&gt;&lt;/H1&gt;</string>
+    <string>&lt;font size=9&gt;&lt;i&gt;&lt;b&gt;&lt;center&gt;Авторизация&lt;/center&gt;&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::AutoText</enum>
@@ -48,8 +48,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>41</y>
+     <x>2</x>
+     <y>59</y>
      <width>51</width>
      <height>20</height>
     </rect>
@@ -62,9 +62,9 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>70</y>
-     <width>261</width>
-     <height>20</height>
+     <y>97</y>
+     <width>303</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -75,8 +75,8 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>125</y>
-     <width>351</width>
+     <y>180</y>
+     <width>411</width>
      <height>21</height>
     </rect>
    </property>
@@ -88,8 +88,8 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>150</y>
-     <width>241</width>
+     <y>200</y>
+     <width>281</width>
      <height>27</height>
     </rect>
    </property>
@@ -100,9 +100,9 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>150</y>
-     <width>111</width>
+     <x>280</x>
+     <y>200</y>
+     <width>131</width>
      <height>27</height>
     </rect>
    </property>
@@ -113,8 +113,8 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>70</y>
+     <x>2</x>
+     <y>100</y>
      <width>51</width>
      <height>20</height>
     </rect>
@@ -126,8 +126,8 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>100</y>
+     <x>2</x>
+     <y>142</y>
      <width>51</width>
      <height>20</height>
     </rect>
@@ -139,8 +139,8 @@
   <widget class="QComboBox" name="comboBox">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>97</y>
+     <x>53</x>
+     <y>140</y>
      <width>301</width>
      <height>26</height>
     </rect>
@@ -152,10 +152,10 @@
   <widget class="QPushButton" name="pushButton_3">
    <property name="geometry">
     <rect>
-     <x>333</x>
-     <y>2</y>
-     <width>20</width>
-     <height>18</height>
+     <x>350</x>
+     <y>40</y>
+     <width>25</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="styleSheet">

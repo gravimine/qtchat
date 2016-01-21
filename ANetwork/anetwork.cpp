@@ -1,32 +1,32 @@
 #include "anetwork.h"
 #include "aclientserver.h"
 #include <QNetworkProxy>
-void ANetwork::RealPost(QString posti)
+using namespace ANetwork;
+void ANetworkAccessManager::RealPost(QString posti)
 {
     Network->post(Server,posti.toLocal8Bit().data());
 }
-void ANetwork::RealGet(QString geti)
+void ANetworkAccessManager::RealGet(QString geti)
 {
 	Network->get(QNetworkRequest(QUrl(geti.toLocal8Bit().data())));
 }
-void ANetwork::getReplyFinished(QNetworkReply*reply)
+void ANetworkAccessManager::getReplyFinished1(QNetworkReply*reply)
 {
-
-
+    timer->stop();
 	if(Type==RESERVE_CODE)
 	{
 		FileFinished(QString::fromUtf8(reply->readAll()));
 	}
 	else
 	{
-		ANetworkReply _value;
-		_value.TextError=reply->errorString();
-		_value.TextReply=QString::fromUtf8(reply->readAll()) ;
-		reply->deleteLater();
-		_value.Type=Type;
-		ARequest(_value);
+        ANetworkReply _value;
+        _value.TextError=reply->errorString();
+        _value.TextReply=QString::fromUtf8(reply->readAll()) ;
+        reply->deleteLater();
+        _value.Type=Type;
+        ARequest(_value);
 	}
-	if(Posts.size()>=1)
+    if(Posts.size()>0)
 	{
 		isSendPost=1;
 		if(Posts.value(0).isPost)RealPost(Posts.value(0).post);
@@ -36,27 +36,57 @@ void ANetwork::getReplyFinished(QNetworkReply*reply)
 	}
 	else isSendPost=0;
 }
-ANetwork::ANetwork()
+void ANetworkAccessManager::nextReqest()
+{
+
+
+    if(Posts.size()>0)
+    {
+        isSendPost=1;
+        if(Posts.value(0).isPost) RealPost(Posts.value(0).post);
+        else RealGet(Posts.value(0).post);
+        Type=Posts.value(0).type;
+        Posts.removeAt(0);
+    }
+    else isSendPost=0;
+}
+void ANetworkAccessManager::setDelayTimeout(int msec)
+{
+    timerDelay=msec;
+    timer->setInterval(msec);
+}
+
+ANetworkAccessManager::ANetworkAccessManager()
 {
 	Network = new QNetworkAccessManager(this);
-	connect(Network, SIGNAL(finished(QNetworkReply*)),this, SLOT(getReplyFinished(QNetworkReply*)));
+    timer = new QTimer(this);
+    connect(Network, SIGNAL(finished(QNetworkReply*)),this, SLOT(getReplyFinished1(QNetworkReply*)));
+    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimer()));
 	isSendPost=0;
 }
-ANetwork::~ANetwork()
+ANetworkAccessManager::~ANetworkAccessManager()
 {
 	delete Network;
+    delete timer;
 }
-void ANetwork::downloadFile(QString url)
+void ANetworkAccessManager::slotTimer()
+{
+    ANetworkReply _value;
+    _value.TextError="Timeout";
+    _value.Type=Type;
+    ARequest(_value);
+}
+void ANetworkAccessManager::downloadFile(QString url)
 {
 	get(url,RESERVE_CODE);
 }
-void ANetwork::setCookie(QString name,QString value)
+void ANetworkAccessManager::setCookie(QString name,QString value)
 {
 	QList<QNetworkCookie> cookies=Network->cookieJar()->cookiesForUrl(Server.url());
 	cookies.append(QNetworkCookie(name.toLocal8Bit().data(), value.toLocal8Bit().data()));
 	Network->cookieJar()->setCookiesFromUrl(cookies,Server.url());
 }
-QString ANetwork::getCookie(QString name)
+QString ANetworkAccessManager::getCookie(QString name)
 {
 	QList<QNetworkCookie> cookies=Network->cookieJar()->cookiesForUrl(Server.url());
 	QNetworkCookie s;
@@ -64,19 +94,23 @@ QString ANetwork::getCookie(QString name)
 	s.setDomain(Server.url().toString());
     return cookies.value(cookies.indexOf(s)).value();
 }
-void ANetwork::clearCookie(QString url)
+void ANetworkAccessManager::clearCookie(QString url)
 {
 	QList<QNetworkCookie> cookies;
 	Network->cookieJar()->setCookiesFromUrl(cookies,url);
 }
-QList<QNetworkCookie> ANetwork::getCookies(QString url)
+QList<QNetworkCookie> ANetworkAccessManager::getCookies(QString url)
 {
 	return Network->cookieJar()->cookiesForUrl(url);
 }
 
-void ANetwork::post(QString text, int Typ)
+void ANetworkAccessManager::post(QString text, int Typ)
 {
-	if(isSendPost==0) {RealPost(text); Type=Typ;isSendPost=1;}
+    if(isSendPost==0) {
+        timer->start();
+        RealPost(text);
+        Type=Typ;
+        isSendPost=1;}
 	else
 	{
 		AQuest tmp;
@@ -85,13 +119,16 @@ void ANetwork::post(QString text, int Typ)
 		tmp.isPost=true;
 		Posts << tmp;
 	}
-
     if(isDebug)qDebug()<< "Post:"+ text;
 }
-void ANetwork::get(QString text, int Typ)
+void ANetworkAccessManager::get(QString text, int Typ)
 {
 
-	if(isSendPost==0) {RealGet(text); Type=Typ;isSendPost=1;}
+    if(isSendPost==0) {
+        timer->start();
+        RealGet(text);
+        Type=Typ;
+        isSendPost=1;}
 	else
 	{
 		AQuest tmp;
@@ -102,15 +139,15 @@ void ANetwork::get(QString text, int Typ)
 	}
     if(isDebug) qDebug()<< "Get:"+ text;
 }
-void ANetwork::setUrl(QString url)
+void ANetworkAccessManager::setUrl(QString url)
 {
     Server.setUrl(url);
 }
-QString ANetwork::url()
+QString ANetworkAccessManager::url()
 {
     return Server.url().url();
 }
-void ANetwork::setRawHeader(QByteArray name,QByteArray value)
+void ANetworkAccessManager::setRawHeader(QByteArray name,QByteArray value)
 {
     Server.setRawHeader(name,value);
 }

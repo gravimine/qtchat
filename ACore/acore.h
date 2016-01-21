@@ -70,7 +70,7 @@ namespace ACore
         RecursionArray(const QMap<QString,QVariant> h);
 		RecursionArray();
         void operator<<(AbstractStruct* h);
-		QMap<QString,QVariant> fromHTMLTegsFormat(QString value, bool isReturn=false);
+        QMap<QString,QVariant> fromHTMLTegsFormat(const QString value, bool isReturn=false);
 		QString toHTMLTegsFormat();
 		QString toYUMFormat();
 		QString toCFGFormat();

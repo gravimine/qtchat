@@ -1,8 +1,9 @@
 #include "achat.h"
-#include "ACore/aclientserver.h"
+#include "ANetwork/aclientserver.h"
 #include "ACore/abbcodec.h"
 #include "config.h"
 using namespace ACore;
+using namespace ANetwork;
 AChat *CluChat;
 ACore::ASettings setings;
 ACore::ALog logs;
@@ -474,13 +475,14 @@ AChat::AChat()
     setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
 	#endif
 	MyClient.com_id=0;
+    setDelayTimeout(5000);
     BBCodeRules << BBCodeRule("color","<font color=${color}>${data}</font>")
                 << BBCodeRule("size","<font size=${size}>${data}</font>")
                 << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
                 << BBCodeRule("pre","<pre>${data}</pre>");
 	ServerType=true;
 	ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
-	connect(this, SIGNAL(ARequest(ANetworkReply)),this, SLOT(getReplyFinished(ANetworkReply)));
+    connect(this, SIGNAL(ARequest(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
 	//Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
 	timersendls=new QTimer(this);
 	timer=new QTimer(this);
@@ -493,6 +495,59 @@ AChat::AChat()
 	isReloadHostory=false;
 	HistoryNumberLS=0;
 	TimerTick=0;
+}
+AChat::AChat(int mode)
+{
+    SetPath=QDir().homePath();
+    if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); logs<<"Create dir .ClusterChat";}
+    logs.SetFile(SetPath+"/.ClusterChat/ClusterChat.log");
+    logs<< "Start";
+    ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
+    isStart=Loading;
+    logs.SetCoutDebug(true);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    TimeStart=QTime::currentTime();
+    #ifdef Q_OS_WIN32
+    if(mode==1) {
+        setings.setPatch(SetPath+"/AppData/Local/Temp/CluChat.cfg",CfgFormat);
+        logs.SetFile(SetPath+"/AppData/Local/Temp/CluChat.log");
+    }
+    else {
+        setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
+        logs.SetFile(SetPath+"/.ClusterChat/ClusterChat.log");
+    }
+    #endif
+    #ifdef Q_OS_LINUX
+    if(mode==1) {
+        setings.setPatch("/tmp/CluChat.cfg",CfgFormat);
+        logs.SetFile("/tmp/CluChat.log");
+    }
+    else {
+        setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
+        logs.SetFile(SetPath+"/CluChat.log");
+    }
+    #endif
+    MyClient.com_id=0;
+    setDelayTimeout(5000);
+    BBCodeRules << BBCodeRule("color","<font color=${color}>${data}</font>")
+                << BBCodeRule("size","<font size=${size}>${data}</font>")
+                << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
+                << BBCodeRule("pre","<pre>${data}</pre>");
+    ServerType=true;
+    ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
+    connect(this, SIGNAL(ARequest(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
+    //Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
+    timersendls=new QTimer(this);
+    timer=new QTimer(this);
+    R->MainUI->textBrowser->setOpenLinks(false);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
+    connect(&logs, SIGNAL(AddLog()), this, SLOT(slotUpdateLogs()));
+    connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
+    SmilesList << Smile(":)",":/res/smail.png") << Smile(":(",":/res/sadness.png")
+               << Smile(":пфф:",":/res/rukalico.png") << Smile(":{}",":/res/zloi.png");
+    isReloadHostory=false;
+    HistoryNumberLS=0;
+    TimerTick=0;
 }
 AChat::~AChat()
 {
@@ -736,10 +791,15 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 		QString sma=GetErrorText(Text.toInt());
 		if(!sma.isEmpty()) SendMessage(sma);
 	}
-
-	if(reply.TextError!="Unknown error"&&reply.TextError!="Неизвестная ошибка")
+    if(reply.TextError=="Timeout")
+    {
+        nextReqest();
+        logs.addError("Timeout request. This request next");
+    }
+    else if(reply.TextError!="Unknown error"&&reply.TextError!="Неизвестная ошибка")
 	{
-		SendErrorMessage(tr("Ошибка при получении данных с сервера ")+reply.TextError);
+        SendErrorMessage("Ошибка при получении данных с сервера "+reply.TextError);
+        logs.addError(reply.TextError);
 	}
 	switch (Type) {
 	case tUnkown:
@@ -884,10 +944,15 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			MyClient.region=MyClientMap.value("na").toString();
 			MyClient.OnlineTime=MyClientMap.value("data").toString();
 			ClientList << MyClient;
+            R->Main->setWindowTitle(VERSION_CLIENT+"["+MyClient.name+"]");
 			R->KabinUI->labelMyColor->setText("<font color=#"+MyClient.color+">#"+MyClient.color);
 			R->KabinUI->lineEditMyName->setText(MyClient.name);
 			R->KabinUI->label_Prem->setText(GetTextGroup(MyClient.group));
 			ADD_DEBUG "My ID:" + QString::number(MyClient.id);
+            ADD_DEBUG "My Name:" + MyClient.id;
+            ADD_DEBUG "My Group:" + MyClient.name;
+            ADD_DEBUG "My Clent:" + MyClient.enterclient+" "+MyClient.versionClient;
+            ADD_DEBUG "My TimeZone:" + MyClient.timezone;
 			LoadStyle(StylePath);
 			post("type=rooms&typeRoom=all",tChats);
 

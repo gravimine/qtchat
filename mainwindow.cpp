@@ -173,9 +173,9 @@ void Kabinet::on_checkBox_2_clicked(bool checked)
 	if(checked) {setings["Debug"]=true;}
 	else setings["Debug"]=false;
 }
-void MainWindow::OnStart()
+void MainWindow::OnStart(int mode)
 {
-    CluChat=new AChat();
+    CluChat=new AChat(mode);
 	CluChat->LoadSettings();
     CluChat->CheckBoxUpdate();
 }

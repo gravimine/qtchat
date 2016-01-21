@@ -12,7 +12,7 @@
 #include <QTime>
 #include <QTextBrowser>
 #include <QTextCodec>
-#include "ACore/anetwork.h"
+#include "ANetwork/anetwork.h"
 #include "auimanager.h"
 #include "ACore/acore.h"
 #include "ACore/abbcodec.h"
@@ -161,7 +161,7 @@ struct Client
     }
 };
 extern ACore::AAppCore ClusterChat;
-
+using ANetwork::ANetworkReply;
 struct AServer
 {
 	QString name;
@@ -201,7 +201,7 @@ struct Style
 extern ACore::ASettings setings;
 extern ACore::ALog logs;
 void SendDialogMessage(QString Text,QString Title="");
-class AChat : public ANetwork
+class AChat : public ANetwork::ANetworkAccessManager
 {
 	Q_OBJECT
 private:
@@ -264,6 +264,7 @@ public:
 	Client FindClientOfIndex(QString id);
 	Client GetClient(int id);
 	AChat();
+    AChat(int mode);
 	~AChat();
     void RenderSmiles();
 	void Registration(QString Login,QString name_and_family, QString Pass,QString EMail);
@@ -280,7 +281,7 @@ public:
 	QString ListToHTML();
 	int GetKomnata();
 	public slots:
-	void getReplyFinished(ANetworkReply reply);
+    void getReplyFinished(ANetworkReply reply);
 	void updateCaption(); //Таймер сработал
     void slotUpdateLogs();
 	void updateCaption2();

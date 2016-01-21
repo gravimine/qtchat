@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void OnStart();
+    void OnStart(int mode);
     void OnRequest();
     void closeEvent ( QCloseEvent * e );
     Ui::MainWindow *ui;

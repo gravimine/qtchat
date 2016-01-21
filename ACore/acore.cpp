@@ -62,6 +62,7 @@ namespace ACore
 		ReturnValue << _value;
 		return ReturnValue;
 	}
+
 	QString QtHtmlRecoder(QString html)
 	{
 		QString result;
@@ -651,7 +652,7 @@ namespace ACore
 	RecursionArray::RecursionArray()
 	{
 	}
-	QMap<QString,QVariant> RecursionArray::fromHTMLTegsFormat(QString value, bool isReturn)
+    QMap<QString,QVariant> RecursionArray::fromHTMLTegsFormat(const QString value, bool isReturn)
 	{
 		QMap<QString,QVariant> ReturnValue; //Возвращаемый массив
 		int i=0;

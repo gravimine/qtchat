@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
     Kabinet *WindKabinet=new Kabinet;
     Loading *LoadWindow=new Loading;
     LoadWindow->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    int InitUI=timer->elapsed();
     R->Kabin=WindKabinet;
     R->KabinUI=WindKabinet->ui;
     R->LoadMenu=WindDialog;
@@ -38,8 +37,11 @@ int main(int argc, char *argv[])
     R->MessageUI=WindMessage->ui;
     R->Reg=WindRegis;
     R->RegUI=WindRegis->ui;
+    int InitUI=timer->elapsed();
     qDebug() << "Инициализация UI: "+QString::number(InitUI)+"мс";
-    WindMain->OnStart();
+    if(a.arguments().contains("-template")) {qDebug() << "[main] Directory Template";
+    WindMain->OnStart(1);}
+    else WindMain->OnStart(0);
     qDebug() << "Старт программы: "+QString::number(timer->elapsed()-InitUI)+"мс";
     WindMain->OnRequest();
     delete timer;
