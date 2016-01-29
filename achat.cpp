@@ -2,6 +2,7 @@
 #include "ANetwork/aclientserver.h"
 #include "ACore/abbcodec.h"
 #include "config.h"
+#include "ANetwork/atcpclient.h"
 using namespace ACore;
 using namespace ANetwork;
 AChat *CluChat;
@@ -202,6 +203,23 @@ bool AChat::SendCommand(QString message)
         SendLS("Привет всем присутствующим в этом чудесном чате!");
         return true;
     }
+    else if(cmd=="/tcp-connect")
+    {
+        if(ArgList.value(1).isEmpty() && ArgList.value(2).isEmpty()) {SendMessage("Используйте /tcp-connect HOST PORT"); return true;}
+        else tcpClient.connectToHost(ArgList.value(1),ArgList.value(2).toInt());
+        return true;
+    }
+    else if(cmd=="/tcp-disconnect")
+    {
+        tcpClient.currentSocket()->disconnect();
+        return true;
+    }
+    else if(cmd=="/tcp-send")
+    {
+        if(ArgList.value(1).isEmpty()) {SendMessage("Используйте /tcp-send TEXT"); return true;}
+        else tcpClient.Send(ArgList.value(1).isEmpty()+"\n");
+        return true;
+    }
 	else if(cmd=="/sendls")
 	{
 		if(ArgList.value(1).isEmpty()) SendMessage("Невозможно отправить пустое сообщение");
@@ -211,6 +229,15 @@ bool AChat::SendCommand(QString message)
 	}
 	else return false;
 }
+void AChat::slotConnected()
+{
+    SendMessage("TCP: Server Connected");
+}
+void AChat::slotRead(QString read)
+{
+    SendMessage("TCP: ReadData:"+read);
+}
+
 void AChat::SetKomnata(int id)
 {
 		MyClient.com_id=id;
@@ -456,47 +483,7 @@ AChate AChat::currentRoom()
 {
     return MyKomnata;
 }
-
-AChat::AChat()
-{
-	SetPath=QDir().homePath();
-    if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); logs<<"Create dir .ClusterChat";}
-    logs.SetFile(SetPath+"/.ClusterChat/ClusterChat.log");
-    logs<< "Start";
-	ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
-    isStart=Loading;
-    logs.SetCoutDebug(true);
-	QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-	TimeStart=QTime::currentTime();
-	#ifdef Q_OS_WIN32
-    setings.setPatch(SetPath+"/.ClusterChat/settings.cfg",CfgFormat);
-	#endif
-	#ifdef Q_OS_LINUX
-    setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
-	#endif
-	MyClient.com_id=0;
-    setDelayTimeout(5000);
-    BBCodeRules << BBCodeRule("color","<font color=${color}>${data}</font>")
-                << BBCodeRule("size","<font size=${size}>${data}</font>")
-                << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
-                << BBCodeRule("pre","<pre>${data}</pre>");
-	ServerType=true;
-	ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
-    connect(this, SIGNAL(ARequest(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
-	//Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
-	timersendls=new QTimer(this);
-	timer=new QTimer(this);
-    R->MainUI->textBrowser->setOpenLinks(false);
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
-    connect(&logs, SIGNAL(AddLog()), this, SLOT(slotUpdateLogs()));
-	connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
-    SmilesList << Smile(":)",":/res/smail.png") << Smile(":(",":/res/sadness.png")
-               << Smile(":пфф:",":/res/rukalico.png") << Smile(":{}",":/res/zloi.png");
-	isReloadHostory=false;
-	HistoryNumberLS=0;
-	TimerTick=0;
-}
-AChat::AChat(int mode)
+AChat::AChat(int mode=0)
 {
     SetPath=QDir().homePath();
     if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); logs<<"Create dir .ClusterChat";}
@@ -543,6 +530,8 @@ AChat::AChat(int mode)
     connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
     connect(&logs, SIGNAL(AddLog()), this, SLOT(slotUpdateLogs()));
     connect(timersendls, SIGNAL(timeout()), this, SLOT(updateCaption2()));
+    connect(&tcpClient, SIGNAL(signalConnected()), this, SLOT(slotConnected()));
+    connect(&tcpClient, SIGNAL(signalRead(QString)), this, SLOT(slotRead(QString)));
     SmilesList << Smile(":)",":/res/smail.png") << Smile(":(",":/res/sadness.png")
                << Smile(":пфф:",":/res/rukalico.png") << Smile(":{}",":/res/zloi.png");
     isReloadHostory=false;
@@ -640,7 +629,7 @@ void AChat::SendCmd(QString cmd)
 }
 void AChat::GetServersList()
 {
-	get("http://monitor.cluster-chat.ml/index.php",tServerList);
+    get("http://chat-clusterproject.rhcloud.com/sub/monitor//index.php",tServerList);
     logs<<"Get server info...";
 }
 Client AChat::currentClient()
@@ -973,12 +962,6 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 	case tServerList:
 		{
 			WriteServerList(ReplyMap);
-            AServer tmp;
-            tmp.name="Server3";
-            tmp.url="http://php-gravit.rhcloud.com/index.php";
-            tmp.status="403";
-            ServersList << tmp;
-            R->LoadMenuUI->comboBox->addItem("Server3");
 			break;
 		}
 	case tGetUngine:

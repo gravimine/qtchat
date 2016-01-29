@@ -16,6 +16,7 @@
 #include "auimanager.h"
 #include "ACore/acore.h"
 #include "ACore/abbcodec.h"
+#include "ANetwork/atcpclient.h"
 #define ADD_DEBUG logs<<
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
@@ -208,6 +209,7 @@ private:
 	Client MyClient;
     QList<ASendLS> SendLSList;
     QTime SendLSOnTime;
+    ATCPClient tcpClient;
     //QList<PrivateMessage> MessageList;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
@@ -263,7 +265,6 @@ public:
 	AChate GetRoom(int id);
 	Client FindClientOfIndex(QString id);
 	Client GetClient(int id);
-	AChat();
     AChat(int mode);
 	~AChat();
     void RenderSmiles();
@@ -285,6 +286,8 @@ public:
 	void updateCaption(); //Таймер сработал
     void slotUpdateLogs();
 	void updateCaption2();
+    void slotConnected();
+    void slotRead(QString read);
 };
 extern AChat *CluChat;
 
