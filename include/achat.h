@@ -12,11 +12,11 @@
 #include <QTime>
 #include <QTextBrowser>
 #include <QTextCodec>
-#include "ANetwork/anetwork.h"
+#include "anetwork.h"
 #include "auimanager.h"
-#include "ACore/acore.h"
-#include "ACore/abbcodec.h"
-#include "ANetwork/atcpclient.h"
+#include "acore.h"
+#include "abbcodec.h"
+#include "atcpclient.h"
 #define ADD_DEBUG logs<<
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
@@ -209,8 +209,7 @@ private:
 	Client MyClient;
     QList<ASendLS> SendLSList;
     QTime SendLSOnTime;
-    ATCPClient tcpClient;
-    //QList<PrivateMessage> MessageList;
+    ANetwork::ATCPClient tcpClient;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
 	QList<Client> ClientList;
@@ -220,16 +219,15 @@ private:
 	QList<UniClient> UniClientList;
     QString InitServerUrl;
     UniKey MyUniKey;
-    QString ReportMessage, passworda,logina,SetPath;
-    int myID,HistoryNumberLS,TimerTick,TexteCashe,CurrentChatIndex;
-    bool isSmiles,isReloadHostory,ServerType,isCensure,isNoPassMode;
+    QString ReportMessage,SetPath,TCPHost;
+    int HistoryNumberLS,TimerTick,TexteCashe,CurrentChatIndex;
+    bool isSmiles,isReloadHostory,isCensure,isNoPassMode;
 	QTime TimeStart;
 	QTimer *timersendls;
 	Style Styled;
 	QString StylePath;
 	Client TimeClient;
     AChate MyKomnata;
-	QTime timer3;
 	QTimer *timer;
 public:
 	bool isSendCommand(QString message);

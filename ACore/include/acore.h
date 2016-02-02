@@ -74,6 +74,7 @@ namespace ACore
 		QString toHTMLTegsFormat();
 		QString toYUMFormat();
 		QString toCFGFormat();
+        QString toPostGetFormat();
 		QString print();
 	};
     class ALog : public QObject, public QStringList

@@ -62,7 +62,17 @@ namespace ACore
 		ReturnValue << _value;
 		return ReturnValue;
 	}
-
+    QString RecursionArray::toPostGetFormat()
+    {
+        QString result;
+        QStringList keyd=keys();
+        for(int i=0;i<size();i++)
+        {
+            if(i==0) result+=keyd.value(i)+"="+VariantToString(value(keyd.value(i)));
+            else result+="&"+keyd.value(i)+"="+VariantToString(value(keyd.value(i)));
+        }
+        return result;
+    }
 	QString QtHtmlRecoder(QString html)
 	{
 		QString result;

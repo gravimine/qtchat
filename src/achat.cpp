@@ -1,8 +1,9 @@
 #include "achat.h"
-#include "ANetwork/aclientserver.h"
-#include "ACore/abbcodec.h"
+#include "aclientserver.h"
+#include "abbcodec.h"
 #include "config.h"
-#include "ANetwork/atcpclient.h"
+#include "atcpclient.h"
+#include "atcpinhttpfunc.h"
 using namespace ACore;
 using namespace ANetwork;
 AChat *CluChat;
@@ -47,7 +48,8 @@ void AChat::SendCommandAraim()
 void AChat::RenderSmiles()
 {
     QString str;
-    for(int i=0;i<SmilesList.size();i++) str+="<IMG src=\""+SmilesList.value(i).url+"\">  "+SmilesList.value(i).code+"<br><br>";
+    for(int i=0;i<SmilesList.size();i++)
+        str+="<IMG src=\""+SmilesList.value(i).url+"\">  "+SmilesList.value(i).code+"<br><br>";
     R->KabinUI->label->setText(str);
 }
 
@@ -149,7 +151,6 @@ void AChat::SetServer(QString name)
 			{
                 setUrl(ServersList.value(i).url);
 				InitServerUrl=ServersList.value(i).url;
-				ServerType=true;
 			}
 			setings["Server"]=ServersList.value(i).url;
 			ADD_DEBUG "Server url: "+ServersList.value(i).url;
@@ -206,18 +207,31 @@ bool AChat::SendCommand(QString message)
     else if(cmd=="/tcp-connect")
     {
         if(ArgList.value(1).isEmpty() && ArgList.value(2).isEmpty()) {SendMessage("Используйте /tcp-connect HOST PORT"); return true;}
-        else tcpClient.connectToHost(ArgList.value(1),ArgList.value(2).toInt());
+        else {//tcpClient.SetProxy("200.239.8.65",10000);
+            tcpClient.connectToHost(ArgList.value(1),ArgList.value(2).toInt());
+        TCPHost=ArgList.value(1);}
         return true;
     }
     else if(cmd=="/tcp-disconnect")
     {
-        tcpClient.currentSocket()->disconnect();
+        tcpClient.disconnectToHost();
         return true;
     }
     else if(cmd=="/tcp-send")
     {
         if(ArgList.value(1).isEmpty()) {SendMessage("Используйте /tcp-send TEXT"); return true;}
-        else tcpClient.Send(ArgList.value(1).isEmpty()+"\n");
+        else tcpClient.Send(ArgList.value(1)+"\n");
+        return true;
+    }
+    else if(cmd=="/tcp-hsend")
+    {
+        RecursionArray reply;
+        for(int i=1;i<ArgList.size();i+=2)
+        {
+            reply[ArgList.value(i)]=ArgList.value(i+1);
+        }
+        tcpClient.Send(FormatHTTP(reply,TCPHost));
+        qDebug() << FormatHTTP(reply,TCPHost);
         return true;
     }
 	else if(cmd=="/sendls")
@@ -235,6 +249,7 @@ void AChat::slotConnected()
 }
 void AChat::slotRead(QString read)
 {
+    qDebug() << read;
     SendMessage("TCP: ReadData:"+read);
 }
 
@@ -520,7 +535,6 @@ AChat::AChat(int mode=0)
                 << BBCodeRule("size","<font size=${size}>${data}</font>")
                 << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
                 << BBCodeRule("pre","<pre>${data}</pre>");
-    ServerType=true;
     ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
     connect(this, SIGNAL(ARequest(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
     //Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
@@ -556,7 +570,6 @@ AChat::~AChat()
 	setings.SaveSettings();
 	delete timer;
 	delete timersendls;
-	ADD_DEBUG "Exit " + timeEx(timer3);
 }
 void AChat::slotUpdateLogs()
 {

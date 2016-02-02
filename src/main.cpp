@@ -8,8 +8,7 @@
 #include <QTime>
 #include <QString>
 #include <QDebug>
-#include "auimanager.h"
-#include "ANetwork/atcpclient.h"
+#include "include/auimanager.h"
 UIModule *R;
 int main(int argc, char *argv[])
 {

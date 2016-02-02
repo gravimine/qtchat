@@ -1,22 +1,32 @@
 #include "atcpclient.h"
-
+#include "atcpinhttpfunc.h"
+#include <QNetworkProxy>
+namespace ANetwork
+{
 ATCPClient::ATCPClient()
 {
     socket = new QTcpSocket();
+    m_nNextBlockSize = 0;
     connect(socket, SIGNAL(connected()), SLOT(slotConected()));
     connect(socket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
 
 }
+void ATCPClient::slotDisconnect()
+{
+    signalDisconnect();
+}
+void ATCPClient::disconnectToHost()
+{
+    socket->disconnectFromHost();
+}
 
 void ATCPClient::connectToHost(QString Host,int port)
 {
-    qDebug() << "Conecting to host";
     socket->connectToHost(Host,port);
 }
 void ATCPClient::slotConected()
 {
     signalConnected();
-    qDebug() << "Conected to host";
 }
 void ATCPClient::slotError(QAbstractSocket::SocketError err)
 {
@@ -29,33 +39,40 @@ void ATCPClient::slotError(QAbstractSocket::SocketError err)
                          "The connection was refused." :
                          QString(socket->errorString())
                         );
-    qDebug() << strError;
+    qDebug() << "Network Error:"+strError;
+    signalError(strError);
 }
 void ATCPClient::slotReadyRead()
 {
-    QString a=socket->readAll();
-    signalRead(a);
-    qDebug() << "Read:"+a;
+    datad+=socket->readAll();
+    qDebug() << datad;
+    if(!socket->bytesAvailable()){
+    signalRead(datad);datad.clear();}
 }
 QTcpSocket* ATCPClient::currentSocket()
 {
     return socket;
 }
+void ATCPClient::SetProxy(QString host,int port)
+{
+    QNetworkProxy s;
+    s.setHostName(host);
+    s.setPort(port);
+    s.setType(QNetworkProxy::Socks5Proxy);
+    socket->setProxy(s);
+}
 
 void ATCPClient::Send(QString data)
 {
-    QByteArray  arrBlock;
-        QDataStream out(&arrBlock, QIODevice::WriteOnly);
-        out.setVersion(QDataStream::Qt_4_2);
-        out << quint16(0)  << data;
-
-        out.device()->seek(0);
-        out << quint16(arrBlock.size() - sizeof(quint16));
-
-        socket->write(arrBlock);
+   socket->write(data.toUtf8());
 }
 ATCPClient::~ATCPClient()
 {
     delete socket;
-    qDebug() << "Destroyter";
 }
+QString FormatHTTP(ACore::RecursionArray Map,QString host)
+{
+    return "GET / HTTP/1.1"+Map.toYUMFormat()+"\nHost:"+host+"\n\n";
+}
+}
+

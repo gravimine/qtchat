@@ -10,29 +10,29 @@ include(ACore/ACore.pri)
 include(ANetwork/ANetwork.pri)
 TARGET = CluChat
 TEMPLATE = app
+INCLUDEPATH += ./include
+SOURCES += src/main.cpp\
+           src/mainwindow.cpp \
+           src/ui.cpp \
+           src/achat.cpp
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    ui.cpp \
-    achat.cpp
+HEADERS  += include/mainwindow.h \
+    include/dialog.h \
+    include/registr.h \
+    include/form.h \
+    include/kabinet.h \
+    include/auimanager.h \
+    include/loading.h \
+    include/achat.h \
+    include/achat.h \
+    include/config.h
 
-HEADERS  += mainwindow.h \
-    dialog.h \
-    registr.h \
-    form.h \
-    kabinet.h \
-    auimanager.h \
-    loading.h \
-    achat.h \
-    achat.h \
-    config.h
-
-FORMS    += mainwindow.ui \
-    dialog.ui \
-    registr.ui \
-    form.ui \
-    kabinet.ui \
-    loading.ui
+FORMS    += ui/mainwindow.ui \
+    ui/dialog.ui \
+    ui/registr.ui \
+    ui/form.ui \
+    ui/kabinet.ui \
+    ui/loading.ui
 RESOURCES     = app.qrc
 
 DISTFILES +=
