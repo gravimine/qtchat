@@ -4,6 +4,8 @@
 #include "config.h"
 #include "atcpclient.h"
 #include "atcpinhttpfunc.h"
+#include <QAudioOutput>
+#include <QSound>
 using namespace ACore;
 using namespace ANetwork;
 AChat *CluChat;
@@ -20,7 +22,6 @@ void AChat::UniKeyDeleteAll()
 {
     post("type=setUnigue&typeCommand=deleteAll",tUniDeleteAll);
 }
-
 QString AChat::GetTextGroup(QString Groups)
 {
 	QString ReturnText="<font color=#0F0>Пользователь";
@@ -223,6 +224,11 @@ bool AChat::SendCommand(QString message)
         else tcpClient.Send(ArgList.value(1)+"\n");
         return true;
     }
+    else if(cmd=="/tcp-flood")
+    {
+        for(int i=0;i<10000;i++) {tcpClient.Send(ArgList.value(1)+"\n\n"); tcpClient.currentSocket()->waitForReadyRead(500);}
+        return true;
+    }
     else if(cmd=="/tcp-hsend")
     {
         RecursionArray reply;
@@ -250,7 +256,7 @@ void AChat::slotConnected()
 void AChat::slotRead(QString read)
 {
     qDebug() << read;
-    SendMessage("TCP: ReadData:"+read);
+    //SendMessage("TCP: ReadData:"+read);
 }
 
 void AChat::SetKomnata(int id)
@@ -498,12 +504,26 @@ AChate AChat::currentRoom()
 {
     return MyKomnata;
 }
+ACore::ASound audioNotice;
+#ifdef Q_OS_LINUX
+void AChatAudioThread::run()
+{
+    qDebug() << "Theard START";
+    audioNotice.SetFormat(48000,16,2,"audio/pcm",QAudioFormat::LittleEndian,QAudioFormat::SignedInt);
+    audioNotice.ForDevice("pulse");
+    audioNotice.SetPatch(":/res/warning.wav");
+    qDebug() << "Theard END";
+}
+AChatAudioThread audioThread;
+#endif
+
 AChat::AChat(int mode=0)
 {
     SetPath=QDir().homePath();
     if(!QDir(SetPath+"/.ClusterChat").exists()) { QDir(SetPath).mkdir(".ClusterChat"); logs<<"Create dir .ClusterChat";}
     logs.SetFile(SetPath+"/.ClusterChat/ClusterChat.log");
     logs<< "Start";
+
     ADD_DEBUG "Выбран путь для сохранения файлов: "+SetPath;
     isStart=Loading;
     logs.SetCoutDebug(true);
@@ -528,6 +548,8 @@ AChat::AChat(int mode=0)
         setings.setPatch(SetPath+"/.config/ClusterChat.cfg",CfgFormat);
         logs.SetFile(SetPath+"/CluChat.log");
     }
+    audioThread.start();
+    //audioNotice.start(classQAudioOutput);
     #endif
     MyClient.com_id=0;
     setDelayTimeout(5000);
@@ -642,7 +664,7 @@ void AChat::SendCmd(QString cmd)
 }
 void AChat::GetServersList()
 {
-    get("http://chat-clusterproject.rhcloud.com/sub/monitor//index.php",tServerList);
+    get("http://chat-clusterproject.rhcloud.com/sub/monitor/index.php",tServerList);
     logs<<"Get server info...";
 }
 Client AChat::currentClient()
@@ -774,6 +796,14 @@ void AChat::SearchNewLS()
     }
     if(!msgEnter.isEmpty() && !R->MainUI->textEdit->hasFocus())
     {
+        #ifdef Q_OS_WIN32
+        audioNotice.start(classQSound);
+        #endif
+        #ifdef Q_OS_LINUX
+        audioNotice.open();
+        audioNotice.start(classQAudioOutput);
+        qDebug() << "Notice start";
+        #endif
         SendDialogMessage(msgEnter,tr("<FONT color=green size=4><center><B>Новое Сообщение!"));
         logs<< "Send Dialog Message Text:"+ msgEnter;
     }

@@ -17,6 +17,7 @@
 #include "acore.h"
 #include "abbcodec.h"
 #include "atcpclient.h"
+#include "asound.h"
 #define ADD_DEBUG logs<<
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
@@ -201,7 +202,16 @@ struct Style
 };
 extern ACore::ASettings setings;
 extern ACore::ALog logs;
+extern ACore::ASound audioNotice;
+
 void SendDialogMessage(QString Text,QString Title="");
+#ifdef Q_OS_LINUX
+class AChatAudioThread : public QThread
+{
+    void run();
+};
+extern AChatAudioThread audioThread;
+#endif
 class AChat : public ANetwork::ANetworkAccessManager
 {
 	Q_OBJECT

@@ -8,5 +8,6 @@
         <file>res/settings.png</file>
         <file>res/time.png</file>
         <file>res/color.png</file>
+        <file>res/warning.wav</file>
     </qresource>
 </RCC>

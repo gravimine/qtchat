@@ -4,10 +4,11 @@
 #
 #-------------------------------------------------
 QT       += core gui network
-#QT       += multimedia
+QT       += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-include(ACore/ACore.pri)
-include(ANetwork/ANetwork.pri)
+include(/home/gravit/mercurial/ASLib/ACore/ACore.pri)
+include(/home/gravit/mercurial/ASLib/ANetwork/ANetwork.pri)
+include(/home/gravit/mercurial/ASLib/AMultimedia/AMultimedia.pri)
 TARGET = CluChat
 TEMPLATE = app
 INCLUDEPATH += ./include
