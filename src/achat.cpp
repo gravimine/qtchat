@@ -1,11 +1,13 @@
 #include "achat.h"
-#include "aclientserver.h"
 #include "abbcodec.h"
 #include "config.h"
 #include "atcpclient.h"
 #include "atcpinhttpfunc.h"
 #include <QAudioOutput>
 #include <QSound>
+#include <QStringList>
+#include <QHostAddress>
+#include <QString>
 using namespace ACore;
 using namespace ANetwork;
 AChat *CluChat;
@@ -13,6 +15,36 @@ ACore::ASettings setings;
 ACore::ALog logs;
 ProgramStatus isStart;
 ACore::AAppCore ClusterChat("ClusterChat");
+void ANetworkInterface::post(QString post,int typ, bool AliveConnect)
+{
+    qDebug() << post;
+    if(srvtype==srvDefaultPHP) ANetworkAccessManager::post(post, typ);
+    else if(srvtype==srvTCPJava || srvtype==srvTCPQt)
+    {
+        tcpclient->Send(post);
+        ReplyType=typ;
+        if(AliveConnect==true) {tcpclient->currentSocket()->waitForReadyRead(1000);}
+        else {tcpclient->currentSocket()->waitForBytesWritten(500);}
+    }
+}
+ANetworkInterface::ANetworkInterface()
+{
+    tcpclient = new ATCPClient();
+    connect(tcpclient, SIGNAL(signalRead(QString)),this, SLOT(ReadCliented(QString)));
+}
+ANetworkInterface::~ANetworkInterface()
+{
+    delete tcpclient;
+}
+void ANetworkInterface::ReadCliented(QString read)
+{
+    ANetworkReply s;
+    s.TextReply = read;
+    s.Type = ReplyType;
+    s.TextError="Unknown error";
+    InterfaceRead(s);
+}
+
 bool AChat::isSendCommand(QString message)
 {
 	if(message.toLatin1()[0]=='/') return true;
@@ -71,6 +103,7 @@ void AChat::WriteServerList(ACore::RecursionArray reply)
 		tmp.status="offline";
 		tmp.information=tmp2.value("info").toString();
 		tmp.users=tmp2.value("users").toString().toInt();
+        tmp.type = srvDefaultPHP;
 		tmp.usersmax=tmp2.value("offusers").toString().toInt();
 
 		R->KabinUI->listWidget->addItem(tmp.name);
@@ -83,8 +116,10 @@ void AChat::WriteServerList(ACore::RecursionArray reply)
 		AllServers++; ServersList<<tmp;
 	}
     logs<<QString::number(Servers)+" ot "+QString::number(AllServers)+" Servers";
-    ServersList << AServer("localhost","http://localhost/index.php","RU","403","local server in this computer");
+    ServersList << AServer("localhost","http://gravit.com/index.php","RU","403","local server in this computer",srvDefaultPHP);
+    ServersList << AServer("localhost TCP","tcp://192.168.1.43:6592","RU","403","local server in this computer",srvTCPQt);
     R->LoadMenuUI->comboBox->addItem("localhost");
+    R->LoadMenuUI->comboBox->addItem("localhost TCP");
     if(url().isEmpty()) setUrl(ServersList.value(0).url);
 }
 void AChat::LSUp()
@@ -150,11 +185,13 @@ void AChat::SetServer(QString name)
 
 		if(ServersList.value(i).name==name && ServersList.value(i).status !="offline") {
 			{
+                srvtype= ServersList.value(i).type;
                 setUrl(ServersList.value(i).url);
-				InitServerUrl=ServersList.value(i).url;
+                InitServerUrl=ServersList.value(i).url;
+                setings["Server"]=ServersList.value(i).url;
+                ADD_DEBUG "Server url: "+ServersList.value(i).url;
 			}
-			setings["Server"]=ServersList.value(i).url;
-			ADD_DEBUG "Server url: "+ServersList.value(i).url;
+
 		}
 	}
 }
@@ -226,7 +263,7 @@ bool AChat::SendCommand(QString message)
     }
     else if(cmd=="/tcp-flood")
     {
-        for(int i=0;i<10000;i++) {tcpClient.Send(ArgList.value(1)+"\n\n"); tcpClient.currentSocket()->waitForReadyRead(500);}
+        for(int i=0;i<10000;i++) {tcpClient.Send(ArgList.value(1)+"\n\n"); tcpClient.currentSocket()->waitForReadyRead(150);}
         return true;
     }
     else if(cmd=="/tcp-hsend")
@@ -345,8 +382,15 @@ UniKey AChat::FindUniKey(QString id)
 void AChat::login(QString loginit,QString passit,QString key)
 {
 	QString posti;
-
     if(url().isEmpty()) SendMessage("Сервер не выбран");
+    if(srvtype!=srvDefaultPHP)
+    {
+        QStringList msdf=url().split("//");
+        QStringList msdf2=msdf.value(1).split(":");
+        tcpclient->currentSocket()->connectToHost(QHostAddress(msdf2.value(0)) ,msdf2.value(1).toInt());
+        tcpclient->currentSocket()->waitForConnected(1000);
+        tcpclient->currentSocket()->waitForReadyRead(1000);
+    }
 	if(key.isEmpty()){
 		UniKey s;
         s.StringID=InitServerUrl+"."+loginit;
@@ -504,7 +548,7 @@ AChate AChat::currentRoom()
 {
     return MyKomnata;
 }
-ACore::ASound audioNotice;
+AMultimedia::ASound audioNotice;
 #ifdef Q_OS_LINUX
 void AChatAudioThread::run()
 {
@@ -558,10 +602,12 @@ AChat::AChat(int mode=0)
                 << BBCodeRule("font","<font color=${color} size=${size}>${data}</font>")
                 << BBCodeRule("pre","<pre>${data}</pre>");
     ADD_DEBUG QString::number(R->KabinUI->pushButton->geometry().height() );
+    connect(this, SIGNAL(InterfaceRead(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
     connect(this, SIGNAL(ARequest(ANetworkReply)), SLOT(getReplyFinished(ANetworkReply)));
     //Server=QNetworkRequest(QUrl("https://php-gravit.rhcloud.com/index.php"));
     timersendls=new QTimer(this);
     timer=new QTimer(this);
+    ReplyType=tGetServerInfo;
     R->MainUI->textBrowser->setOpenLinks(false);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateCaption()));
     connect(&logs, SIGNAL(AddLog()), this, SLOT(slotUpdateLogs()));
@@ -797,11 +843,11 @@ void AChat::SearchNewLS()
     if(!msgEnter.isEmpty() && !R->MainUI->textEdit->hasFocus())
     {
         #ifdef Q_OS_WIN32
-        audioNotice.start(classQSound);
+        audioNotice.start(AMultimedia::classQSound);
         #endif
         #ifdef Q_OS_LINUX
         audioNotice.open();
-        audioNotice.start(classQAudioOutput);
+        audioNotice.start(AMultimedia::classQAudioOutput);
         qDebug() << "Notice start";
         #endif
         SendDialogMessage(msgEnter,tr("<FONT color=green size=4><center><B>Новое Сообщение!"));
@@ -974,7 +1020,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			MyClient.versionClient=MyClientMap.value("initV").toString();
 			MyClient.status=MyClientMap.value("status").toString();
 			MyClient.region=MyClientMap.value("na").toString();
-			MyClient.OnlineTime=MyClientMap.value("data").toString();
+            MyClient.OnlineTime=MyClientMap.value("data").toString();
 			ClientList << MyClient;
             R->Main->setWindowTitle(VERSION_CLIENT+"["+MyClient.name+"]");
 			R->KabinUI->labelMyColor->setText("<font color=#"+MyClient.color+">#"+MyClient.color);

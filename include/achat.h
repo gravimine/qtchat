@@ -18,6 +18,7 @@
 #include "abbcodec.h"
 #include "atcpclient.h"
 #include "asound.h"
+#include <QLinkedList>
 #define ADD_DEBUG logs<<
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
 #define DEFAULT_TEXT_TEXTBROWSER "<center><br><br><br><hr>Для начала работы откройте нужную комнату в списке справа -><br>Или создайте новую в \"личном кабинете\"<hr>"
@@ -30,6 +31,7 @@ struct PrivateMessage
     int ClientID;
     bool isRealLS,isCommand;
 };
+using ANetwork::ANetworkReply;
 enum ProgramStatus
 {
     Loading,
@@ -43,6 +45,29 @@ enum UpdateType
     updateHistoryMessage,
     updateMessage,
     updateClients
+};
+enum ServerType
+{
+    srvDefaultPHP,
+    srvTCPJava,
+    srvTCPInHTTPJava,
+    srvTCPQt,
+    srvTCPInHTTPQt
+};
+class ANetworkInterface :public ANetwork::ANetworkAccessManager
+{
+    Q_OBJECT
+public:
+    ANetwork::ATCPClient* tcpclient;
+    ServerType srvtype;
+    ANetworkInterface();
+    ~ANetworkInterface();
+    void post(QString post, int typ, bool AliveConnect = true);
+    int ReplyType;
+public slots:
+    void ReadCliented(QString read);
+signals:
+    void InterfaceRead(ANetworkReply s);
 };
 extern ProgramStatus isStart;
 struct AChate
@@ -116,6 +141,7 @@ enum ChatTypes
 	tNewLS,
 	tChats,
 	tDefault,
+    tGetServerInfo,
 	tExit,
 	tGetInfo,
 	tSetInfo,
@@ -163,7 +189,7 @@ struct Client
     }
 };
 extern ACore::AAppCore ClusterChat;
-using ANetwork::ANetworkReply;
+
 struct AServer
 {
 	QString name;
@@ -174,16 +200,18 @@ struct AServer
 	QString information;
 	QPixmap logo;
 	int users,usersmax;
+    ServerType type;
 	bool operator ==(AServer h)
 	{
 		if(url==h.url) return true;
 		else return false;
 	}
     AServer() {}
-    AServer(QString _name,QString _url,QString _region,QString _status,QString _info)
+    AServer(QString _name,QString _url,QString _region,QString _status,QString _info,ServerType _type)
     {
         name=_name;
         url=_url;
+        type=_type;
         region=_region;
         status=_status;
         information=_info;
@@ -202,7 +230,7 @@ struct Style
 };
 extern ACore::ASettings setings;
 extern ACore::ALog logs;
-extern ACore::ASound audioNotice;
+extern AMultimedia::ASound audioNotice;
 
 void SendDialogMessage(QString Text,QString Title="");
 #ifdef Q_OS_LINUX
@@ -212,7 +240,7 @@ class AChatAudioThread : public QThread
 };
 extern AChatAudioThread audioThread;
 #endif
-class AChat : public ANetwork::ANetworkAccessManager
+class AChat : public ANetworkInterface
 {
 	Q_OBJECT
 private:
