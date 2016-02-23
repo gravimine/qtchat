@@ -62,7 +62,7 @@ public:
     ServerType srvtype;
     ANetworkInterface();
     ~ANetworkInterface();
-    void post(QString post, int typ, bool AliveConnect = true);
+    void post(QString post, int typ);
     int ReplyType;
 public slots:
     void ReadCliented(QString read);
@@ -154,6 +154,7 @@ enum ChatTypes
 	tAllNewLS,
 	tOnlineList,
 	tReg,
+    tServerInfo2,
     tDeleteUniKey,
 	tServerPixmap,
 	tGetMy

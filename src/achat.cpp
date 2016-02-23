@@ -15,16 +15,17 @@ ACore::ASettings setings;
 ACore::ALog logs;
 ProgramStatus isStart;
 ACore::AAppCore ClusterChat("ClusterChat");
-void ANetworkInterface::post(QString post,int typ, bool AliveConnect)
+void ANetworkInterface::post(QString post,int typ)
 {
-    qDebug() << post;
+
     if(srvtype==srvDefaultPHP) ANetworkAccessManager::post(post, typ);
     else if(srvtype==srvTCPJava || srvtype==srvTCPQt)
     {
-        tcpclient->Send(post);
+        qDebug() << post;
         ReplyType=typ;
-        if(AliveConnect==true) {tcpclient->currentSocket()->waitForReadyRead(1000);}
-        else {tcpclient->currentSocket()->waitForBytesWritten(500);}
+        tcpclient->Send(post);
+        //if(AliveConnect==true) {tcpclient->currentSocket()->waitForReadyRead(1000);}
+
     }
 }
 ANetworkInterface::ANetworkInterface()
@@ -38,6 +39,7 @@ ANetworkInterface::~ANetworkInterface()
 }
 void ANetworkInterface::ReadCliented(QString read)
 {
+    qDebug() << read;
     ANetworkReply s;
     s.TextReply = read;
     s.Type = ReplyType;
@@ -882,7 +884,6 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 	switch (Type) {
 	case tUnkown:
 		{
-			SendMessage(Text);
 			break;
 		}
 	case tAuth:
@@ -1161,7 +1162,6 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
 			break;
 		}
 	default:
-		SendMessage(Text);
 		break;
 	}
 }
