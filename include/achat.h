@@ -31,6 +31,20 @@ struct PrivateMessage
     int ClientID;
     bool isRealLS,isCommand;
 };
+class AAppCore
+{
+public:
+    void SendM(QString text);
+    void Error(QString text);
+    bool MessageQuest(QString text);
+    void SetProgramName(QString name);
+    AAppCore();
+    ~AAppCore();
+    AAppCore(QString ProgName);
+protected:
+    int MessageBoxNumber;
+    QString ProgramName;
+};
 using ANetwork::ANetworkReply;
 enum ProgramStatus
 {
@@ -189,7 +203,7 @@ struct Client
         else return true;
     }
 };
-extern ACore::AAppCore ClusterChat;
+extern AAppCore ClusterChat;
 
 struct AServer
 {

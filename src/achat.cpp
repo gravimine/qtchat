@@ -14,7 +14,67 @@ AChat *CluChat;
 ACore::ASettings setings;
 ACore::ALog logs;
 ProgramStatus isStart;
-ACore::AAppCore ClusterChat("ClusterChat");
+AAppCore ClusterChat("ClusterChat");
+void AAppCore::SendM(QString text)
+{
+    MessageBoxNumber++;
+    if(MessageBoxNumber>MAX_MESSAGE_BOX)
+    {
+        //Коментарий  сохранен в файле
+        //Не сохранен
+        qDebug() << text;
+        return;
+    }
+    QMessageBox* pmbx =
+    new QMessageBox(QMessageBox::NoIcon,ProgramName,
+    text
+    );
+    pmbx->exec();
+    delete pmbx;
+    MessageBoxNumber--;
+}
+void AAppCore::SetProgramName(QString name)
+{
+    ProgramName=name;
+}
+AAppCore::AAppCore()
+{
+    MessageBoxNumber=0;
+    ProgramName="NULL";
+}
+AAppCore::~AAppCore()
+{
+}
+AAppCore::AAppCore(QString ProgName)
+{
+    MessageBoxNumber=0;
+    ProgramName=ProgName;
+}
+void AAppCore::Error(QString text)
+{
+    qDebug() << "Критическая ошибка: "+text;
+    QMessageBox* pmbx =
+    new QMessageBox(QMessageBox::Critical,ProgramName+" fatal error",
+    text
+    );
+    pmbx->exec();
+    delete pmbx;
+}
+bool AAppCore::MessageQuest(QString text)
+{
+    qDebug() << "Вопрос: "+text;
+    QMessageBox* pmbx =
+    new QMessageBox(ProgramName,
+    text,
+    QMessageBox::Information,
+    QMessageBox::Yes,
+    QMessageBox::No,
+    QMessageBox::Cancel | QMessageBox::Escape);
+    int n = pmbx->exec();
+    delete pmbx;
+    if (n == QMessageBox::Yes)return true;
+    else return false;
+}
 void ANetworkInterface::post(QString post,int typ)
 {
 
@@ -313,7 +373,9 @@ void AChat::SMStoValues(ACore::RecursionArray Map,bool isClear)
     QList<QString> keys=Map.keys();
     for(int j=0;j<keys.size();j++) {
         int ListID=0;
-        for(int k=0;k<ChatsList.size();k++) {if(ChatsList.value(k).KomID==Map.value(QString::number(j)).toMap().value("id").toString().toInt()) ListID=k;}
+        for(int k=0;k<ChatsList.size();k++) {
+            if(ChatsList.value(k).KomID==Map.value(QString::number(j)).toMap().value("id").toString().toInt()) ListID=k;
+        }
     QList<QString> keys2=Map.value(QString::number(j)).toMap().keys();
     if(isClear) ChatsList[ListID].messages.clear();
     if(Map.value(QString::number(j)).toMap().isEmpty()) continue;
