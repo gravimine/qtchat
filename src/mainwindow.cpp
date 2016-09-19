@@ -94,7 +94,7 @@ void Kabinet::on_listWidget_clicked(const QModelIndex &index)
 }
 void MainWindow::on_pushButton_clicked()
 {
-    CluChat->SendCommandAraim();
+
 }
 
 void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)

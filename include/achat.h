@@ -18,6 +18,8 @@
 #include "abbcodec.h"
 #include "atcpclient.h"
 #include "asound.h"
+#include "alog.h"
+#include "asettings.h"
 #include <QLinkedList>
 #define ADD_DEBUG logs<<
 #define foreash(n,mas) for(int n=0;n<mas.size();n++)
@@ -77,6 +79,7 @@ public:
     ANetworkInterface();
     ~ANetworkInterface();
     void post(QString post, int typ);
+    void post(ACore::RecursionArray post, int typ);
     int ReplyType;
 public slots:
     void ReadCliented(QString read);
@@ -258,7 +261,7 @@ extern AChatAudioThread audioThread;
 class AChat : public ANetworkInterface
 {
 	Q_OBJECT
-private:
+protected:
 	Client MyClient;
     QList<ASendLS> SendLSList;
     QTime SendLSOnTime;
@@ -282,21 +285,23 @@ private:
 	Client TimeClient;
     AChate MyKomnata;
 	QTimer *timer;
+    bool isSendCommand(QString message);
+    void WriteServerList(ACore::RecursionArray reply);
+    QString OnlinetoHTML(AChate room);
+    void SearchNewLS();
+    QString ListToHTML();
 public:
-	bool isSendCommand(QString message);
 	QString GetTextGroup(QString Groups);
 	void AddLS(int ClientID,QString msg);
     void DelUniKey(QString key);
-	void WriteServerList(ACore::RecursionArray reply);
 	void LSUp();
 	void LSDown();
 	void ReloadHistory();
 	void ReloadAllSMS();
     void UniKeyDeleteAll();
-    QString OnlinetoHTML(AChate room);
 	void SetServer(QString name);
 	AServer FindServer(QString name);
-	bool SendCommand(QString message);
+    bool SendCommand(QString message);
 	void SetKomnata(int id);
 	void SMStoValues(ACore::RecursionArray Map,bool isClear);
 	void SendMessage(QString text);
@@ -305,7 +310,6 @@ public:
 	UniKey FindUniKey(QString id);
     UniKey currentUniKey();
 	void login(QString loginit,QString passit,QString key = "");
-	void GetFileErrors();
     void SendCommandAraim();
     void SendCmd(QString cmd);
 	void LoadSettings();
@@ -326,12 +330,8 @@ public:
     Client currentClient();
 	void exit();
 	void clearlist();
-    void SearchNewLS();
 	UniClient GetUniClient(QString key);
-	QString Reformat(QString TEXT);
 	void WriteClients(ACore::RecursionArray Map);
-	QString ListToHTML();
-	int GetKomnata();
 	public slots:
     void getReplyFinished(ANetworkReply reply);
 	void updateCaption(); //Таймер сработал
