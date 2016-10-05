@@ -87,7 +87,7 @@ signals:
     void InterfaceRead(ANetworkReply s);
 };
 extern ProgramStatus isStart;
-struct AChate
+struct AChatRoom
 {
 	QString Name;
 	int CreatedID;
@@ -95,7 +95,7 @@ struct AChate
     bool isOpen,isDostupe;
 	QList<int> ClientList;
     QList<PrivateMessage> messages;
-	bool operator ==(AChate h)
+    bool operator ==(AChatRoom h)
 	{
 		if(KomID==h.KomID) return true;
 		else return false;
@@ -133,7 +133,7 @@ struct UniClient
 		else return false;
 	}
 };
-struct ASendLS
+struct AMessage
 {
     QString text;
     bool isCommand;
@@ -149,33 +149,7 @@ struct Smile
         url=_url;
     }
 };
-enum ChatTypes
-{
-	tUnkown,
-	tAuth,
-	tMessage,
-	tGetID,
-	tNewLS,
-	tChats,
-	tDefault,
-    tGetServerInfo,
-	tExit,
-	tGetInfo,
-	tSetInfo,
-	tCreateRoom,
-	tRemoveRoom,
-    tUniDeleteAll,
-	tGetUngine,
-	tGetError,
-	tServerList,
-	tAllNewLS,
-	tOnlineList,
-	tReg,
-    tServerInfo2,
-    tDeleteUniKey,
-	tServerPixmap,
-	tGetMy
-};
+
 struct Client
 {
 	QString name;
@@ -263,13 +237,13 @@ class AChat : public ANetworkInterface
 	Q_OBJECT
 protected:
 	Client MyClient;
-    QList<ASendLS> SendLSList;
+    QList<AMessage> SendLSList;
     QTime SendLSOnTime;
     ANetwork::ATCPClient tcpClient;
 	QList<AServer> ServersList;
     QList<Smile> SmilesList;
 	QList<Client> ClientList;
-	QList<AChate> ChatsList;
+    QList<AChatRoom> RoomsList;
 	QList<UniKey> UniKeyList;
     QList<ACore::BBCodeRule> BBCodeRules;
 	QList<UniClient> UniClientList;
@@ -283,14 +257,40 @@ protected:
 	Style Styled;
 	QString StylePath;
 	Client TimeClient;
-    AChate MyKomnata;
+    AChatRoom MyKomnata;
 	QTimer *timer;
     bool isSendCommand(QString message);
     void WriteServerList(ACore::RecursionArray reply);
-    QString OnlinetoHTML(AChate room);
+    QString OnlinetoHTML(AChatRoom room);
     void SearchNewLS();
-    QString ListToHTML();
+    QString RenderMessages();
 public:
+    enum ChatTypes
+    {
+        tUnknown,
+        tAuth,
+        tMessage,
+        tGetID,
+        tNewLS,
+        tChats,
+        tDefault,
+        tGetServerInfo,
+        tExit,
+        tGetInfo,
+        tSetInfo,
+        tCreateRoom,
+        tRemoveRoom,
+        tUniDeleteAll,
+        tGetUngine,
+        tServerList,
+        tAllNewLS,
+        tOnlineList,
+        tReg,
+        tServerInfo2,
+        tDeleteUniKey,
+        tServerPixmap,
+        tGetMy
+    };
 	QString GetTextGroup(QString Groups);
 	void AddLS(int ClientID,QString msg);
     void DelUniKey(QString key);
@@ -301,7 +301,7 @@ public:
     void UniKeyDeleteAll();
 	void SetServer(QString name);
 	AServer FindServer(QString name);
-    bool SendCommand(QString message);
+    bool ExecCommand(QString message);
 	void SetKomnata(int id);
 	void SMStoValues(ACore::RecursionArray Map,bool isClear);
 	void SendMessage(QString text);
@@ -310,14 +310,13 @@ public:
 	UniKey FindUniKey(QString id);
     UniKey currentUniKey();
 	void login(QString loginit,QString passit,QString key = "");
-    void SendCommandAraim();
-    void SendCmd(QString cmd);
+    void SendSvrCommand(QString cmd);
 	void LoadSettings();
 	void CheckBoxUpdate();
-    AChate currentRoom();
+    AChatRoom currentRoom();
 	bool LoadStyle(QString path);
-	AChate FindKomOfIndex(QString id);
-	AChate GetRoom(int id);
+    AChatRoom FindKomOfIndex(QString id);
+    AChatRoom GetRoom(int id);
 	Client FindClientOfIndex(QString id);
 	Client GetClient(int id);
     AChat(int mode);

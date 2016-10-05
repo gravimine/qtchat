@@ -40,13 +40,13 @@ void Kabinet::on_pushButton_CreateRoom_clicked()
         QString NameRoom=R->KabinUI->lineEdit_CreateRoom->text();
         R->KabinUI->pushButton_CreateRoom->setText("Создать комнату");
 		if(ClusterChat.MessageQuest("Вы действительно хотите создать комнату \""+NameRoom+"\"?"))
-		CluChat->post("type=addRoom&nameTextRoom="+NameRoom, tCreateRoom);
+        CluChat->post("type=addRoom&nameTextRoom="+NameRoom, AChat::tCreateRoom);
 		isCreareRoom=false;
 	}
 }
 void  Kabinet::on_pushButton_2_clicked()
 {
-	CluChat->post("type=getUnigue",tGetUngine);
+    CluChat->post("type=getUnigue",AChat::tGetUngine);
 
 }
 void Kabinet::on_pushButton_6_clicked()
@@ -56,7 +56,7 @@ void Kabinet::on_pushButton_6_clicked()
 
 void Kabinet::on_pushButton_4_clicked()
 {
-    AChate MyKomnata=CluChat->currentRoom();
+    AChatRoom MyKomnata=CluChat->currentRoom();
 	QString NameRoom=MyKomnata.Name;
     if(MyKomnata.CreatedID!=CluChat->currentClient().id)
 	{
@@ -65,7 +65,7 @@ void Kabinet::on_pushButton_4_clicked()
 	if(ClusterChat.MessageQuest("Вы действительно хотите удалить комнату \""+NameRoom+"\"?\nВся переписка БУДЕТ УДАЛЕНА!"))
 	if(ClusterChat.MessageQuest("Подтвердите свои действия:\n1.Удаление комнаты \""+NameRoom+"\"?Вся переписка БУДЕТ УДАЛЕНА!"))
 	{
-		CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),tRemoveRoom);
+        CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),AChat::tRemoveRoom);
 	}
 }
 void Kabinet::on_pushButton_9_clicked()
@@ -94,7 +94,7 @@ void Kabinet::on_listWidget_clicked(const QModelIndex &index)
 }
 void MainWindow::on_pushButton_clicked()
 {
-
+    CluChat->SendSvrCommand("c:134:321");
 }
 
 void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
@@ -109,7 +109,7 @@ void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 
 void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
 {
-	AChate tmp=CluChat->FindKomOfIndex(index.data().toString());
+    AChatRoom tmp=CluChat->FindKomOfIndex(index.data().toString());
 	Client Creater=CluChat->GetClient(tmp.CreatedID);
     R->KabinUI->label_NameKom->setText("Имя комнаты: "+tmp.Name);
     R->KabinUI->label_NumKom->setText("Номер комнаты: "+QString::number(tmp.KomID));
@@ -141,7 +141,7 @@ void Kabinet::on_pushButton_clicked()
 	QString posti="type=setInfo&id="+QString::number(tmp.id);
     if(tmp.name!=R->KabinUI->lineEditMyName->text())
     posti+="&real_name="+R->KabinUI->lineEditMyName->text();
-	CluChat->post(posti,tSetInfo);
+    CluChat->post(posti,AChat::tSetInfo);
 }
 void Dialog::on_checkBox_stateChanged(int arg1)
 {
@@ -205,16 +205,18 @@ void registr::on_pushButton_3_clicked()
 
 void registr::on_pushButton_clicked()
 {
-    if(!R->RegUI->lineEditLogin->text().isEmpty()) if(!R->RegUI->lineEditPass->text().isEmpty())
-    if(!R->RegUI->lineEditName->text().isEmpty()) if(!R->RegUI->lineEditFamelye->text().isEmpty())
-    if(!R->RegUI->lineEditEmail->text().isEmpty())
-    CluChat->Registration(R->RegUI->lineEditLogin->text(),R->RegUI->lineEditName->text()+" "+R->RegUI->lineEditFamelye->text(),
-    R->RegUI->lineEditPass->text(),R->RegUI->lineEditEmail->text());
-	else ClusterChat.SendM("Неверно заполнены поля");
-	else ClusterChat.SendM("Неверно заполнены поля");
-	else ClusterChat.SendM("Неверно заполнены поля");
-	else ClusterChat.SendM("Неверно заполнены поля");
-	else ClusterChat.SendM("Неверно заполнены поля");
+    if(!R->RegUI->lineEditLogin->text().isEmpty())
+        if(!R->RegUI->lineEditPass->text().isEmpty())
+            if(!R->RegUI->lineEditName->text().isEmpty())
+                if(!R->RegUI->lineEditFamelye->text().isEmpty())
+                    if(!R->RegUI->lineEditEmail->text().isEmpty())
+                        CluChat->Registration(R->RegUI->lineEditLogin->text(),R->RegUI->lineEditName->text()+" "+R->RegUI->lineEditFamelye->text(),
+                                              R->RegUI->lineEditPass->text(),R->RegUI->lineEditEmail->text());
+                    else ClusterChat.SendM("Не заполнен EMail");
+                else ClusterChat.SendM("Не заполнена фамилия");
+            else ClusterChat.SendM("Не заполнено имя");
+        else ClusterChat.SendM("Не заполнен пароль");
+    else ClusterChat.SendM("Не заполнен логин");
 }
 void MainWindow::on_commandLinkButton_clicked()
 {

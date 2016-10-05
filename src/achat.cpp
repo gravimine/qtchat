@@ -77,11 +77,10 @@ bool AAppCore::MessageQuest(QString text)
 }
 void ANetworkInterface::post(QString post,int typ)
 {
-
+    qDebug() << post;
     if(srvtype==srvDefaultPHP) ANetworkAccessManager::post(post, typ);
     else if(srvtype==srvTCPJava || srvtype==srvTCPQt)
     {
-        qDebug() << post;
         ReplyType=typ;
         tcpclient->Send(post);
         //if(AliveConnect==true) {tcpclient->currentSocket()->waitForReadyRead(1000);}
@@ -90,11 +89,10 @@ void ANetworkInterface::post(QString post,int typ)
 }
 void ANetworkInterface::post(ACore::RecursionArray post,int typ)
 {
-
+    qDebug() << post.print();
     if(srvtype==srvDefaultPHP) ANetworkAccessManager::post(post.toPost(), typ);
     else if(srvtype==srvTCPJava || srvtype==srvTCPQt)
     {
-        qDebug() << post.print();
         ReplyType=typ;
         tcpclient->Send(post.toArcan());
         //if(AliveConnect==true) {tcpclient->currentSocket()->waitForReadyRead(1000);}
@@ -116,7 +114,7 @@ void ANetworkInterface::ReadCliented(QString read)
     ANetworkReply s;
     s.TextReply = read;
     s.Type = ReplyType;
-    s.TextError="Unknown error";
+    s.error=QNetworkReply::NoError;
     InterfaceRead(s);
 }
 
@@ -146,7 +144,7 @@ void AChat::AddLS(int ClientID,QString msg)
     temp.isRealLS=false;
     temp.id=0;
     temp.msg=msg;
-    ChatsList[CurrentChatIndex].messages << temp;
+    RoomsList[CurrentChatIndex].messages << temp;
 }
 void AChat::RenderSmiles()
 {
@@ -186,9 +184,11 @@ void AChat::WriteServerList(ACore::RecursionArray reply)
         AllServers++; ServersList<<tmp;
     }
     logs<<QString::number(Servers)+" ot "+QString::number(AllServers)+" Servers";
-    ServersList << AServer("localhost","http://gravit.com/index.php","RU","403","local server in this computer",srvDefaultPHP);
+    ServersList << AServer("localhost","http://localhost/s1/index.php","RU","403","local server in this computer",srvDefaultPHP);
+    ServersList << AServer("Simply","http://simply.esy.es/index.php","RU","403","Simply Server",srvDefaultPHP);
     ServersList << AServer("localhost TCP","tcp://192.168.1.43:6592","RU","403","local server in this computer",srvTCPQt);
     R->LoadMenuUI->comboBox->addItem("localhost");
+    R->LoadMenuUI->comboBox->addItem("Simply");
     R->LoadMenuUI->comboBox->addItem("localhost TCP");
     if(url().isEmpty()) setUrl(ServersList.value(0).url);
 }
@@ -204,8 +204,8 @@ void AChat::ReloadHistory()
 {
     isReloadHostory=true;
     if(MyClient.com_id!=0)
-    {QString rooms;for(int i=0;i<ChatsList.size();i++){
-            if(ChatsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(ChatsList.value(i).KomID);}
+    {QString rooms;for(int i=0;i<RoomsList.size();i++){
+            if(RoomsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(RoomsList.value(i).KomID);}
         post("type=msglist&otMessages=25&room="+QString::number(MyKomnata.KomID)+rooms+"&maxMessages="+QString::number(HistoryNumberLS),tMessage);}
     post("type=msglist&otMessages=25&room="+QString::number(MyKomnata.KomID)+"&maxMessages="+QString::number(HistoryNumberLS),tMessage);
 }
@@ -219,10 +219,10 @@ void AChat::ReloadAllSMS()
     }
     post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);*/
     if(MyKomnata.isDostupe){
-        QString Texte=ListToHTML();
+        QString Texte=RenderMessages();
         QTextCursor s=R->MainUI->textBrowser->textCursor();
         R->MainUI->textBrowser->setHtml(Texte);
-        TexteCashe=ChatsList[CurrentChatIndex].messages.length();
+        TexteCashe=RoomsList[CurrentChatIndex].messages.length();
         QTextCursor k(R->MainUI->textBrowser->document());
         k=s;
         if(s.position()==0) R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
@@ -233,7 +233,7 @@ void AChat::ReloadAllSMS()
         R->MainUI->textBrowser->setHtml("<br><br><br><center><b>Вы не можете войти в эту комнату</b>");
     }
 }
-QString AChat::OnlinetoHTML(AChate room)
+QString AChat::OnlinetoHTML(AChatRoom room)
 {
     QList<int> List=room.ClientList;
     QString allLS;
@@ -277,7 +277,7 @@ AServer AChat::FindServer(QString name)
     }
     return returnServer;
 }
-bool AChat::SendCommand(QString message)
+bool AChat::ExecCommand(QString message)
 {
     //QStringList ArgList=message.split(" ");
     QStringList ArgList=ACore::splitStringArgs(message);
@@ -287,14 +287,14 @@ bool AChat::SendCommand(QString message)
         if(ArgList.value(1).isEmpty()||ArgList.value(2).isEmpty()) SendMessage("Неверные аргументы");
         else
         {
-            post("type=ban&id="+ArgList.value(1)+"&hour="+ArgList.value(2),tUnkown);
+            post("type=ban&id="+ArgList.value(1)+"&hour="+ArgList.value(2),tUnknown);
         }
         return true;
     }
     else if(cmd=="/post")
     {
         if(ArgList.value(1).isEmpty()) SendMessage("Невозможно отправить пустой запрос");
-        else post(ArgList.value(1),tUnkown);
+        else post(ArgList.value(1),tUnknown);
         return true;
     }
     else if(cmd=="/sin")
@@ -347,7 +347,7 @@ bool AChat::SendCommand(QString message)
     {
         if(ArgList.value(1).isEmpty()) SendMessage("Невозможно отправить пустое сообщение");
         AddLS(MyClient.id,ArgList.value(1));
-        R->MainUI->textBrowser->setText(ListToHTML());
+        R->MainUI->textBrowser->setText(RenderMessages());
         return true;
     }
     else return false;
@@ -365,8 +365,8 @@ void AChat::slotRead(QString read)
 void AChat::SetKomnata(int id)
 {
     MyClient.com_id=id;
-    for(int k=0;k<ChatsList.size();k++) {if(ChatsList.value(k).KomID==id) CurrentChatIndex=k;}
-    MyKomnata=ChatsList.value(CurrentChatIndex);
+    for(int k=0;k<RoomsList.size();k++) {if(RoomsList.value(k).KomID==id) CurrentChatIndex=k;}
+    MyKomnata=RoomsList.value(CurrentChatIndex);
     ReloadAllSMS();
     ADD_DEBUG "Комната выбрана: "+QString::number(id);
     //ChatsList[GetKomnata()].messages.clear();
@@ -377,11 +377,11 @@ void AChat::SMStoValues(ACore::RecursionArray Map,bool isClear)
     QList<QString> keys=Map.keys();
     for(int j=0;j<keys.size();j++) {
         int ListID=0;
-        for(int k=0;k<ChatsList.size();k++) {
-            if(ChatsList.value(k).KomID==Map.value(QString::number(j)).toMap().value("id").toString().toInt()) ListID=k;
+        for(int k=0;k<RoomsList.size();k++) {
+            if(RoomsList.value(k).KomID==Map.value(QString::number(j)).toMap().value("id").toString().toInt()) ListID=k;
         }
         QList<QString> keys2=Map.value(QString::number(j)).toMap().keys();
-        if(isClear) ChatsList[ListID].messages.clear();
+        if(isClear) RoomsList[ListID].messages.clear();
         if(Map.value(QString::number(j)).toMap().isEmpty()) continue;
         for(int i=0;i<keys2.size();i++)
         {
@@ -402,7 +402,7 @@ void AChat::SMStoValues(ACore::RecursionArray Map,bool isClear)
 
             Temp.data=TimeData.value(0);
             Temp.time=TimeData.value(1);
-            if(!Temp.msg.isEmpty())ChatsList[ListID].messages << Temp;
+            if(!Temp.msg.isEmpty())RoomsList[ListID].messages << Temp;
         }
     }
 }
@@ -484,7 +484,8 @@ void AChat::login(QString loginit,QString passit,QString key)
                 {"login",loginit},
                 {"pass",passit},
                 {"init",INIT_CLIENT},
-                {"initV",INIT_VERSION}
+                {"initV",INIT_VERSION},
+                {"clientUnigue","?"}
             };
             //posti="type=auth&login="+loginit+"&pass="+passit+"&init="+INIT_CLIENT+"&clientUnigue=?&initV="+INIT_VERSION;
         }
@@ -513,7 +514,7 @@ void AChat::LoadSettings()
     setings["TimeFormat"]="[%1:%2:%3]";
     setings["Smiles"]=true;
     setings["SettingsVersion"]=1.0;
-    setings["NoPassword"]=true;
+    setings["NoPassword"]=false;
     setings["Sencure"]=true; //OUTDATE Не используется
     setings.LoadSettings();
     R->LoadMenuUI->lineEdit->setText(setings["Login"].toString());
@@ -576,22 +577,22 @@ bool AChat::LoadStyle(QString path)
     logs<< "Style loaded";
     return true;
 }
-AChate AChat::FindKomOfIndex(QString id)
+AChatRoom AChat::FindKomOfIndex(QString id)
 {
-    AChate returnChat;
-    for(int i=0;i<ChatsList.size();i++)
+    AChatRoom returnChat;
+    for(int i=0;i<RoomsList.size();i++)
     {
-        if(ChatsList.value(i).Name==id)
+        if(RoomsList.value(i).Name==id)
         {
-            returnChat=ChatsList.value(i);
+            returnChat=RoomsList.value(i);
             break;
         }
     }
     return returnChat;
 }
-AChate AChat::GetRoom(int id)
+AChatRoom AChat::GetRoom(int id)
 {
-    return ChatsList.value(id);
+    return RoomsList.value(id);
 }
 
 Client AChat::FindClientOfIndex(QString id)
@@ -621,7 +622,7 @@ Client AChat::GetClient(int id)
     }
     return returnClient;
 }
-AChate AChat::currentRoom()
+AChatRoom AChat::currentRoom()
 {
     return MyKomnata;
 }
@@ -746,7 +747,7 @@ void AChat::SendLS(QString Text)
     if(SendLSOnTime.elapsed()<=TIMER_SENDLS) //Так делать нужно
     {
         if(!Text.isEmpty()) {
-            ASendLS s;
+            AMessage s;
             s.text=Text;
             s.isCommand=false;
             SendLSList << s;}
@@ -760,17 +761,17 @@ void AChat::SendLS(QString Text)
                  .replace("&","%26").replace("+","%2B"), tNewLS);
         }
         //if(!isSendCommand(Text)) post("type=sendmsg&message="+Text.replace("&","%26"),tNewLS);
-        else SendCommand(Text);
+        else ExecCommand(Text);
     }
     SendLSOnTime.currentTime();
     SendLSOnTime.start();
 }
-void AChat::SendCmd(QString cmd)
+void AChat::SendSvrCommand(QString cmd)
 {
     if(SendLSOnTime.elapsed()<=TIMER_SENDLS) //Так делать нужно
     {
         if(!cmd.isEmpty()) {
-            ASendLS s;
+            AMessage s;
             s.text=cmd;
             s.isCommand=true;
             SendLSList << s;}
@@ -801,7 +802,7 @@ void AChat::exit()
 }
 void AChat::clearlist()
 {
-    ChatsList.clear();
+    RoomsList.clear();
     ClientList.clear();
     UniClientList.clear();
     R->MainUI->listWidget->clear();
@@ -842,24 +843,24 @@ void AChat::WriteClients(RecursionArray Map)
         }
     }
     QString rooms;
-    for(int i=0;i<ChatsList.size();i++)
+    for(int i=0;i<RoomsList.size();i++)
     {
-        if(ChatsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(ChatsList.value(i).KomID);
+        if(RoomsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(RoomsList.value(i).KomID);
     }
     if(isStart!=Wait) post("type=msglist&room="+rooms,tMessage);
     else post("type=msglist&new=true&room="+rooms,tMessage);
     isReloadHostory=false;
     SendLSOnTime.start();
 }
-QString AChat::ListToHTML()
+QString AChat::RenderMessages()
 {
     QString HTML;
     int nummers=0;
     QString allLS="";
     int doClient=0;
-    for(int i=0;i<ChatsList.value(CurrentChatIndex).messages.size();i++)
+    for(int i=0;i<RoomsList.value(CurrentChatIndex).messages.size();i++)
     {
-        PrivateMessage ssLS=ChatsList.value(CurrentChatIndex).messages.value(i);
+        PrivateMessage ssLS=RoomsList.value(CurrentChatIndex).messages.value(i);
         ssLS.msg=replacerBBCode( ssLS.msg,BBCodeRules);
         ssLS.msg.replace("\n","<br>");
         for(int i=0;i<SmilesList.size();i++) ssLS.msg.replace(SmilesList.value(i).code,"<IMG src=\""+SmilesList.value(i).url+"\">");
@@ -893,18 +894,18 @@ QString AChat::ListToHTML()
 void AChat::SearchNewLS()
 {
     QString msgEnter;
-    for(int i=0;i<ChatsList.size();i++)
+    for(int i=0;i<RoomsList.size();i++)
     {
-        AChate currentChate=ChatsList[i];
+        AChatRoom currentChate=RoomsList[i];
         PrivateMessage maxLS=currentChate.messages.value(currentChate.messages.size()-1);
         /*for(int j=0;j<currentChate.messages.size();j++){
             if(currentChate.messages.value(j).id>maxLS.id) {
             maxLS=currentChate.messages.value(j);
             }
         }*/
-        if(!maxLS.msg.isEmpty() && MyClient.id != maxLS.ClientID && maxLS.id>ChatsList[i].endLS) {
+        if(!maxLS.msg.isEmpty() && MyClient.id != maxLS.ClientID && maxLS.id>RoomsList[i].endLS) {
             Client ClientLS=GetClient(maxLS.ClientID);
-            ChatsList[i].endLS=maxLS.id;
+            RoomsList[i].endLS=maxLS.id;
             if(!maxLS.isCommand)
                 msgEnter+="<br><b>["+currentChate.Name+"]<font color=blue>"+ClientLS.name+"</font>:"+maxLS.msg+"</b>";
             else{
@@ -929,29 +930,29 @@ void AChat::SearchNewLS()
 void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ сервера
 {
     RecursionArray ValuesMap;
-    ValuesMap.fromArcan(reply.TextReply.toUtf8());
+    ValuesMap.fromHtml(reply.TextReply);
     RecursionArray ReplyMap=ValuesMap.value("arg").toMap();
     QString Text;
     Text=ValuesMap.value("key").toString();
-    if(isDebug)qDebug() << ValuesMap.print();
+    qDebug() << ValuesMap.print() << reply.TextReply;
     int Type=reply.Type;
     if(Text.toInt() > 300 && Text.toInt() <600)
     {
         QString sma=GetErrorText(Text.toInt());
         if(!sma.isEmpty()) SendMessage(sma);
     }
-    if(reply.TextError=="Timeout")
+    if(reply.error==QNetworkReply::TimeoutError)
     {
         nextReqest();
         logs.addError("Timeout request. This request next");
     }
-    else if(reply.TextError!="Unknown error"&&reply.TextError!="Неизвестная ошибка")
+    else if(reply.error!=QNetworkReply::NoError)
     {
-        SendErrorMessage("Ошибка при получении данных с сервера "+reply.TextError);
-        logs.addError(reply.TextError);
+        SendErrorMessage("Ошибка при получении данных с сервера "+reply.errorString);
+        logs.addError(reply.errorString);
     }
     switch (Type) {
-    case tUnkown:
+    case tUnknown:
     {
         break;
     }
@@ -960,7 +961,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
         if(Text=="403"){
             MyClient.Active=true;
             isStart=AuthServer;
-            post("type=info&id=?",tGetMy);
+            post({{"type","info"},{"id","?"}},tGetMy);
             if(!ValuesMap.value("сlientUnigue").toString().isEmpty())
             {
                 UniKey s;
@@ -986,17 +987,8 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
             logs<< "login on";
         }
         else{
-            SendMessage(tr("Ошибка авторизации"));logs<< "login Error: "+ Text;
+            SendMessage(tr("Ошибка авторизации"));logs<< "login Error: "+ reply.TextReply;
             SendMessage(Text); MyClient.Active=false;}
-        break;
-    }
-    case tGetError:
-    {
-        QFile errorsp;
-        errorsp.setFileName(SetPath+"/Errors.txt");
-        errorsp.open(QIODevice::WriteOnly);
-        errorsp.write(Text.toLocal8Bit());
-        errorsp.close();
         break;
     }
     case tSetInfo:
@@ -1043,9 +1035,9 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
         }
         if(isDebug) R->LoadWindowUI->label_2->setText(tr("Получение списка доступных комнат"));
         QString postiString;
-        for(int i=0;i<ChatsList.size();i++)
+        for(int i=0;i<RoomsList.size();i++)
         {
-            int RoomID=ChatsList.value(i).KomID;
+            int RoomID=RoomsList.value(i).KomID;
             if(RoomID!=MyClient.com_id) postiString+="/"+QString::number(RoomID);
         }
         if(MyClient.com_id!=0)post( "type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);
@@ -1148,7 +1140,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
     {
         if(Text!="403") SendMessage("Ошибка отправки ЛС: "+Text);
         QString rooms;
-        for(int i=0;i<ChatsList.size();i++){if(ChatsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(ChatsList.value(i).KomID);}
+        for(int i=0;i<RoomsList.size();i++){if(RoomsList.value(i).KomID!=MyKomnata.KomID) rooms+="/"+QString::number(RoomsList.value(i).KomID);}
         if(MyClient.com_id!=0) post("type=msglist&new=true&room="+QString::number(MyKomnata.KomID)+rooms,tMessage);
         break;
     }
@@ -1159,7 +1151,7 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
         QStringList result;
         for(int i=0;i<keys.size();i++)
         {
-            AChate temp2;
+            AChatRoom temp2;
             RecursionArray ValueMap=ReplyMap.value(QString::number(i)).toMap();
             temp2.KomID=ValueMap.value("id").toString() .toInt();
             temp2.CreatedID=ValueMap.value("idUserCreat").toString() .toInt();
@@ -1178,8 +1170,8 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
                     result<<UsersRoom.value(j);
                 }
             }
-            if(!ChatsList.contains(temp2)){
-                ChatsList<<temp2;
+            if(!RoomsList.contains(temp2)){
+                RoomsList<<temp2;
                 R->MainUI->listWidget->addItem( temp2.Name+" "+ QString::number(temp2.KomID));
                 R->KabinUI->listWidget_3->addItem( temp2.Name);}
         }
@@ -1216,11 +1208,11 @@ void AChat::getReplyFinished(ANetworkReply reply) //Принят ответ се
         }
         else SMStoValues(ReplyMap,false);
         if(MyKomnata.KomID!=0 && MyKomnata.isDostupe){
-            QString Texte=ListToHTML();
+            QString Texte=RenderMessages();
             QTextCursor s=R->MainUI->textBrowser->textCursor();
-            if(TexteCashe!=ChatsList.value(CurrentChatIndex).messages.length()){
+            if(TexteCashe!=RoomsList.value(CurrentChatIndex).messages.length()){
                 R->MainUI->textBrowser->setHtml(Texte);
-                TexteCashe=ChatsList[CurrentChatIndex].messages.length();
+                TexteCashe=RoomsList[CurrentChatIndex].messages.length();
                 QTextCursor k(R->MainUI->textBrowser->document());
                 k=s;
                 if(s.position()==0) R->MainUI->textBrowser->moveCursor(QTextCursor::End,QTextCursor::MoveAnchor);
@@ -1258,17 +1250,17 @@ void AChat::updateCaption() //Таймер сработал
     {
         if(TimerTick!=TIMER_TICK_RELOAD) {
             QString rooms;
-            for(int i=0;i<ChatsList.size();i++)
+            for(int i=0;i<RoomsList.size();i++)
             {
-                if(ChatsList.value(i).KomID!=MyKomnata.KomID)
-                    rooms+="/"+QString::number(ChatsList.value(i).KomID);
+                if(RoomsList.value(i).KomID!=MyKomnata.KomID)
+                    rooms+="/"+QString::number(RoomsList.value(i).KomID);
             }
             if(MyClient.com_id!=0) post("type=msglist&new=true&room="+QString::number(MyKomnata.KomID)+rooms,tMessage);}
         else {
             QString postiString;
-            for(int i=0;i<ChatsList.size();i++)
+            for(int i=0;i<RoomsList.size();i++)
             {
-                int RoomID=ChatsList.value(i).KomID;
+                int RoomID=RoomsList.value(i).KomID;
                 if(RoomID!=MyClient.com_id) postiString+="/"+QString::number(RoomID);
             }
             post("type=onlineUsersRoom&room="+QString::number(MyClient.com_id)+postiString,tOnlineList);TimerTick=0;}
