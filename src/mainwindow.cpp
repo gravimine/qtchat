@@ -26,23 +26,23 @@ QTextBrowser *tmppp;
 bool isCreareRoom=false;
 void Kabinet::on_pushButton_CreateRoom_clicked()
 {
-	if(!isCreareRoom)
-	{
+    if(!isCreareRoom)
+    {
         R->KabinUI->label_CreateRoom->show();
         R->KabinUI->lineEdit_CreateRoom->show();
         R->KabinUI->pushButton_CreateRoom->setText("Применить");
-		isCreareRoom=true;
-	}
-	else
-	{
+        isCreareRoom=true;
+    }
+    else
+    {
         R->KabinUI->label_CreateRoom->hide();
         R->KabinUI->lineEdit_CreateRoom->hide();
         QString NameRoom=R->KabinUI->lineEdit_CreateRoom->text();
         R->KabinUI->pushButton_CreateRoom->setText("Создать комнату");
-		if(ClusterChat.MessageQuest("Вы действительно хотите создать комнату \""+NameRoom+"\"?"))
-        CluChat->post("type=addRoom&nameTextRoom="+NameRoom, AChat::tCreateRoom);
-		isCreareRoom=false;
-	}
+        if(ClusterChat.MessageQuest("Вы действительно хотите создать комнату \""+NameRoom+"\"?"))
+            CluChat->post("type=addRoom&nameTextRoom="+NameRoom, AChat::tCreateRoom);
+        isCreareRoom=false;
+    }
 }
 void  Kabinet::on_pushButton_2_clicked()
 {
@@ -57,16 +57,16 @@ void Kabinet::on_pushButton_6_clicked()
 void Kabinet::on_pushButton_4_clicked()
 {
     AChatRoom MyKomnata=CluChat->currentRoom();
-	QString NameRoom=MyKomnata.Name;
+    QString NameRoom=MyKomnata.Name;
     if(MyKomnata.CreatedID!=CluChat->currentClient().id)
-	{
-		ClusterChat.SendM("Вы не владеете комнатой \""+NameRoom+"\".");
-	} else
-	if(ClusterChat.MessageQuest("Вы действительно хотите удалить комнату \""+NameRoom+"\"?\nВся переписка БУДЕТ УДАЛЕНА!"))
-	if(ClusterChat.MessageQuest("Подтвердите свои действия:\n1.Удаление комнаты \""+NameRoom+"\"?Вся переписка БУДЕТ УДАЛЕНА!"))
-	{
-        CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),AChat::tRemoveRoom);
-	}
+    {
+        ClusterChat.SendM("Вы не владеете комнатой \""+NameRoom+"\".");
+    } else
+        if(ClusterChat.MessageQuest("Вы действительно хотите удалить комнату \""+NameRoom+"\"?\nВся переписка БУДЕТ УДАЛЕНА!"))
+            if(ClusterChat.MessageQuest("Подтвердите свои действия:\n1.Удаление комнаты \""+NameRoom+"\"?Вся переписка БУДЕТ УДАЛЕНА!"))
+            {
+                CluChat->post("type=deleteRoom&room="+QString::number(MyKomnata.KomID),AChat::tRemoveRoom);
+            }
 }
 void Kabinet::on_pushButton_9_clicked()
 {
@@ -77,13 +77,13 @@ void Kabinet::on_pushButton_9_clicked()
 
 MainWindow::~MainWindow()
 {
-	delete ui;
-	delete CluChat;
+    delete ui;
+    delete CluChat;
 }
 void Kabinet::on_listWidget_clicked(const QModelIndex &index)
 {
 
-	AServer tmp=CluChat->FindServer(index.data().toString());
+    AServer tmp=CluChat->FindServer(index.data().toString());
     R->KabinUI->label_nameserver->setText("Имя сервера: "+tmp.name);
     if(tmp.status!="offline")R->KabinUI->label_serverstatus->setText("Статус: <font color=#0F0>online");
     else R->KabinUI->label_serverstatus->setText("Статус: <font color=#F00>offline");
@@ -99,7 +99,7 @@ void MainWindow::on_pushButton_clicked()
 
 void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 {
-	UniClient tmp=CluChat->GetUniClient(index.data().toString());
+    UniClient tmp=CluChat->GetUniClient(index.data().toString());
     R->KabinUI->label_ClientVersion_Uni->setText("Версия: "+tmp.Init+" "+tmp.InitVersion);
     R->KabinUI->label__UniKey_Uni->setText("Уникальный ключ: "+tmp.key);
     R->KabinUI->label_LastData_Uni->setText("Дата последнего входа: "+tmp.lastDate);
@@ -110,21 +110,21 @@ void Kabinet::on_listWidget_4_clicked(const QModelIndex &index)
 void Kabinet::on_listWidget_3_clicked(const QModelIndex &index)
 {
     AChatRoom tmp=CluChat->FindKomOfIndex(index.data().toString());
-	Client Creater=CluChat->GetClient(tmp.CreatedID);
+    Client Creater=CluChat->GetClient(tmp.CreatedID);
     R->KabinUI->label_NameKom->setText("Имя комнаты: "+tmp.Name);
     R->KabinUI->label_NumKom->setText("Номер комнаты: "+QString::number(tmp.KomID));
     R->KabinUI->label_Creater->setText("Создатель комнаты: "+Creater.name);
     R->KabinUI->listWidget_5->clear();
-	for(int i=0;i<tmp.ClientList.size();i++)
-	{
-		Client s=CluChat->GetClient(tmp.ClientList.value(i));
-		if(!s.name.isEmpty() && s.id!=tmp.CreatedID)
-        R->KabinUI->listWidget_5->addItem(s.name);
-	}
+    for(int i=0;i<tmp.ClientList.size();i++)
+    {
+        Client s=CluChat->GetClient(tmp.ClientList.value(i));
+        if(!s.name.isEmpty() && s.id!=tmp.CreatedID)
+            R->KabinUI->listWidget_5->addItem(s.name);
+    }
 }
 void  Kabinet::on_listWidget_2_clicked(const QModelIndex &index)
 {
-	Client  tmp=CluChat->FindClientOfIndex(index.data().toString());
+    Client  tmp=CluChat->FindClientOfIndex(index.data().toString());
     R->KabinUI->label_NameUser->setText("Имя пользователя: "+tmp.name);
     R->KabinUI->label_RegionUser->setText("Страна: "+tmp.region);
     if(tmp.Active){R->KabinUI->label_StatusUser->setText("<center><font color=green>Онлайн"); R->KabinUI->label_TimeOnlineUser->setText("");}
@@ -138,9 +138,9 @@ void  Kabinet::on_listWidget_2_clicked(const QModelIndex &index)
 void Kabinet::on_pushButton_clicked()
 {
     Client tmp=CluChat->currentClient();
-	QString posti="type=setInfo&id="+QString::number(tmp.id);
+    QString posti="type=setInfo&id="+QString::number(tmp.id);
     if(tmp.name!=R->KabinUI->lineEditMyName->text())
-    posti+="&real_name="+R->KabinUI->lineEditMyName->text();
+        posti+="&real_name="+R->KabinUI->lineEditMyName->text();
     CluChat->post(posti,AChat::tSetInfo);
 }
 void Dialog::on_checkBox_stateChanged(int arg1)
@@ -148,50 +148,50 @@ void Dialog::on_checkBox_stateChanged(int arg1)
     if(arg1==2) {setings["Login"]=R->LoadMenuUI->lineEdit->text();
         if(setings["NoPassword"]==false) setings["Pass"]=R->LoadMenuUI->lineEdit_2->text();}
     else
-      {if(setings["NoPassword"]==true) setings["Login"]=R->LoadMenuUI->lineEdit->text();
-              setings["Pass"]="";}
+    {if(setings["NoPassword"]==true) setings["Login"]=R->LoadMenuUI->lineEdit->text();
+        setings["Pass"]="";}
 }
 void Kabinet::on_checkBox_7_stateChanged(int arg1)
 {
-	if(arg1==2) {setings["Sencure"]=true;}
-	else {setings["Sencure"]=false;}
+    if(arg1==2) {setings["Sencure"]=true;}
+    else {setings["Sencure"]=false;}
 }
 
 void Kabinet::on_checkBox_5_stateChanged(int arg1)
 {
-	if(arg1==2) {setings["VirtualHost"]=true;}
-	else {setings["VirtualHost"]=false;}
+    if(arg1==2) {setings["VirtualHost"]=true;}
+    else {setings["VirtualHost"]=false;}
 }
 
 void Kabinet::on_checkBox_clicked(bool checked)
 {
-	if(checked) {setings["Smiles"]=true;}
-	else setings["Smiles"]=false;
+    if(checked) {setings["Smiles"]=true;}
+    else setings["Smiles"]=false;
 }
 void Kabinet::on_checkBox_2_clicked(bool checked)
 {
-	if(checked) {setings["Debug"]=true;}
-	else setings["Debug"]=false;
+    if(checked) {setings["Debug"]=true;}
+    else setings["Debug"]=false;
 }
 void MainWindow::OnStart(int mode)
 {
     CluChat=new AChat(mode);
-	CluChat->LoadSettings();
+    CluChat->LoadSettings();
     CluChat->CheckBoxUpdate();
 }
 void MainWindow::OnRequest()
 {
-	CluChat->GetServersList();
+    CluChat->GetServersList();
 }
 void Dialog::on_comboBox_activated(const QString &arg1)
 {
-	CluChat->SetServer(arg1);
+    CluChat->SetServer(arg1);
 }
 void Dialog::on_pushButton_clicked()
 {
     if(!CluChat->url().isEmpty())
-    CluChat->login(R->LoadMenuUI->lineEdit->text(),R->LoadMenuUI->lineEdit_2->text());
-	else ClusterChat.SendM("Выберите сервер для входа");
+        CluChat->login(R->LoadMenuUI->lineEdit->text(),R->LoadMenuUI->lineEdit_2->text());
+    else ClusterChat.SendM("Выберите сервер для входа");
 }
 void registr::on_pushButton_2_clicked()
 {
@@ -227,22 +227,22 @@ void MainWindow::on_commandLinkButton_clicked()
 
 void MainWindow::on_listWidget_clicked(const QModelIndex &index)
 {
-	QStringList lst=index.data().toString().split(" ");
-	CluChat->SetKomnata(lst.value(lst.size()-1).toInt());
+    QStringList lst=index.data().toString().split(" ");
+    CluChat->SetKomnata(lst.value(lst.size()-1).toInt());
 }
 void MainWindow::on_action_6_triggered()
 {
-	CluChat->exit();
+    CluChat->exit();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-	CluChat->LSUp();
-	CluChat->ReloadHistory();
+    CluChat->LSUp();
+    CluChat->ReloadHistory();
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
-	CluChat->LSDown();
-	CluChat->ReloadHistory();
+    CluChat->LSDown();
+    CluChat->ReloadHistory();
 }

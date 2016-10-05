@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     int InitUI=timer->elapsed();
     qDebug() << "Инициализация UI: "+QString::number(InitUI)+"мс";
     if(a.arguments().contains("-template")) {qDebug() << "[main] Directory Template";
-    WindMain->OnStart(1);
+        WindMain->OnStart(1);
     }
     else WindMain->OnStart(0);
     qDebug() << "Старт программы: "+QString::number(timer->elapsed()-InitUI)+"мс";
